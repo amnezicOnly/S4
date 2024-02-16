@@ -1,0 +1,230 @@
+\documentclass{article}
+\usepackage[a4paper, total={6in, 8in}]{geometry}  
+\usepackage{graphicx} % pour insérer des images
+
+% pour utiliser des notations scientifiques
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{extarrows} % pour afficher les flèches de logiques (implique, équivalent à ,etc...)
+\usepackage{soul} % utilité à troiver
+\let\oldemptyset\emptyset
+\usepackage[T1]{fontenc}
+
+\author{Amnézic}
+\date{}
+\title{Aide Vim}
+
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+\subsection{Présentation}
+Pour trouver de l'aide sur une commande ou un sujet, il suffit d'être en mode normal et de taper: :[commande] ou :[subject]. Pour l'utilisation d'une commande dans un certain mode, il suffira de taper:[mode]\_[commande ou sujet]. Les différents modes sont :
+\begin{itemize}
+    \item i (insert mode)
+    \item v (visual mode)
+    \item c (command line mode)
+\end{itemize}
+Toutes les comandes seront présentées dans un tabularau à deux colonnes, la première avec la commande pour une seule itération et la seconde colonne avec la commande pour \textit{n} itérations.
+\subsection{Commandes de base}
+Se déplacer (les flèches directionnelles fonctionnent aussi) (dans le sens horaire en partant d'en haut): k, l, j et h.\newline
+Pour insérer du texte : i[texte]
+
+\section{Modifier le document}
+
+\subsection{Se déplacer efficacement}
+\begin{center}
+\newline\begin{tabular}{|l|l|l|}
+    \hline
+    Début des mots suivants & w & \textit{n}w \\
+    \hline
+    Fin des mots suivants & e & \textit{n}ge \\
+    \hline
+    Début des mots précédents & b & \textit{n}b \\
+    \hline
+    Fin des mots précédents & ge & \textit{n}ge \\
+    \hline
+    Aller au début de la ligne & 0 & \\
+    \hline
+    Aller à la fin de la ligne & \$ & \\
+    \hline
+    Aller au prochain [x] & f[x] & \textit{n}f[x] \\
+    \hline
+    Aller au précédent [x] & F[x] & \textit{n}F[x] \\
+    \hline
+    Aller au caractère ouvrant/fermant correspondant & \% & \\
+    \hline
+    Aller en haut du document & H & \\
+    \hline
+    Aller au milieu du document & M & \\
+    \hline
+    Aller en bas du document & L & \\
+    \hline
+    Ajouter une ligne au-dessus & maj-o & \textit{n}maj-o \\
+    \hline
+    Ajouter une ligne en-dessous & o & \textit{n}o\\
+    \hline
+    Aller à la ligne & \textit{n} & :\textit{n} \\
+    \hline
+    Se déplacer à la prochaine occurence de [texte] & /[texte] & \\
+    Aller au suivant & n & \\
+    \hline
+    A revoir & mots qui  se finissent & par [texte] \\
+    \hline
+\end{tabular}
+\end{center}
+
+
+
+
+\subsection{Insérer du texte}
+
+
+
+
+
+\subsection{Supprimer}
+\begin{center}
+\newline\begin{tabular}{|l|l|l|}
+    \hline
+    Des caractères & x & \text{n}x \\
+    \hline
+    Des mots (se place au début du mot restant) & dw & d\textit{n}w\\
+    \hline
+    Des mots (se place avant le mot restant) & de & d\textit{n}e \\
+    \hline
+    Supprimer le mot courant & daw & \textit{n}daw \\
+    \hline
+    Des lignes depuis la courante & dd & \text{n}dd \\
+    \hline
+    Supprimer le reste de la ligne & D & \\
+    \hline
+    Supprimer la ligne jusq'au curseur (non-inclus) & d0 & \\
+    \hline
+    Supprimer le contenu jusqu'à la ligne courante & dgg & \\
+    Supprimer le contenu jusqu'a la fin du fichier & dG & \\
+    \hline
+    Remplacer un caractère par [x] & rx & r\textit{n}x \\
+    \hline
+    Changer du texte & cw[texte] & c\textit{n}w[texte] \\
+    \hline
+    Changer le reste de la ligne & C & \\
+    \hline
+    Changer toute la ligne & S & \\
+    \hline
+\end{tabular}
+\end{center}
+
+
+
+\subsection{Séléctionner du texte}
+Pour aider à voir ce que vous faites, vous pouvez vous mettre en mode visuel, simplement en cliquant sur v à partir du mode normal.
+\begin{center}
+\newline\begin{tabular}{|l|l|l|}
+    \hline
+    Séléctionner \textit{n} lignes & Vj & V\textit{n}j \\
+    \hline
+    Copier du texte (avec espace final) & yw & y\textit{n}w \\
+    Copier du texte (sans espace final) & ye & y\textit{n}e \\
+    Copier le reste de la ligne courante & y\$ & \\
+    Copier toute la ligne & Y & \\
+    \hline
+    Coller du texte (du texte est supposé copié) & p & \\
+    \hline
+\end{tabular}
+\end{center}
+
+
+\section{Commandes sur le fichier}
+\begin{center}
+\newline\begin{tabular}{|l l|}
+    \hline
+    Sauvegarder le fichier & :w \\
+    \hline
+    Sortir du fichier sans sauvegarder & :q! \\
+    \hline
+    Sortir du fichier et sauvegarder & ZZ \\
+    \hline
+    Laisser le fichier en suspend & Ctrl-z (puis fg dans la CLI pour revenir dessus) \\
+    \hline
+    Ouvrir les fichiers les uns derrière les autres & vim file1 ... fileN \\
+    Aller au fichier suivant & :(w pour sauvegarder)next(! ne pas enregistrer)\\
+    Aller au n-ième fichier suivant & :(w pour sauvegarder)\textit{n}next(! ne pas enregistrer) \\
+    Aller au fichier précédent & :(w pour sauvegarder)previous(! ne pas enregistrer)\\
+    Aller au n-ième fichier précédent & :(w pour sauvegarder)\textit{n}previous(! ne pas enregistrer) \\
+    Aller au premier fichier & :(w pour sauvegarder)first(! ne pas enregistrer)\\
+    Aller au dernier fichier & :(w pour sauvegarder)last(! ne pas enregistrer)\\
+    Redéfinir les fichiers ouvert & :args newFile1 ... newFileN \\
+    \hline
+    Ouvrir les fichiers côte à côte & vim -O file1 ... fileN  \\
+    Se déplacer au fichier à gauche & ctrl-maj-w h\\
+    Se déplacer au fichier à droite & ctrl-maj-w l\\
+    (Vim) Ouvrir un nouveau fichier à côté du premier & :vsplit file1 ... fileN \\
+    \hline
+    Ouvrir les fichiers empilés & vim -o file1 ... fileN \\
+    Se déplacer au fichier au-dessus & ctrl-maj-w k\\
+    Se déplacer au fichier en-dessous & ctrl-maj-w j\\
+    Ouvrir un nouveau fichier en-dessous du premier & :split file1 ... fileN \\
+    \hline
+    Quitter tous les fichiers & qall! \\
+    Sauvegarder tous les fichiers & wall \\ 
+    \hline
+    Copier coller du texte dans 2 fichiers différents & :edit file1 \\
+     & sélection du texte et copiage \\
+     & :edit file2 \\
+     & p \\
+    \hline
+    Revoir page 74 \\
+    \hline
+    Voir le contenu d'un fichier & vim -R file \\
+    \hline
+    Passer le fichier en read-only (permanent?) & vim -M file \\
+    \hline
+    Créer un nouveau fichier à partir d'un fichier déjà existant & aller dans le fichier déjà existant \\
+     & :edit existingFile \\
+     & (travail sur le nouveau fichier) \\
+     & :saveas newFile \\
+    \hline
+    Changer le nom du fichier courant & :file newFileName \\
+    \hline
+\end{tabular}
+\end{center}
+
+
+\section{Autres}
+\subsection{Les dossiers}
+Pour "raccourcir" le fichier, il est possible de demander à Vim de créer des dossiers, c'est-à-dire réduire ce qui peut être réduit. Donc si vous avez un fichier avec disons 5 fonctions et que chaque fonction fait 20 lignes, de devoir se déplacer parmi les 100 lignes, il sera possible de se déplacer parmi 5 lignes. Pour cela, il suffit de modifier le vimrc.\newline
+Il y a plusieurs méthodes de fold :
+\begin{itemize}
+    \item manual : il faut faire manuellement chaque dossier
+    \item indent : crée les dossiers à partir de l'indentation
+    \item syntax : crée les dossiers à partir de la syntaxe du langage du fichier
+\end{itemize}
+
+\subsection{Recherche}
+Pour rechercher un caractère ou une suite de caractères dans le fichier, il suffit de faire (en mode normal) /[texte]. Le texte est en réalité interprété comme une regex. Donc :
+\begin{itemize}
+    \item /a* : permet de chercher "","a","aa",...
+    \item /ab$\backslash$+ : permet de chercher "ab","abb",...
+    \item /ab$\backslash$- : permet de chercher "a" ou "ab"
+    \item /word1$\backslash$|...$\backslash$|wordN : permet de chercher word1 ou ... ou wordN
+    \item /$\backslash$(ab$\backslash$)$\backslash$* ou + ou - : permet de faire les mêmes recherches mais sur des groupes de caractères 
+    \item /text : permet de chercher le texte
+    \item /text$\backslash$ : permet de chercher uniquement le texte que l'on veut (par exemple, si on cherche $\backslash$i, if et while ne seront pas surlignés)
+    \item /(\^\ texte) : permet de chercher tout sauf le texte
+\end{itemize}
+Pour ceux qui ont des notions de regex : * correspond à *, a$\backslash$+ correspond à a$^{+}$ et a$\backslash$- correspond à a$^{?}$. Les ensembles \textbf{évidents} tels que [a-z],[A-Z] et [0-9] (qui peuvent être combinés d'ailleurs), peuvent aussi être utilisés à la place des caractères ou des mots. D'ailleurs, afin de faciliter la recherche de ces ensembles, il y a les raccourcis suivants (doivent toujours être précédés de / pour la recherche):
+\begin{itemize}
+    \item $\backslash$d : [0-9]
+    \item $\backslash$x : [0-9a-fA-F]
+    \item $\backslash$s : caractères espaces
+    \item $\backslash$l : [a-z]
+    \item $\backslash$u : [A-Z]
+    \item remarques : pour trouver le complémentaire de chaque ensemble, il suffit de faire $\backslash$<la lettre en majuscule>. Par exemple, pour chercher tout sauf les nombres de 0 à 9, on fera /$\backslash$D.
+\end{itemize}
+
+\end{document}

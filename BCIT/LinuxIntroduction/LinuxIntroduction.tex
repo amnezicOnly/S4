@@ -1,0 +1,103 @@
+\documentclass{article}
+%% to use a package, just delete the % character to enable the package in this document, only on the lines where there is a single % character (otherwise it won't compile)
+%% to understand the utility of the package, please read the comment between \begin{comment} and \end{comment} right below the package you need
+\usepackage[a4paper, total={6in, 8in}]{geometry} % for european user
+
+%% for multiple lines comment in LaTeX
+\usepackage{verbatim} % (won't compile if this line is deleted)
+%% usage :
+\begin{comment}
+	Your multiple lines comment
+\end{comment}
+
+
+%% to include images
+%\usepackage{graphicx}
+%% usage :
+\begin{comment}
+	\begin{figure}
+		\centering (not necessary but it's prettier)
+		\includegraphics[scale=(1 by default)]{path to the image/imageName.extension}
+		\if you want to put another image side to side, just add a line like the previous
+		\caption{picture(s) in a nutshell} (not necessary but it's useful) (won't compile if missing)
+	\end{figure}
+\end{comment}
+
+
+%% pour insérer des liens
+%\usepackage{hyperref}
+%% usage :
+\begin{comment}
+	\href{the complete link}{the display text}
+	or if you want to show the complete link, just use 
+	\url{the complete link}
+\end{comment}
+
+
+%% to display code easily (insert --shell-escape option when compile, otherwise, it won't compile)
+%\usepackage{mint}
+%% usage :
+\begin{comment}
+	- first, you have to have python3-pygments installed on your computer
+	\begin{minted}{<language you choose>
+		Your code
+	\end{minted}
+\end{comment}
+
+%% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
+%\usepackage{listings} 
+%% usage :
+\begin{comment}
+	- listings package let you highly customize how your code will be displayed on the document
+	- for simple display just do this :
+	\lstdefinestyle{mystyle}{
+		Your customizations
+	}
+	\begin{lstlisting}[language=<the language you'll use)
+		Your code
+	\end{lstlisting}
+\end{comment}
+
+%% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
+%\usepackage{amssymb,amsmath,amsfonts,extarrows}
+%% usage : just type the backslash chararacter and the name of the symbol you want, depending of document on the the previous link
+
+%% Have to find the goal of it
+%\usepackage{soul}
+%\let\oldemptyset\emptyset
+%\usepackage[T1]{fontenc}
+
+%% won't compile if at least one of these three next line is deleted
+%% but you can add nothing between the brackets to leave it blank
+\author{Amnézic}
+\date{}
+\title{Introduction à Linux}
+
+\begin{document}
+\maketitle
+\newpage
+%% not necessary
+%% compile twice the first time to display table of content
+\tableofcontents
+\newpage
+
+\section{What is Linux?}
+Basically, Linux is behind everything that deals with computers.
+\subsection{Linux is \textbf{a} Kernel}
+In the 70's, UNIX was (and still is) both a trademark and a specification of the \textit{Open Group} consortium. UNIX is like a group of norms that make an OS UNIX or not. There are mostly used in companies. In the beginning of the 90's, Linus Torvalds (a Finnish) create an open source UNIX-like OS inspired by MINIX, another UNIX-like OS, but licenced, used by his professor in college. But Linux, even Linux fit in all the UNIX requirements, Linux isn't a UNIX OS because it's not approved by UNIX.\newline Beside that, in 1983, Richard Stallman had created a project named GNU Project that aimed to create a new UNIX-like operating system.
+
+\subsection{The open-source philosphy}
+One of the main aspect of Linux is the open-source : when a software is 
+
+\section{La CLI}
+Pour simplifier le cours dont je ne connais pas encore la simplicité, je vais juste tout ce qu'on a déjà vu en cours à l'EPITA dans une liste, et vous pourrez vous renseignez sur toutes ces commandes/notions basiques:
+\begin{itemize}
+	\item cd (../, ./, ~/) 
+	\item ls
+	\item echo (\$echo <text> > filename : \rightarrow écrit <text> dans le fichier filename)
+	\item man <command>
+\end{itemize}
+
+
+
+\end{document}

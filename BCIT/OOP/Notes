@@ -1,0 +1,51 @@
+- Les variables d'une interface doivent être définies et une fois définies elles sont statiques et finales
+- Une classe qui implémente partiellement une interface doit être explicitement abstract
+- Une fois définies, les méthodes doivent être publiques
+- Quand on crée un objet, on crée implicitement un objet des classes parentes
+- Dans l'ordre, on exécute les variables/méthodes statiques, les constructeurs, et ensuite, dans l'ordre dans le code, les variables et les méthodes classiques
+- Si un constructeur parent nécessite des arguments, dans le constructeur de la classe courante, il faut appeler super(arguments nécessaires)
+- POURQUOI DETERGENT EST APPELÉ AVANT CLEANSER ALORS QU'IL EST APRÈS DANS LE CODE
+- Les variables statiques ne sont lues/exécutées qu'une seule fois
+- Une variable finale ne peut pas être NULL
+- Une variable static n'est considérée que si sa classe est appelée
+- Une méthode doit avoir un également ou + privée que la condition de cette même méthode dans sa classe parente
+- Une méthode final ne peut pas être override
+- DEMANDER POUR OVERRIDDINGILLUSION
+- on peut faire Type1 obj = new Type2() même si la classe Type1 est abstraite, ssi la classe Type2 n'est pas abstraite
+- Le résultat d'une fonction statique ne peut être qu'un résultat statique et inversement
+- POURQUOI K EST AFFICHÉE AVANT BEETLE DANS BEETLE.JAVA ?
+- Une variable final doit être définie lors de sa déclaration ou dans son constructeur au plus tard
+- revoir le code de LectureB/Inheritence/Chess
+- revoir le code LectureB/Inheritence/Wind
+- revoir le code Cleanup dans Exception
+- Dans CoolException, pourquoi il y a quelquechose après le main finally ?
+- Dans FinallyWorks, pq il y a In while loop à la 3° ligne et No exception à la 4° et pas l'inverse ?
+-
+
+
+Type Generic :
+- On ne peut pas appeler une même classe générique T pour deux classes différentes sur une même ligne de code 
+- On ne peut pas associer une valeur avec un type explicite à une variable générique
+- dans le prototype de la fonction doit apparaître, entre < >, tous les types génériques qui sont demandés en argument (séparés par des virgules si plusieurs)
+- si on utilise des types qui ont des héritage, il faut faire <T extends A> ce qui va associer à T toutes les classes héritées de A (direct ou indirect) et A elle même
+- on ne peut pas mettrer les types primitifs entre crochets : <int>,<char>... ne vont pas fonctionner, mais on peut utiliser <String>
+- si on veut utiliser des types génériques particuliers, il faut utiliser la notation <T extends X> avec X l'"upperbound". (Number pour int, float, double... et Character pour char par exemple) (à revoir car pas très clair)
+	--> En programmation générique Java, la notion de "upper bound" (ou borne supérieure) fait référence à la restriction qu'on peut imposer sur un paramètre de type générique pour qu'il soit d'un certain type ou qu'il soit une sous-classe de ce type (chatgpt)
+- un type générique peut avoir plusieurs upper bounds : il faudra l'exprimer comme ça : <T extends Class & Interface1 & ... & InterfaceN> (toujours la classe (héritance simple en java) avant les interfaces, sinon erreur lors de la compilation)
+- Une classe normale peut implémenter une interface générique et une classe générique peut implémenter une interface classique
+- une classe/interface générique peut avoir plusieurs méthodes qui portent le même nom si et seulement si leur signature sont toutes différentes
+- une classe normale peut contenir des méthodes génériques et inversement
+- dans ce cas là :
+	public <T extends Number> T get(T val){
+    		return val;
+	}
+
+	public int get(int val){
+    		return val;
+	}
+	get(5) // c'est la méthode int get qui sera appelée car la méthode <T extends Number> T get n'accepte pas de int directement
+
+- you cannot use “new <T>” to create elements for an array, instead you must use (usually) Object. The compiler will deal with casting upon returning the array (À REVOIR !!!!)
+- le nom de la classe générique peut être en majuscule ou minuscule et faire plusieurs lettres
+
+- revoir les slides 9, 20 

@@ -1,0 +1,10 @@
+- If a class B inherit from a class A which contains a private attribute x, B contains x attribute too but isn't accessible.
+- If there is a method foo in both classes A and B, if we want to use A.foo() in B class, we need to call super.foo(). super keyword works only for one level up.
+- If there s a method foo in both classes A and B, access modifier of B.foo() should be same or higher
+- Une classe abstract possède au moins une méthode abstraite
+- On peut créer un objet d'une classe qui n'a pas de constructeur
+- Une classe ne peut pas extends plusieurs classes mais peut en implements plusieurs en même temps
+- le constructeur de la classe parente est toujours appelé avant le constructeur de la classe enfant
+- le block finally (pour les exceptions) permet d'être sûr que le code à l'intérieur sera run, erreur ou pas erreur
+- Si il y a plusieurs exceptions à la suite dans un programme, seule la dernière sera conservée  
+- Une classe enfant ne peut pas renvoyer une exception qui ne peut pas être renvoyé par une classe parente ???

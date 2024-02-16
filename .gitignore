@@ -1,0 +1,14 @@
+# Fichiers temporaires
+*.out
+*.toc
+*.log
+*.aux
+*.swap
+*.swp
+
+# Fichiers Java
+*.class
+*.MF
+
+# Fichiers Microsoft Project
+*.mpp
