@@ -1,4 +1,4 @@
-The The vi editor is a full editor that allows you to move the cursor around the entire screen when you are in
+The The vi editor is a fullscreen editor that allows you to move the cursor around the entire screen when you are in
 the command mode. You can do this by
 (1)typing certain unique key sequences, 
 (2)or you can move from one line to another or over one or more spaces 
