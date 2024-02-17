@@ -12,7 +12,3 @@
 
 # Fichiers Microsoft Project
 *.mpp
-
-# Exclure les exécutables sans extension sauf les Makefile
-*.*
-!Makefile

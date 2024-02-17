@@ -1,0 +1,54 @@
+CHapitre 5 :
+- shell : command line interpreter (+++ Bash)
+- CLI : command Line Interface
+- output displayed on the terminal
+- prompt : userName@systemName:pwd$ 
+- pour trouver la valeur d'une variable : echo $variableName ou env | grep variableName
+- pour unset une variable : unset variable2
+- type : (5.5 à revoir)
+    * type indique si c'est une commande interne(built-in) ou externe
+    * which indique le chemin jusqu'à l'exécutable de la commande
+- pour afficher des variables :
+    * " " permet d'afficher la phrase et la valeur de la variable
+    * ' ' permet d'afficher la phrase demandé caractère par caractère (n'affiche pas la valeur de la variable)
+    * (rien) permet d'afficher la phrase et la valeur de la variable si $(variableName) ou si `variableName`
+    * utiliser le \$variableName permet d'éviter de traduire la commande $variableName
+
+
+Chapitre 6:
+    - man page contains : name, synopsis, description, options, files, author, reporting bugs, see also and copyright
+    - 9 sections de pages man :
+        * 1 : commandes générales
+        * 2 : system calls
+        * 3 : library calls
+        * 4 : special files
+        * 5 : file formats and conventions
+        * 6 : games
+        * 7 : miscellaneous
+        * 8 : system administration commands
+        * 9 : kernel routines
+    - pour avoir une liste des pages du manuel de la commande : man -f command (= whatis command)
+    - pour aller à la page n du manuel de command : man n command
+    - pour chercher une action précise : man -k action (ex : man -k copy)
+    - locate truc permet de trouver tous les endroits où truc se trouve
+    - info != apropos ?
+    - 
+
+Chapitre 7: (commande ls)
+    - pour utiliser l'option -h il faut utiliser l'option -l
+    - idem pour -S
+    - t trie les éléments du dossier du plus récemment modifié au moins récemment modifié
+
+Chapitre 8:
+    - les regex prennent en compte les extensions des fichiers
+    - ne regardent les fichiers cachés ssi .*
+    - cp -i vérifie qu'on veut si on veut overwrite un fichier et -n nous en empêche
+
+Chapitre 10 :
+    - pour lire un gros fichier depuis la CLI, il vaut mieux utiliser la commande pager (ou more et less)
+    - si on redirige STDOUT et STDERR dans un fichier (something &> fileName), ce fichier contiendra d'abord tous les STDERR puis tous les STDOUT
+    - something > fileName : met l'output de something dans fileName (overwrite si fileName existe déjà) (utiliser >> pour append et non write)
+    - something 2> filename : pour rediriger uniquement le STDERR dans fileName
+    - on peut faire cat > fileName pour créer un fichier et écrire dans ce fichier directement depuis le terminal
+    - tr 'a-z' 'A-Z' < example.txt > newexample.txt
+    - head -1 /etc/rc.d/* > outfile 2> errfile  
