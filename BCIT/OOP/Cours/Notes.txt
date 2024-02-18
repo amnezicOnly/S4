@@ -8,3 +8,7 @@
 - le block finally (pour les exceptions) permet d'être sûr que le code à l'intérieur sera run, erreur ou pas erreur
 - Si il y a plusieurs exceptions à la suite dans un programme, seule la dernière sera conservée  
 - Une classe enfant ne peut pas renvoyer une exception qui ne peut pas être renvoyé par une classe parente ???
+
+
+Collections :
+	- 
