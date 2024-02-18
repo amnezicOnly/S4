@@ -11,4 +11,18 @@
 
 
 Collections :
-	- 
+	- Si on copie une array qui contient des objets, on fera simplement une copie des références des objets, donc pas de nouveaux objets créés
+    - (ListTest.java : 27) liste1.addAll(liste2) ajoute tous les éléments de la liste 2 dans la liste 1
+    - On ne peut pas utiliser de boucle for each si on compte modifier la liste. On peut par contre utiliser :
+        - une boucle for ou while avec un index int
+        - utiliser un objet Iterator
+    - Un objet iterator est un objet qui permet d'itérer de manière sécurisée :
+        (List)Iterator<TYPE> iterator = listeName.(list)Iterator(); (dans Iterator(), on peut mettre listeName.size() mais pas de valeur explicite (même pas 0))
+        forme de la boucle while (fonctionne aussi avec une boucle for)
+        while(iterator.hasNext() / iterator.hasPrevious){
+            TYPE elt = iterator.next()/iterator.previous();
+            // fonction de la boucle
+        }
+    - See UsingToArray.java to see how to convert an array to a List. Note that the list returned by the Array class does not allow add, remove, etc. operations (just set()).
+    - queue.peek() retourne l'élément le plus petit de queue (cf PriorityQueue)
+    - 
