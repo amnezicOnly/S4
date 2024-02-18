@@ -1,5 +1,9 @@
 public abstract class Players{
 	String[] lifeForms = {"Herbs","Herbivors"};
+	int X;
+	int Y;
+	int maxLaps;
+	
 	
 	public int getLifeFormNumber(Players type) {
 		if(type==null)
@@ -14,4 +18,8 @@ public abstract class Players{
         	// Si aucune correspondance trouvée, retourner une valeur par défaut
         	return -1;
     	}
+
+	public abstract boolean couldEat(Cell cell);
+	public abstract boolean stillAlive();
+	public abstract void newLap();
 }

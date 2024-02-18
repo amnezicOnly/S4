@@ -9,26 +9,23 @@ public class Game{
 		world = new World(nbCellsX,nbCellsy);
 		firstLap(world);
 	}
-
+	
+	// initialize the first lap with RandomGenerator
 	public void firstLap(World world){
 		for(int j=0; j<nbCellsY; j++){
 			for(int i=0; i<nbCellsX; i++){
 				int temp = RandomGenerator.nextNumber(100);
 				if(temp>=85){
-					world.updateCell(world.cells,i,j,new Herbivors());
-					System.out.println("1 ");
+					world.updateCell(world.cells,i,j,new Herbivore(i,j));
 				}
 				else if(temp>=65){
-					world.updateCell(world.cells,i,j,new Herbs());
-					System.out.println("0 ");
+					world.updateCell(world.cells,i,j,new Plant(i,j));
 				}
 				else{
 					world.updateCell(world.cells,i,j,null);
-					System.out.println("r ");
 				}
 					
 			}
-			System.out.println("\n");
 		}
 	}
 }

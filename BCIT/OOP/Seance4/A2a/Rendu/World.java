@@ -18,17 +18,4 @@ public class World{
 		}
 	}
 
-	public void printMatrix(){
-		int temp;
-		for(int j=0; j<nbCellsY; j++){
-			for(int i=0; i<nbCellsX; i++){
-				temp = (cells[i][j]).getLifeFormNumber();
-				if(temp!=-2)
-					System.out.println(temp+" ");
-				else
-					System.out.println("r ");	
-			}
-			System.out.println("\n");
-		}
-	}	
 }
