@@ -42,16 +42,15 @@ void zoomArray(char*** arr, float n, int *rows, int *cols){
             			}
         		}
 		}
-	
-		(*rows) = new_rows;
-		(*cols) = new_cols;
 	}
 	
 	if(n<1){
 			
 	}
 	
-	
+		
+	(*rows) = new_rows;
+	(*cols) = new_cols;
 	*arr = temp;
 }
 
