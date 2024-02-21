@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
     printf("\n");
 
     // Call the zoomArray function
-    zoomArray(arr, zoomFactor, &rows, &cols);
+    zoomArray(arr, zoomFactor, &rows, &cols); 	
 
     // Free the memory allocated for the 2D array
     for (int i = 0; i < rows; i++)

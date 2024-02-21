@@ -135,7 +135,24 @@ void checkCollision(struct Particule** liste,size_t* size){
        deleteParticule(liste,size,(*liste)[i].X, (*liste)[i].Y, i); 
 }
 
-struct Particule* sortList(struct Particule* liste,size_t size){
+
+struct Particule* sortList(struct Particule* liste, size_t size){
+        struct Particule* res =malloc(size*sizeof(struct Particule));
+        res[0] = liste[0];
+        size_t size_res = 1;
+        while(size_res!=size){  // tant que toute la liste n'y est pas passée
+            size_t i = 0;
+            while(i<size_res && (liste[size_res].Y<res[i].Y || (liste[size_res].Y==res[i].Y && liste[size_res].X<res[i].X)))
+                i++;
+            for(size_t j=size_res-1; j>i; j--)
+                res[j] = res[j-1];
+            res[i] = liste[size_res];
+            size_res++;
+        }
+}
+
+
+/*struct Particule* sortList(struct Particule* liste,size_t size){
     struct Particule* res = malloc(sizeof(struct Particule));
     res[0] = liste[0];
     size_t res_size = 1;
@@ -154,7 +171,7 @@ struct Particule* sortList(struct Particule* liste,size_t size){
         	res[i] = temp;
    	}
     return res;
-}
+}*/
 
 void writeOutput(FILE* output, struct Particule* liste, size_t* size, short width, short height){
 	// va d'abord afficher la ligne du haut
@@ -272,11 +289,13 @@ int main(int argc, char** argv){
     	// Crée une nouvelle liste de Particule qui est la liste triée
     	struct Particule* end = sortList(liste,(*size));
     	printf("Here it's ok\n");
+        return 0;
+        printListe(end,*size);
     	free(liste);
 
 	// écrit la fenêtre et les particules dans le fichier output
 	writeOutput(output,end,size,width,height);
-    	free(end);
+   	free(end);
 	fclose(output);
 		
 	return 0;
