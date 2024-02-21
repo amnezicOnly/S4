@@ -5,52 +5,40 @@
 // Update this with your A number
 char a_num[] = "01410991";
 
-void zoomArray(char **arr, float n, int *rows, int *cols){
+
+
+void zoomArray(char*** arr, float n, int *rows, int *cols){
 	//printf("Size of arr at the beginning of zoomArray : %zu\n",sizeof(**arr)/sizeof(arr[0][0]));
-	int new_rows;
-    	int new_cols;
-    	if(n>1){    // agrandissement de la arr
-        	new_rows = (*rows)*n;
-        	new_cols = new_rows;
+	int new_rows = (*rows)*n;
+    	int new_cols = new_rows;
+    	char** temp = *arr;
+    	if(n>1){    // agrandissement de arr        	
+    		temp = (char**)realloc(temp,new_rows*sizeof(char*));
+        	for(int i = (*rows); i<new_rows; i++)
+            		temp[i] = 0;
+        	for(int i=0; i<new_rows; i++){
+            		if(temp[i]==NULL){
+                		temp[i] = (char*)malloc(new_cols*sizeof(char));
+            		}
+            		else{
+                		temp[i] = (char*)realloc(temp[i],new_cols*sizeof(char));
+            		}
+        	}
         
         	if(new_rows%2==1){	// longueur impaire
-			arr = (char**)realloc(arr,new_rows*sizeof(char*));
-        		for(int i = (*rows); i<new_rows; i++)
-            			arr[i] = 0;
-        		for(int i=0; i<new_rows; i++){
-            			if(arr[i]==NULL){
-                			arr[i] = (char*)malloc(new_cols*sizeof(char));
-            			}
-            			else{
-                			arr[i] = (char*)realloc(arr[i],new_cols*sizeof(char));
-            			}
-        		}	
-
-        		for(int i=new_rows-1; i>=0; i--){
+			for(int i=new_rows-1; i>=0; i--){
             			int line = i/((*rows)-1);
             			for(int j=new_cols-1; j>=0; j--){
-               				arr[i][j] = arr[line][j/((*cols)-1)];
+               				temp[i][j] = temp[line][j/((*cols)-1)];
             			}
         		}
 		}
 	
 		else{
-			arr = (char**)realloc(arr,new_rows*sizeof(char*));
-        		for(int i = (*rows); i<new_rows; i++)
-            			arr[i] = 0;
-        		for(int i=0; i<new_rows; i++){
-            			if(arr[i]==NULL){
-                			arr[i] = (char*)malloc(new_cols*sizeof(char));
-            			}
-            			else{
-                			arr[i] = (char*)realloc(arr[i],new_cols*sizeof(char));
-            			}
-        		}
-
-        		for(int i=new_rows-1; i>=0; i--){
+			for(int i=new_rows-1; i>=0; i--){
             			int line = i/(*rows);
             			for(int j=new_cols-1; j>=0; j--){
-               				arr[i][j] = arr[line][j/(*cols)];
+               				temp[i][j] = temp[line][j/(*cols)];
             			}
         		}
 		}
@@ -58,21 +46,13 @@ void zoomArray(char **arr, float n, int *rows, int *cols){
 		(*rows) = new_rows;
 		(*cols) = new_cols;
 	}
+	
 	if(n<1){
-	
-	
+			
 	}
 	
 	
-	
-	
-    	for(int i=0; i<new_rows; i++){
-        	for(int j=0; j<new_cols; j++){
-         		printf("%c",arr[i][j]);
-        	}
-        	printf("\n");
-    	}
-	//printf("Size of arr at the end of zoomArray : %zu\n",sizeof(arr)/sizeof(arr[0][0]));
+	*arr = temp;
 }
 
 int main(int argc, char *argv[])
@@ -154,22 +134,24 @@ int main(int argc, char *argv[])
     printf("\n");
 
     // Call the zoomArray function
-    zoomArray(arr, zoomFactor, &rows, &cols);
-    printf("Size of arr = %zu\n",sizeof(arr));
-    for(int i=0; i<rows; i++){
-        for(int j=0; j<cols; j++){
-         	printf("%c",arr[i][j]);
-        }
-        printf("\n");
-    }
+    zoomArray(&arr, zoomFactor, &rows, &cols);
     
-    return 0;
+    
     FILE* output = fopen(argv[2],"w");
     if(output==NULL)
     {
         perror("Error opening output file");
         return 1;
     }
+    
+    for(int i=0; i<rows-1; i++){
+	for(int j=0; j<cols; j++){
+	    fputc(arr[i][j],output);
+	}
+  	fputc('\n',output);
+    }
+    for(int i=0; i<cols; i++)
+    	fputc(arr[rows-1][i],output);    	
 
     fclose(output);
     

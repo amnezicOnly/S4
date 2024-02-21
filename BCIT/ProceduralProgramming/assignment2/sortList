@@ -1,0 +1,14 @@
+struct Particule* sortList(struct Particule* liste, size_t size){
+	struct Particule* res = (size*sizeof(struct Particule));
+	res[0] = liste[0];
+	size_t size_res = 1;
+	while(size_res!=size){	// tant que toute la liste n'y est pas passée
+		size_t i = 0;
+		while(i<size_res && (liste[size_res].Y<res[i].Y || (liste[size_res].Y==res[i].Y && liste[size_res].X<res[i].X)))
+			i++;
+		for(size_t j=res_size-1; j>i; j--)
+			res[j] = res[j-1];
+		res[i] = liste[size_res];
+		size_res++;
+	}
+}
