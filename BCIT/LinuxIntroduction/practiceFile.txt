@@ -2,11 +2,16 @@ The vi editor is a fullscreen editor that allows you to move the cursor around t
 the command mode. You can do this by
 (1)typing certain unique key sequences, 
 (2)or you can move from one line to another or over one or more spaces 
+You can also move lines to a new location by using the "y" for yank. 
+It will copy your line or lines to a buffer and you can then place it 
+somewhere else by using the "p" for the put command. 
  on a line by using the h j k l keys. 
-The h key moves the cursor to the left, l moves the cursor to the right 
-j moves the cursor down one line and k moves the cursor up one line.
-Delete word word 1. 
-Delete delete word 2.
+The h key moves the cursor to the right, l moves the cursor to the left, 
+j moves the cursor down one line and k moves up one line.
+If you want to open a new line above, you can press the "O" key.
+If you want to open a new line below the line you are on, press the "o" (lower case "o") key.
+Delete word 1. 
+Delete word 2.
 (1)typing certain unique key sequences, 
 You can also move lines to a new location by using the "y" for yank. 
 It will copy your line or lines to a buffer and you can then place it 
