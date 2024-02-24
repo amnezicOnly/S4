@@ -1,26 +1,39 @@
+Exceptions :
+- Throwable n'est pas une sous classe de Erreur
+- n'exécute ce qu'il y a après le finally uniquement si l'erreur envoyé a été catch et qu'il n'y a pas de throw Exception dans le catch/finally
+
+Héritage/Polymorphisme :
+- Quand on crée un objet, appelle les constructeurs de tous ses parents (du plus haut au plus bas)
+- Si un constructeur parent nécessite des arguments, dans le constructeur de la classe courante, il faut appeler super(arguments nécessaires)
+- on peut faire Type1 obj = new Type2() même si la classe Type1 est abstraite, ssi la classe Type2 n'est pas abstraite
+- Une variable final doit être définie lors de sa déclaration ou dans son constructeur au plus tard
+- Une méthode doit avoir un également ou + publique que la condition de cette même méthode dans sa classe parente
+- mot clé final :
+	* si c'est un type primitif (int, string, float...) on ne peut pas changer sa valeur après sa définition
+	* si c'est un objet, on ne peut pas changer sa classe mais on peut changer son/ses attribut(s)
+- quand une classe est final, elle ne peut pas faire hériter
+
+Inner classes :
+
+Interfaces :
 - Les variables d'une interface doivent être définies et une fois définies elles sont statiques et finales
 - Une classe qui implémente partiellement une interface doit être explicitement abstract
-- Une fois définies, les méthodes doivent être publiques
-- Quand on crée un objet, on crée implicitement un objet des classes parentes
+- On peut avoir un argument dans une fonction qui est un interface mais on ne pourra pas l'utiliser dans cette fonction car ce n'est pas un objet instantiable
+- Une fois définies, les méthodes doivent être explicitement publiques
+
+Polymorphism :
+
+
+Mot clé static :
 - Dans l'ordre, on exécute les variables/méthodes statiques, les constructeurs, et ensuite, dans l'ordre dans le code, les variables et les méthodes classiques
-- Si un constructeur parent nécessite des arguments, dans le constructeur de la classe courante, il faut appeler super(arguments nécessaires)
-- POURQUOI DETERGENT EST APPELÉ AVANT CLEANSER ALORS QU'IL EST APRÈS DANS LE CODE
 - Les variables statiques ne sont lues/exécutées qu'une seule fois
 - Une variable finale ne peut pas être NULL
 - Une variable static n'est considérée que si sa classe est appelée
-- Une méthode doit avoir un également ou + privée que la condition de cette même méthode dans sa classe parente
-- Une méthode final ne peut pas être override
-- DEMANDER POUR OVERRIDDINGILLUSION
-- on peut faire Type1 obj = new Type2() même si la classe Type1 est abstraite, ssi la classe Type2 n'est pas abstraite
 - Le résultat d'une fonction statique ne peut être qu'un résultat statique et inversement
-- POURQUOI K EST AFFICHÉE AVANT BEETLE DANS BEETLE.JAVA ?
-- Une variable final doit être définie lors de sa déclaration ou dans son constructeur au plus tard
-- revoir le code de LectureB/Inheritence/Chess
-- revoir le code LectureB/Inheritence/Wind
-- revoir le code Cleanup dans Exception
-- Dans CoolException, pourquoi il y a quelquechose après le main finally ?
-- Dans FinallyWorks, pq il y a In while loop à la 3° ligne et No exception à la 4° et pas l'inverse ?
--
+
+
+
+- Une méthode final ne peut pas être override
 
 
 Type Generic :
@@ -49,3 +62,13 @@ Type Generic :
 - le nom de la classe générique peut être en majuscule ou minuscule et faire plusieurs lettres
 
 - revoir les slides 9, 20 
+
+
+Fichiers à revoir :
+	- Cleanup dans A --> Exceptions
+	- overriding illusion dans A-->Inheritance
+	- Beetle(1 et 2) (utilisation de static) A--> Inheritance
+	- revoir la notion de package
+	
+	
+	
