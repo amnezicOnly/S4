@@ -5,7 +5,6 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include<err.h>
 
 struct Particule{
 	short X;	// X position
@@ -49,6 +48,12 @@ short searchParticule(struct Particule* liste, size_t size, short x, short y){
 }
 
 void addParticule(struct Particule* liste, size_t* size, short x, short y, short velx, short vely){
+	short i = searchParticule(liste,*size,x,y);
+	if(i!=-1){
+		liste[i].X = -2;
+		liste[i].Y = 25;
+		return;
+	}
 	(*size)++;
 	liste = realloc(liste,(*size)*sizeof(struct Particule));
 	liste[(*size)-1].X=x;
