@@ -12,6 +12,7 @@ Héritage/Polymorphisme :
 	* si c'est un type primitif (int, string, float...) on ne peut pas changer sa valeur après sa définition
 	* si c'est un objet, on ne peut pas changer sa classe mais on peut changer son/ses attribut(s)
 - quand une classe est final, elle ne peut pas faire hériter
+- on ne peut pas appeler une foncton privée en dehors de sa classe, même avec un super.
 
 Inner classes :
 
