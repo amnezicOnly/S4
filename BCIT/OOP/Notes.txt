@@ -13,8 +13,11 @@ Héritage/Polymorphisme :
 	* si c'est un objet, on ne peut pas changer sa classe mais on peut changer son/ses attribut(s)
 - quand une classe est final, elle ne peut pas faire hériter
 - on ne peut pas appeler une foncton privée en dehors de sa classe, même avec un super.
+- si une classe A possède un attribut privé, on ne peut pas y accéder/le modifier en dehors de cette classe, même dans une autre classe qui hérite de A (sauf pour les inner class)
 
 Inner classes :
+- si une classe A possède un attribut privé, on peut y accéder/le modifier dans une inner classe A, sans getter/setter
+
 
 Interfaces :
 - Les variables d'une interface doivent être définies et une fois définies elles sont statiques et finales
@@ -41,10 +44,10 @@ Type Generic :
 - On ne peut pas appeler une même classe générique T pour deux classes différentes sur une même ligne de code 
 - On ne peut pas associer une valeur avec un type explicite à une variable générique
 - dans le prototype de la fonction doit apparaître, entre < >, tous les types génériques qui sont demandés en argument (séparés par des virgules si plusieurs)
+	--> il n'est pas nécessaire si le type est déjà défini au niveau de la classe (ex : public class A <T extends Number>)
 - si on utilise des types qui ont des héritage, il faut faire <T extends A> ce qui va associer à T toutes les classes héritées de A (direct ou indirect) et A elle même
+	--> <? extends A> permet d'utiliser toutes les sous-classes de A mais pas A lui même
 - on ne peut pas mettrer les types primitifs entre crochets : <int>,<char>... ne vont pas fonctionner, mais on peut utiliser <String>
-- si on veut utiliser des types génériques particuliers, il faut utiliser la notation <T extends X> avec X l'"upperbound". (Number pour int, float, double... et Character pour char par exemple) (à revoir car pas très clair)
-	--> En programmation générique Java, la notion de "upper bound" (ou borne supérieure) fait référence à la restriction qu'on peut imposer sur un paramètre de type générique pour qu'il soit d'un certain type ou qu'il soit une sous-classe de ce type (chatgpt)
 - un type générique peut avoir plusieurs upper bounds : il faudra l'exprimer comme ça : <T extends Class & Interface1 & ... & InterfaceN> (toujours la classe (héritance simple en java) avant les interfaces, sinon erreur lors de la compilation)
 - Une classe normale peut implémenter une interface générique et une classe générique peut implémenter une interface classique
 - une classe/interface générique peut avoir plusieurs méthodes qui portent le même nom si et seulement si leur signature sont toutes différentes
@@ -59,17 +62,29 @@ Type Generic :
 	}
 	get(5) // c'est la méthode int get qui sera appelée car la méthode <T extends Number> T get n'accepte pas de int directement
 
-- you cannot use “new <T>” to create elements for an array, instead you must use (usually) Object. The compiler will deal with casting upon returning the array (À REVOIR !!!!)
-- le nom de la classe générique peut être en majuscule ou minuscule et faire plusieurs lettres
 
-- revoir les slides 9, 20 
-
-
-Fichiers à revoir :
-	- Cleanup dans A --> Exceptions
-	- overriding illusion dans A-->Inheritance
-	- Beetle(1 et 2) (utilisation de static) A--> Inheritance
-	- revoir la notion de package
+Collections :
+    - Si on copie une array qui contient des objets, on fera simplement une copie des références des objets, donc pas de nouveaux objets créés
+    - (ListTest.java : 27) liste1.addAll(liste2) ajoute tous les éléments de la liste 2 dans la liste 1
+    - On ne peut pas utiliser de boucle for each si on compte modifier la liste. On peut par contre utiliser :
+        - une boucle for ou while avec un index int
+        - utiliser un objet Iterator
+    - Un objet iterator est un objet qui permet d'itérer de manière sécurisée :
+        (List)Iterator<TYPE> iterator = listeName.(list)Iterator(); (dans Iterator(), on peut mettre listeName.size() mais pas de valeur explicite (même pas 0))
+        forme de la boucle while (fonctionne aussi avec une boucle for)
+        while(iterator.hasNext() / iterator.hasPrevious){
+            TYPE elt = iterator.next()/iterator.previous();
+            // fonction de la boucle
+        }
+    - See UsingToArray.java to see how to convert an array to a List. Note that the list returned by the Array class does not allow add, remove, etc. operations (just set()).
+    - queue.peek() retourne l'élément le plus petit de queue (cf PriorityQueue)
+    - Dans Java, la classe Collections est une classe utilitaire fournie dans le package java.util. Elle contient diverses méthodes statiques pour effectuer des opérations sur des collections, telles que la recherche, le tri, la manipulation, etc
+    - 
+    
+    - revoir les slides 4, 
+    
+    - on ne peut pas créer de Set, juste des sous classes de set : Set<TYPE> set = new SOUSCLASSE<>();
+    - si on ajoute un élément déjà existant dans un set, ça ne fait juste rien
 	
 	
 	
