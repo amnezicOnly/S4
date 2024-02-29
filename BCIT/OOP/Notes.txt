@@ -68,7 +68,7 @@ Collections :
     - (ListTest.java : 27) liste1.addAll(liste2) ajoute tous les éléments de la liste 2 dans la liste 1
     - On ne peut pas utiliser de boucle for each si on compte modifier la liste. On peut par contre utiliser :
         - une boucle for ou while avec un index int
-        - utiliser un objet Iterator
+        - utiliser un objet Iterator (on ne peut pas les utiliser sur des tableaux)
     - Un objet iterator est un objet qui permet d'itérer de manière sécurisée :
         (List)Iterator<TYPE> iterator = listeName.(list)Iterator(); (dans Iterator(), on peut mettre listeName.size() mais pas de valeur explicite (même pas 0))
         forme de la boucle while (fonctionne aussi avec une boucle for)
