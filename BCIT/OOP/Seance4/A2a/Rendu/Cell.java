@@ -1,15 +1,24 @@
 public class Cell{
 	Players currentPlayer;
+	int X;
+	int Y;
 
-	public Cell(Players player){
+	public Cell(Players player, int i, int j){
 		currentPlayer = player;
+		this.X = i;
+		this.Y = j;
+	}
+	
+	public int getX(){
+		return this.X;
+	}
+	
+	public int getY(){
+		return this.Y;
 	}
 
 	public void setPlayer(Players player){
 		this.currentPlayer = player;
 	}
 
-	public int getLifeFormNumber(){
-		return currentPlayer.getLifeFormNumber(currentPlayer);
-    	}	
 }

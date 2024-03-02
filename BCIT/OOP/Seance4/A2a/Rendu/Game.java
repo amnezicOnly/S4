@@ -28,4 +28,8 @@ public class Game{
 			}
 		}
 	}
+	
+	public void newLap(){
+		world.newLap();
+	}
 }

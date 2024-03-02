@@ -53,6 +53,9 @@ public class Main {
 		JFrame frame = new JFrame("Game of Life");
 		game = new Game(nbCellsX,nbCellsY);
 		createFrame(frame, game.world.cells, nbCellsX, nbCellsY);
+		game.newLap();
+		createFrame(frame, game.world.cells, nbCellsX, nbCellsY);
+		System.out.println("Actualisation");
 
       	}
 }
