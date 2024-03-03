@@ -13,17 +13,44 @@ public class Herbivore extends Players{
 		maxLaps--;
 		if(maxLaps==0)
 			return new Cell[0];
-		if(this.X==0 || this.X==board.length-1 || this.Y==0 || this.X==((board[0]).length)-1)
-			return new Cell[0];
+		
 		int couldEat = 0;
 		Cell[] eatable = new Cell[8];
-		for(int i=(this.X)-1; i<(this.X)+1; i++){
-			for(int j=(this.Y)-1; j<(this.Y)+1; j++){
-				if((board[i][j]).currentPlayer instanceof Plant){
-					eatable[couldEat] = board[i][j];
-					couldEat++;
-				}
-			}
+		int max = board.length;
+		// haut
+		if((this.Y)+1<max && (board[(this.X)][(this.Y)+1].currentPlayer==null || board[(this.X)][(this.Y)+1].currentPlayer instanceof Plant)){
+			eatable[couldEat] = board[(this.X)][(this.Y)+1];
+			couldEat++;
+		}
+		// haut droite
+		if((this.X)+1<max && (this.Y)+1<max && (board[(this.X)+1][(this.Y)+1].currentPlayer==null || board[(this.X)+1][(this.Y)+1].currentPlayer instanceof Plant)){
+			eatable[couldEat] = board[(this.X)+1][(this.Y)+1];
+			couldEat++;
+		}
+		// droite
+		if((this.X)+1<max && (board[(this.X)+1][(this.Y)].currentPlayer==null || board[(this.X)+1][(this.Y)].currentPlayer instanceof Plant)){
+			eatable[couldEat] = board[(this.X)+1][this.Y];
+			couldEat++;
+		}
+		// bas droite
+		if((this.X)+1<max && (this.Y)-1>=0 && (board[(this.X)+1][(this.Y)-1].currentPlayer==null || board[(this.X)+1][(this.Y)-1].currentPlayer instanceof Plant)){
+			eatable[couldEat] = board[(this.X)+1][(this.Y)-1];
+			couldEat++;
+		}
+		// bas
+		if((this.Y)-1>=0 && (board[(this.X)][(this.Y)-1].currentPlayer==null || board[(this.X)][(this.Y)-1].currentPlayer instanceof Plant)){
+			eatable[couldEat] = board[(this.X)][(this.Y)-1];
+			couldEat++;
+		}
+		// bas gauche
+		if((this.X)-1>=0 && (this.Y)-1>=0 && (board[(this.X)-1][(this.Y)-1].currentPlayer==null || board[(this.X)-1][(this.Y)-1].currentPlayer instanceof Plant)){
+			eatable[couldEat] = board[(this.X)-1][(this.Y)-1];
+			couldEat++;
+		}
+		// gauche
+		if((this.X)-1>=0 && (board[(this.X)-1][(this.Y)].currentPlayer==null || board[(this.X)-1][(this.Y)].currentPlayer instanceof Plant)){
+			eatable[couldEat] = board[(this.X)-1][(this.Y)];
+			couldEat++;
 		}
 		if(couldEat!=0)
 			return eatable;

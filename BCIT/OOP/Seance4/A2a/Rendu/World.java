@@ -33,7 +33,7 @@ public class World{
 					int longueur = eatable.length;
 					boolean state = false;
 					// si c'est un herbivore et que sa liste est vide et que son maxLaps==0, on le détruit
-					if((cells[i][j]).currentPlayer instanceof Herbivore && longueur==0){
+					if((cells[i][j]).currentPlayer instanceof Herbivore){
 						(cells[i][j]).currentPlayer.maxLaps--;
 						if((cells[i][j]).currentPlayer.maxLaps<0){
 							(cells[i][j]).currentPlayer = null;
@@ -52,8 +52,11 @@ public class World{
 						// en fonction du type de joueur sur la case, on remplace une case par un Plant ou un Herbivore
 						if((cells[i][j]).currentPlayer instanceof Plant)
 							cells[(eatable[randomInt]).getX()][(eatable[randomInt]).getY()].currentPlayer = new Plant((eatable[randomInt]).getX(),(eatable[randomInt]).getY());
-						else if((cells[i][j]).currentPlayer instanceof Herbivore)
+						else if((cells[i][j]).currentPlayer instanceof Herbivore){
 							cells[(eatable[randomInt]).getX()][(eatable[randomInt]).getY()].currentPlayer = new Herbivore((eatable[randomInt]).getX(),(eatable[randomInt]).getY());
+							cells[(eatable[randomInt]).getX()][(eatable[randomInt]).getY()].currentPlayer.maxLaps = 5;
+							(cells[i][j]).currentPlayer = null;
+						}
 					}				
 				}
 			}

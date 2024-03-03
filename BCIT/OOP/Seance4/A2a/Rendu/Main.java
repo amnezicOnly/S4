@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-
 public class Main {
 	// game object that will be displayed
 	static Game game;
@@ -19,16 +18,14 @@ public class Main {
 		}
 		return Color.WHITE;
 	}
-
-
-	static JPanel actualGrid(Cell[][] cells, int width, int height){
-		JPanel gridPanel = new JPanel(new GridLayout(width, height)); // Utilisation de GridLayout pour la grille
-        	// fill each cell of the grid with the correct color
+	
+	static JPanel createGrid(int width, int height){
+		JPanel gridPanel = new JPanel(new GridLayout(width, height));
 		for (int j=0; j < height; j++) {
 			for(int i=0; i<width; i++){
-            			JLabel cell = new JLabel();
+				JLabel cell = new JLabel();
             			cell.setOpaque(true);
-				cell.setBackground(getColor(cells[i][j]));
+				cell.setBackground(Color.WHITE);
             			cell.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Ajout d'une bordure noire
             			gridPanel.add(cell);
 			}
@@ -36,26 +33,38 @@ public class Main {
 		return gridPanel;
 	}
 
-	static void createFrame(JFrame frame, Cell[][] cells, int width, int height){
+
+	static void actualGrid(Cell[][] cells, int width, int height, JPanel gridPanel){
+		Component[] components = gridPanel.getComponents();
+		for (int i=0; i < width; i++) {
+			for(int j=0; j<height; j++){
+				int index = (i*width)+j;
+            			Component cell = components[index];
+				cell.setBackground(getColor(cells[i][j]));
+            		}
+        	}
+	}
+
+	static JFrame createFrame(String title){
 		// create a new frame
+		JFrame frame = new JFrame(title);
 		frame.setPreferredSize(new Dimension(400,400));	
         	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-       		JPanel gridPanel = actualGrid(cells,width,height);
-        
-        	frame.add(gridPanel);
+                
         	frame.pack(); 
         	frame.setVisible(true);
-
+        	return frame;
 	}
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("Game of Life");
+		// Création de la fenêtre et initialisation de la partie et de la grille
+		JFrame frame = createFrame("Game of Life");
+		JPanel gridPanel = createGrid(nbCellsX, nbCellsY);
+		frame.add(gridPanel);
+		frame.setPreferredSize(new Dimension(500,500));
 		game = new Game(nbCellsX,nbCellsY);
-		createFrame(frame, game.world.cells, nbCellsX, nbCellsY);
+		actualGrid(game.world.cells, nbCellsX, nbCellsY, gridPanel);
 		game.newLap();
-		createFrame(frame, game.world.cells, nbCellsX, nbCellsY);
-		System.out.println("Actualisation");
-
+		actualGrid(game.world.cells, nbCellsX, nbCellsY, gridPanel);
       	}
 }
