@@ -7,9 +7,9 @@ INPUT = input.txt
 OUTPUT = output.txt
 REF = ref.txt
 # Source file
-SRCS = assignment2.c
+SRCS = lab6.c
 # Output
-TARGET = assignment2.out
+TARGET = lab6.out
 
 # Default target
 all: $(TARGET)
@@ -18,14 +18,18 @@ all: $(TARGET)
 $(TARGET): $(SRCS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET)
 
-
 convert_input: $(INPUT)
-	dos2unix $(INPUT)
+	cat $(INPUT) | dos2unix | tee $(INPUT)
+	@tail -c1 $(INPUT) | grep -q . && echo >> $(INPUT)
+	tr -d '\r' < $(INPUT) > temp_file && mv temp_file $(INPUT)
 
 convert_output: $(OUTPUT)
-	dos2unix $(OUTPUT)
+	cat $(OUTPUT) | dos2unix | tee $(OUTPUT)
+	$(tail -c1 ($INPUT)) != ""  && echo >> $(INPUT)
+	tr -d '\r' < $(OUTPUT) > temp_file && mv temp_file $(OUTPUT)
 
 check: $(OUTPUT) $(REF)
+	$(tail -c1 ($REF)) != ""  && echo >> $(REF)
 	@diff -q $(OUTPUT) $(REF) > /dev/null; \
 	if [ $$? -eq 0 ]; then \
 		echo "Pass"; \

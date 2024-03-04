@@ -6,17 +6,18 @@ interface Car {
 interface Boat {
   void sail();
 }
-class Vehicle {
-  public void turn(){
-    System.out.println("Turning vehicle");
-  }
+interface Vehicle {
+  void turn();
 }
-class Hovercraft extends Vehicle implements Car, Boat {
+class Hovercraft   implements Car, Boat ,Vehicle{
   public void drive(){
     System.out.println("drive on ground");
   }
   public void sail(){
     System.out.println("sail on water");
+  }
+  public void turn(){
+    System.out.println("Turning vehicle");
   }
 }
 class Porche extends Vehicle implements Car{
