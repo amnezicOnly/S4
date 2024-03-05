@@ -31,7 +31,7 @@ public class Plant extends Players{
 			eatable[couldEat] = board[(this.X)+1][(this.Y)+1];
 			couldEat++;
 		}
-		if((this.X)+1<max && (this.Y)+1<max && board[(this.X)][(this.Y)+1].currentPlayer instanceof Plant){
+		if((this.X)+1<max && (this.Y)+1<max && board[(this.X)+1][(this.Y)+1].currentPlayer instanceof Plant){
 			tempPlants++;
 		}
 		
@@ -80,7 +80,7 @@ public class Plant extends Players{
 			tempPlants++;
 		}
 		
-		if(tempPlants>=4 && couldEat>=3)
+		if(tempPlants==4 && couldEat>=3)
 			return eatable;
 		return new Cell[0];
 	}

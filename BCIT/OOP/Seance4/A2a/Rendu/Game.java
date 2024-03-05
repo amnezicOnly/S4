@@ -14,7 +14,7 @@ public class Game{
 	public void firstLap(World world){
 		for(int j=0; j<nbCellsY; j++){
 			for(int i=0; i<nbCellsX; i++){
-				int temp = RandomGenerator.nextNumber(99);
+				int temp = RandomGenerator.nextNumber(100);
 				if(temp>=85){
 					world.updateCell(world.cells,i,j,new Herbivore(i,j));
 				}

@@ -2,6 +2,7 @@ public class Cell{
 	Players currentPlayer;
 	int X;
 	int Y;
+    	boolean alreadySeen = false;
 
 	public Cell(Players player, int i, int j){
 		currentPlayer = player;

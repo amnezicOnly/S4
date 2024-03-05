@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class Main {
 	// game object that will be displayed
 	static Game game;
@@ -21,7 +24,7 @@ public class Main {
 	
 	static JPanel createGrid(int width, int height){
 		JPanel gridPanel = new JPanel(new GridLayout(width, height));
-		for (int j=0; j < height; j++) {
+		for (int j=0; j<height; j++) {
 			for(int i=0; i<width; i++){
 				JLabel cell = new JLabel();
             			cell.setOpaque(true);
@@ -36,10 +39,9 @@ public class Main {
 
 	static void actualGrid(Cell[][] cells, int width, int height, JPanel gridPanel){
 		Component[] components = gridPanel.getComponents();
-		for (int i=0; i < width; i++) {
-			for(int j=0; j<height; j++){
-				int index = (i*width)+j;
-            			Component cell = components[index];
+		for (int j=0; j < height; j++) {
+			for(int i=0; i<width; i++){
+            			Component cell = components[(j*width)+i];
 				cell.setBackground(getColor(cells[i][j]));
             		}
         	}
@@ -64,7 +66,13 @@ public class Main {
 		frame.setPreferredSize(new Dimension(500,500));
 		game = new Game(nbCellsX,nbCellsY);
 		actualGrid(game.world.cells, nbCellsX, nbCellsY, gridPanel);
-		game.newLap();
-		actualGrid(game.world.cells, nbCellsX, nbCellsY, gridPanel);
+		frame.addMouseListener(new MouseAdapter() {
+            		public void mouseClicked(MouseEvent e) {
+                		game.newLap();
+				actualGrid(game.world.cells, nbCellsX, nbCellsY, gridPanel);
+            		}
+        	});
+
+		
       	}
 }

@@ -24,17 +24,15 @@ public class World{
 	}
 
 	public void newLap(){
-		System.out.println("Rentre bien dans la fonction World.newLap()");
-		for(int i = 0; i<nbCellsX; i++){
-			for(int j = 0; j<nbCellsY; j++){	// pour chaque cellule du plateau
-				if((cells[i][j]).currentPlayer!=null){	// si la case n'est pas vide
+		for(int j = 0; j<nbCellsY; j++){
+			for(int i = 0; i<nbCellsX; i++){	// pour chaque cellule du plateau
+				if((cells[i][j]).currentPlayer!=null && (cells[i][j]).alreadySeen==false){	// si la case n'est pas vide
 					// On récupère la liste des cellules voisines qui peuvent être mangées
 					Cell[] eatable = (cells[i][j]).currentPlayer.hasEnoughNeighbor(cells);
 					int longueur = eatable.length;
 					boolean state = false;
-					// si c'est un herbivore et que sa liste est vide et que son maxLaps==0, on le détruit
+					// si c'est un herbivore et que sa liste est vide et que son maxLaps<0, on le détruit
 					if((cells[i][j]).currentPlayer instanceof Herbivore){
-						(cells[i][j]).currentPlayer.maxLaps--;
 						if((cells[i][j]).currentPlayer.maxLaps<0){
 							(cells[i][j]).currentPlayer = null;
 							state = true;
@@ -49,17 +47,35 @@ public class World{
 						// on prend un nombre random compris entre 0 et realLength inclus
 						Random random = new Random();
 						int randomInt = random.nextInt(realLength);
+						int tempX = eatable[randomInt].getX();
+						int tempY = eatable[randomInt].getY();
 						// en fonction du type de joueur sur la case, on remplace une case par un Plant ou un Herbivore
-						if((cells[i][j]).currentPlayer instanceof Plant)
-							cells[(eatable[randomInt]).getX()][(eatable[randomInt]).getY()].currentPlayer = new Plant((eatable[randomInt]).getX(),(eatable[randomInt]).getY());
-						else if((cells[i][j]).currentPlayer instanceof Herbivore){
-							cells[(eatable[randomInt]).getX()][(eatable[randomInt]).getY()].currentPlayer = new Herbivore((eatable[randomInt]).getX(),(eatable[randomInt]).getY());
-							cells[(eatable[randomInt]).getX()][(eatable[randomInt]).getY()].currentPlayer.maxLaps = 5;
+						if((cells[i][j]).currentPlayer instanceof Plant){
+							(cells[tempX][tempY]).currentPlayer = new Plant(tempX,tempY);
+							(cells[tempX][tempY]).alreadySeen = true;
+							(cells[i][j]).alreadySeen = true;
+						}
+						if((cells[i][j]).currentPlayer instanceof Herbivore){
+							if((cells[tempX][tempY]).currentPlayer!=null && (cells[tempX][tempY]).currentPlayer instanceof Plant)
+								(cells[i][j]).currentPlayer.maxLaps = 5;
+							(cells[tempX][tempY]).currentPlayer = (cells[i][j]).currentPlayer;
+							(cells[tempX][tempY]).currentPlayer.setX(tempX);
+							(cells[tempX][tempY]).currentPlayer.setY(tempY);
+							(cells[tempX][tempY]).alreadySeen = true;
+							(cells[i][j]).alreadySeen = true;
 							(cells[i][j]).currentPlayer = null;
+							
 						}
 					}				
 				}
 			}
 		}
+
+        for(int i=0; i<nbCellsX; i++){
+            for(int j=0; j<nbCellsY; j++){
+                (cells[i][j]).alreadySeen = false;
+            }
+        }
+
 	}
 }
