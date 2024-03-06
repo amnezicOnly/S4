@@ -80,6 +80,15 @@ public class Plant extends Players{
 			tempPlants++;
 		}
 		
+		// haut gauche
+		if((this.X)-1>=0 && (this.Y)+1<max && board[(this.X)-1][(this.Y)+1].currentPlayer==null){
+			eatable[couldEat] = board[(this.X)-1][(this.Y)+1];
+			couldEat++;
+		}
+		if((this.X)-1>=0 && (this.Y)+1<max && board[(this.X)-1][(this.Y)].currentPlayer instanceof Plant){
+			tempPlants++;
+		}
+		
 		if(tempPlants==4 && couldEat>=3)
 			return eatable;
 		return new Cell[0];
