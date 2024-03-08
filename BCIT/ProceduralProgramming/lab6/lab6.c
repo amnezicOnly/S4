@@ -2,13 +2,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int mainFunction(int shift, long lower, long upper, int first, int negative1, int second, int negative2){
+int mainFunction(int shift, long lower, long upper, long first, int negative1, long second, int negative2){
     // calcule first*second et regarde s'il y a dépassemeent
     // si dépassement par les négatifs, retourne -1
     // si dépassement par les positifs, retourne 1
     // retourne 0 sinon
-    int result = first*second;
-
+    long result = first*second;
+    long mask = 1;
+    for(int i=1; i<shift; i++){
+        mask<<=1;
+        mask++;
+    }
+    if(negative1==negative2){
+        // le produit de 2 termes de même signe est positif
+    }
 
     return 0;
 }
@@ -69,15 +76,17 @@ int main(int argc, char **argv){
 
 	
 	int first = 0;
-	int negative1 = 0;
+	int negative1 = 1;
+    int state = 0;
 	while((temp=fgetc(input))!='E' && temp!='\n' && temp!=EOF){
+        state = 1;
         if(temp=='-')
 			negative1 = 0;
 		else
 			first = first*10 + (temp-'0');
 	}
 		
-	if(temp=='E'){	// si le fichier ne contient qu'un seul nombre
+	if((temp=='E' || temp==EOF) && state==0){	// si le fichier ne contient qu'un seul nombre
         fprintf(output,"min: %ld\t0x%.16lx\n",lower,lower);
         fprintf(output,"max: %ld\t0x%.16lx\n",upper,upper);
 		fclose(input);
@@ -93,20 +102,20 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    if(negative1==1)
+    if(negative1==0)
         first = -first;
 
 
 	int second = 0;
-    int negative2 = 0;
+    int negative2 = 1;
 	while((temp=fgetc(input))!='E' && temp!='\n' && temp!=EOF){
         if(temp=='-')
-            negative2 = 1;
+            negative2 = 0;
         else
 		    first = first*10 + (temp-'0');
     }
 
-    if(negative2==1)
+    if(negative2==0)
         second = -second;
 
     int enfin = mainFunction(shift,upper,lower,first,negative1,second,negative2);
