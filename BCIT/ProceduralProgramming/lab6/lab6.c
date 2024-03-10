@@ -2,22 +2,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int mainFunction(int shift, long lower, long upper, long first, int negative1, long second, int negative2){
+int mainFunction(int shift, long first, int negative1, long second, int negative2){
     // calcule first*second et regarde s'il y a dépassemeent
     // si dépassement par les négatifs, retourne -1
     // si dépassement par les positifs, retourne 1
     // retourne 0 sinon
     long result = first*second;
     long mask = 1;
-    for(int i=1; i<shift; i++){
-        mask<<=1;
-        mask++;
+    mask<<=(shift-1);   // mask sera un nombre négatif de la forme 10...0
+    if(negative1==negative2){   // le produit de 2 termes de même signe est positif
+        if((result & mask)==mask && result!=0)   //si bit de signe de result ET 1 == 1
+            // si le bit de signe de result est différent de 0 (donc égal à 1)
+            // ça va renvoyer 1 car il y aura un dépassement par les positifs
+            return 1;
+        // si la condition retourne 0, c'est qu'il n'y a pas eu de dépassement
+        // donc on retourne 0
+        return 0; 
     }
-    if(negative1==negative2){
-        // le produit de 2 termes de même signe est positif
+    else{   // si negative1!=negative2 --> result est négatif
+        if((result & mask)!=mask && result!=0)   // si bit de signe de mask ET 1 == 0
+            // si la condition est remplie ça veut dire que le résultat et positif
+            // donc dépassement par kes négatifs donc on renvoie -1
+            return -1;
+        // sinon c'est que le résultat ne pose pas de problème
+        return 0;
     }
-
-    return 0;
 }
 
 
@@ -36,7 +45,7 @@ int main(int argc, char **argv){
 	if (output==NULL)
 		perror("Unable to open output file.\n");
 	
-	// récupération et traitement du shift
+	// récupération du shift
 	int shift = 0;
 	char temp;
 	while((temp=fgetc(input))!='E' && temp!='\n' && temp!='-')
@@ -66,16 +75,12 @@ int main(int argc, char **argv){
     }
 
     // on calcule les bornes inférieures et supérieures
-    long upper = 1;
-	for(int i=1; i<shift-1; i++){
-		upper<<=1;
-        upper++;
-	}
-
+    long upper = 1<<(shift-1);
+    upper--;
     long lower = ~upper;
 
-	
-	int first = 0;
+	// si le fichier contient plus d'une ligne, on récupère le premier facteur
+	long first = 0;
 	int negative1 = 1;
     int state = 0;
 	while((temp=fgetc(input))!='E' && temp!='\n' && temp!=EOF){
@@ -102,32 +107,38 @@ int main(int argc, char **argv){
         return 0;
     }
 
+    // s'il y avait un moins, on passe le nombre en négatif
     if(negative1==0)
         first = -first;
 
-
-	int second = 0;
+    // récupération du second facteur
+	long second = 0;
     int negative2 = 1;
 	while((temp=fgetc(input))!='E' && temp!='\n' && temp!=EOF){
         if(temp=='-')
             negative2 = 0;
         else
-		    first = first*10 + (temp-'0');
+		    second = second*10 + (temp-'0');
     }
 
+    //printf("Here\n");
+    // s'il y avait un moins, on passe le nombre en négatif
     if(negative2==0)
         second = -second;
 
-    int enfin = mainFunction(shift,upper,lower,first,negative1,second,negative2);
+    // on regarde s'il y a un dépassement
+    int enfin = mainFunction(shift,first,negative1,second,negative2);
 
-    if(enfin==-1)
+    if(enfin==-1)   // si dépassement par les négatifs
         fprintf(output,"%ld\n",lower);
-    if(enfin==0)
-        fprintf(output,"%d\n",(first*second));
-    if(enfin==1)
+    if(enfin==0)    // si aucun dépassement, cas normal
+        fprintf(output,"%ld\n",(first*second));
+    if(enfin==1)    // si dépassement par les positifs
         fprintf(output,"%ld\n",upper);
 	
+    // on referme les fichiers
 	fclose(input);
 	fclose(output);
+    // on sort du programme
 	return 0;
 }
