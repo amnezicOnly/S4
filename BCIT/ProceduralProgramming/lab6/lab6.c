@@ -2,16 +2,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int mainFunction(int shift, long first, int negative1, long second, int negative2){
+int mainFunction(int shift, long long first, int negative1, long long second, int negative2){
     // calcule first*second et regarde s'il y a dépassemeent
     // si dépassement par les négatifs, retourne -1
     // si dépassement par les positifs, retourne 1
     // retourne 0 sinon
-    long result = first*second;
-    long mask = 1;
-    mask<<=(shift-1);   // mask sera un nombre négatif de la forme 10...0
+    long long result = first*second;
+    long long mask = 0;
     if(negative1==negative2){   // le produit de 2 termes de même signe est positif
-        if((result & mask)==mask && result!=0)   //si bit de signe de result ET 1 == 1
+	for(int i=shift-1; i>=0; i--){
+		mask<<=1;
+		if((result & 1<<i)==(1<<i))
+			mask++;
+	}	
+    	// mask<<=(shift-1);   // mask sera un nombre négatif de la forme 10...0
+        if((result & mask)==mask)   //si bit de signe de result ET 1 == 1
             // si le bit de signe de result est différent de 0 (donc égal à 1)
             // ça va renvoyer 1 car il y aura un dépassement par les positifs
             return 1;
@@ -20,7 +25,20 @@ int mainFunction(int shift, long first, int negative1, long second, int negative
         return 0; 
     }
     else{   // si negative1!=negative2 --> result est négatif
-        if((result & mask)!=mask && result!=0)   // si bit de signe de mask ET 1 == 0
+	for(int i=shift; i<64; i++){
+		mask<<=1;
+		mask++;
+	}
+	printf("Result : %lld\t0x%.16llx\n",result,result);
+	printf("Mask : %lld\t0x%.16llx\n",mask,mask);
+	for(int i=shift-1; i>=0; i--){
+		mask<<=1;
+		if((result & 1<<i)==(1<<i))
+			mask++;
+		printf("Mask : %lld\t0x%.16llx\n",mask,mask);
+	}
+
+        if((result & mask)!=mask)   // si bit de signe de mask ET 1 == 0
             // si la condition est remplie ça veut dire que le résultat et positif
             // donc dépassement par kes négatifs donc on renvoie -1
             return -1;
@@ -75,14 +93,15 @@ int main(int argc, char **argv){
     }
 
     // on calcule les bornes inférieures et supérieures
-    long upper = 1<<(shift-1);
+    long long upper = 1LL;
+	upper<<=(shift-1);
     upper--;
-    long lower = ~upper;
+    long long lower = ~upper;
 
 	// si le fichier contient plus d'une ligne, on récupère le premier facteur
-	long first = 0;
+	long long first = 0LL;
 	int negative1 = 1;
-    int state = 0;
+    	int state = 0;
 	while((temp=fgetc(input))!='E' && temp!='\n' && temp!=EOF){
         state = 1;
         if(temp=='-')
@@ -92,8 +111,8 @@ int main(int argc, char **argv){
 	}
 		
 	if((temp=='E' || temp==EOF) && state==0){	// si le fichier ne contient qu'un seul nombre
-        fprintf(output,"min: %ld\t0x%.16lx\n",lower,lower);
-        fprintf(output,"max: %ld\t0x%.16lx\n",upper,upper);
+        	fprintf(output,"min: %lld\t0x%.16llx\n",lower,lower);
+        	fprintf(output,"max: %lld\t0x%.16llx\n",upper,upper);
 		fclose(input);
 		fclose(output);
 		return 0;
@@ -112,8 +131,8 @@ int main(int argc, char **argv){
         first = -first;
 
     // récupération du second facteur
-	long second = 0;
-    int negative2 = 1;
+	long long second = 0LL;
+    	int negative2 = 1;
 	while((temp=fgetc(input))!='E' && temp!='\n' && temp!=EOF){
         if(temp=='-')
             negative2 = 0;
@@ -130,12 +149,11 @@ int main(int argc, char **argv){
     int enfin = mainFunction(shift,first,negative1,second,negative2);
 
     if(enfin==-1)   // si dépassement par les négatifs
-        fprintf(output,"%ld\n",lower);
+        fprintf(output,"%lld\n",lower);
     if(enfin==0)    // si aucun dépassement, cas normal
-        fprintf(output,"%ld\n",(first*second));
+        fprintf(output,"%lld\n",(first*second));
     if(enfin==1)    // si dépassement par les positifs
-        fprintf(output,"%ld\n",upper);
-	
+        fprintf(output,"%lld\n",upper);
     // on referme les fichiers
 	fclose(input);
 	fclose(output);
