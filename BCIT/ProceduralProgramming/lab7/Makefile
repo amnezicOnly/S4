@@ -3,13 +3,13 @@ CC = gcc
 CFLAGS = -Wall -std=c11
 
 #Input file
-INPUT = input1.txt
+INPUT = input.txt
 OUTPUT = output.txt
-REF = ref1.txt
+REF = ref.txt
 # Source file
-SRCS = lab6.c
+SRCS = lab7.c
 # Output
-TARGET = lab6.out
+TARGET = lab7.out
 
 # Default target
 all: $(TARGET)
