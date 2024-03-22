@@ -1,0 +1,2 @@
+Problème à résoudre :
+	- muavaise allocation de mémoire dans addInList : alloc/realloc --> NULL
