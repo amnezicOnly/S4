@@ -25,7 +25,7 @@ public class Carnivore extends Players{
 		int voidCells = 0;
 		int neighbors = 0;
 		int max = board.length;
-		// haut
+		// N
 		if((this.Y)+1<max){
 			if(board[(this.X)][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)][(this.Y)+1]);
@@ -39,7 +39,7 @@ public class Carnivore extends Players{
 				neighbors++;
 			}
 		}
-		// haut droite
+		// N-E
 		if((this.Y)+1<max && (this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)+1]);
@@ -53,7 +53,7 @@ public class Carnivore extends Players{
 				neighbors++;
 			}
 		}
-		// droite
+		// E
 		if((this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)]);
@@ -67,7 +67,7 @@ public class Carnivore extends Players{
 				neighbors++;
 			}
 		}
-		// bas droite
+		// S-E
 		if((this.X)+1<max && (this.Y)-1>0){
 			if(board[(this.X)+1][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)-1]);
@@ -81,7 +81,7 @@ public class Carnivore extends Players{
 				neighbors++;
 			}
 		}
-		// bas
+		// S
 		if((this.Y)-1>0){
 			if(board[(this.X)][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)][(this.Y)-1]);
@@ -95,7 +95,7 @@ public class Carnivore extends Players{
 				neighbors++;
 			}
 		}
-		// bas gauche
+		// S-W
 		if((this.Y)-1>0 && (this.X)-1>0){
 			if(board[(this.X)-1][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)-1]);
@@ -109,7 +109,7 @@ public class Carnivore extends Players{
 				neighbors++;
 			}
 		}
-		// gauche
+		// W
 		if((this.X)-1>0){
 			if(board[(this.X)-1][(this.Y)].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)]);
@@ -123,7 +123,7 @@ public class Carnivore extends Players{
 				neighbors++;
 			}
 		}
-		// haut gauche
+		// N-W
 		if((this.X)-1>0 && (this.Y)+1<max){
 			if(board[(this.X)-1][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)+1]);

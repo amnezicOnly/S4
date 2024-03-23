@@ -3,7 +3,7 @@ import java.util.*;
 public class World{
 	int nbCellsX;
 	int nbCellsY;
-	static Cell[][] cells;
+	Cell[][] cells;
 
 	public World(int x, int y){
 		this.nbCellsX = x;
@@ -21,42 +21,44 @@ public class World{
 	}
 
 	public void newLap(){
+		// for each cell of the board
 		for(int j = 0; j<nbCellsY; j++){
-			for(int i = 0; i<nbCellsX; i++){	// pour chaque cellule du plateau
-				if((cells[i][j]).currentPlayer!=null && (cells[i][j]).alreadySeen==false){	// si la case n'est pas vide
-					// On vérifie qu'elle est toujours vivante
+			for(int i = 0; i<nbCellsX; i++){
+				// If the current cell isn't free and we didn't modify it
+				if((cells[i][j]).currentPlayer!=null && (cells[i][j]).alreadySeen==false){
+					// Check if the player on the current cell has to be dead
 					if((cells[i][j]).currentPlayer.stillAlive()==false){
 						(cells[i][j]).currentPlayer = null;
 						(cells[i][j]).alreadySeen = true;
 					}	
 
-					// Si toujours vivante
+					// If it's still alive
 					if((cells[i][j]).alreadySeen==false){
-						// On regarde là où le joueur peut aller
+						// We get the list of the cells where the current player could go
 						ArrayList<Cell> eatable = (cells[i][j]).currentPlayer.hasEnoughNeighbor(cells);
 						int longueur = eatable.size();
-						// S'il peut aller quelque part
+						// if the list isn't empty
 						if(longueur>0){
-							// On prend une cell random dans sa liste de choix possibles
+							// we took one cell randomly
 							Random random = new Random();
 							int randomInt = random.nextInt(longueur);
 							int tempX = eatable.get(randomInt).getX();
 							int tempY = eatable.get(randomInt).getY();
 							(cells[i][j]).alreadySeen = true;
-							// Si c'est une Plant, on crée un nouveau joueur
+							// if the current player is a Plant, we create a new Plant
 							if((cells[i][j]).currentPlayer instanceof Plant){
 								(cells[tempX][tempY]).currentPlayer = new Plant(tempX,tempY);
 							}
-							else{	// Sinon c'est qu'il doit juste se déplacer
-								(cells[i][j]).currentPlayer.maxLaps--;
-								// Si le joueur mange quelquechose
+							// otherwise, we just move the current player to another available cell
+							else{
+								// if the current player eat something, we put the lap counter to five
 								if((cells[tempX][tempY]).currentPlayer!=null)
 									(cells[i][j]).currentPlayer.maxLaps = 5;
-								// On place le joueur sur la nouvelle case et on l'efface de l'ancienne
+								// We move the current player to the new cell and remove him from the old one
 								(cells[tempX][tempY]).currentPlayer = (cells[i][j]).currentPlayer;
 								(cells[i][j]).currentPlayer = null;		
 							}
-							// la nouvelle case est déjà vue
+							// we mark that this cell has already been seen
 							(cells[tempX][tempY]).alreadySeen = true;
 						}				
 					}
@@ -64,10 +66,11 @@ public class World{
 			}
 		}
 
-        	for(int j=0; j<nbCellsY; j++){
-            		for(int i=0; i<nbCellsX; i++){
-                		(cells[i][j]).alreadySeen = false;
-            		}
-        	}
+		// we change the status of each cell of the board for the next lap
+        for(int j=0; j<nbCellsY; j++){
+            for(int i=0; i<nbCellsX; i++){
+                	(cells[i][j]).alreadySeen = false;
+            	}
+        }
 	}
 }
