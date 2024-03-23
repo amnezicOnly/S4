@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Carnivore extends Players{
 	public Carnivore(int x, int y){
@@ -9,8 +10,8 @@ public class Carnivore extends Players{
 	}
 
 	public boolean stillAlive(){
-		maxLaps--;
-		return this.maxLaps==-1;
+		this.maxLaps--;
+		return this.maxLaps>=0;
 	}
 	
 	public boolean couldEat(Players player){
@@ -18,7 +19,8 @@ public class Carnivore extends Players{
 	}
 
 	public ArrayList<Cell> hasEnoughNeighbor(Cell[][] board){
-		ArrayList<Cell> res = new ArrayList<>();		
+		ArrayList<Cell> res = new ArrayList<>();
+		ArrayList<Cell> res2 = new ArrayList<>();	
 		int couldEat = 0;
 		int voidCells = 0;
 		int neighbors = 0;
@@ -26,7 +28,7 @@ public class Carnivore extends Players{
 		// haut
 		if((this.Y)+1<max){
 			if(board[(this.X)][(this.Y)+1].currentPlayer==null){
-				res.add(board[(this.X)][(this.Y)+1]);
+				res2.add(board[(this.X)][(this.Y)+1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)][(this.Y)+1].currentPlayer)){
@@ -40,7 +42,7 @@ public class Carnivore extends Players{
 		// haut droite
 		if((this.Y)+1<max && (this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)+1].currentPlayer==null){
-				res.add(board[(this.X)+1][(this.Y)+1]);
+				res2.add(board[(this.X)+1][(this.Y)+1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)+1].currentPlayer)){
@@ -54,7 +56,7 @@ public class Carnivore extends Players{
 		// droite
 		if((this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)].currentPlayer==null){
-				res.add(board[(this.X)+1][(this.Y)]);
+				res2.add(board[(this.X)+1][(this.Y)]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)].currentPlayer)){
@@ -68,7 +70,7 @@ public class Carnivore extends Players{
 		// bas droite
 		if((this.X)+1<max && (this.Y)-1>0){
 			if(board[(this.X)+1][(this.Y)-1].currentPlayer==null){
-				res.add(board[(this.X)+1][(this.Y)-1]);
+				res2.add(board[(this.X)+1][(this.Y)-1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)-1].currentPlayer)){
@@ -82,7 +84,7 @@ public class Carnivore extends Players{
 		// bas
 		if((this.Y)-1>0){
 			if(board[(this.X)][(this.Y)-1].currentPlayer==null){
-				res.add(board[(this.X)][(this.Y)-1]);
+				res2.add(board[(this.X)][(this.Y)-1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)][(this.Y)-1].currentPlayer)){
@@ -96,11 +98,11 @@ public class Carnivore extends Players{
 		// bas gauche
 		if((this.Y)-1>0 && (this.X)-1>0){
 			if(board[(this.X)-1][(this.Y)-1].currentPlayer==null){
-				res.add(board[(this.X)-1][(this.Y)-1]);
+				res2.add(board[(this.X)-1][(this.Y)-1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)-1].currentPlayer)){
-				res.add(board[(this.X)-1][(this.Y)-1]);
+				res2.add(board[(this.X)-1][(this.Y)-1]);
 				couldEat++;
 			}
 			else if(board[(this.X)-1][(this.Y)-1].currentPlayer instanceof Carnivore){
@@ -110,11 +112,11 @@ public class Carnivore extends Players{
 		// gauche
 		if((this.X)-1>0){
 			if(board[(this.X)-1][(this.Y)].currentPlayer==null){
-				res.add(board[(this.X)-1][(this.Y)]);
+				res2.add(board[(this.X)-1][(this.Y)]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)].currentPlayer)){
-				res.add(board[(this.X)-1][(this.Y)]);
+				res2.add(board[(this.X)-1][(this.Y)]);
 				couldEat++;
 			}
 			else if(board[(this.X)-1][(this.Y)].currentPlayer instanceof Carnivore){
@@ -124,7 +126,7 @@ public class Carnivore extends Players{
 		// haut gauche
 		if((this.X)-1>0 && (this.Y)+1<max){
 			if(board[(this.X)-1][(this.Y)+1].currentPlayer==null){
-				res.add(board[(this.X)-1][(this.Y)+1]);
+				res2.add(board[(this.X)-1][(this.Y)+1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)+1].currentPlayer)){
@@ -137,7 +139,6 @@ public class Carnivore extends Players{
 		}
 		if(neighbors>=1 && voidCells>=3 && couldEat==2)
 			return res;
-		ArrayList<Cell> res2 = new ArrayList<>();
 		return res2;
 	}
 }

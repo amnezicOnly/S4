@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Omnivore extends Players{
 	public Omnivore(int x, int y){
@@ -9,8 +10,8 @@ public class Omnivore extends Players{
 	}
 
 	public boolean stillAlive(){
-		maxLaps--;
-		return this.maxLaps==-1;
+		this.maxLaps--;
+		return this.maxLaps>=0;
 	}
 	
 	public boolean couldEat(Players player){
@@ -19,8 +20,7 @@ public class Omnivore extends Players{
 
 	public ArrayList<Cell> hasEnoughNeighbor(Cell[][] board){
 		ArrayList<Cell> res = new ArrayList<>();
-		if(maxLaps==0)
-			return res;
+		ArrayList<Cell> res2 = new ArrayList<>();	
 		
 		int couldEat = 0;
 		int voidCells = 0;
@@ -29,7 +29,7 @@ public class Omnivore extends Players{
 		// haut
 		if((this.Y)+1<max){
 			if(board[(this.X)][(this.Y)+1].currentPlayer==null){
-				res.add(board[(this.X)][(this.Y)+1]);
+				res2.add(board[(this.X)][(this.Y)+1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)][(this.Y)+1].currentPlayer)){
@@ -43,7 +43,7 @@ public class Omnivore extends Players{
 		// haut droite
 		if((this.Y)+1<max && (this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)+1].currentPlayer==null){
-				res.add(board[(this.X)+1][(this.Y)+1]);
+				res2.add(board[(this.X)+1][(this.Y)+1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)+1].currentPlayer)){
@@ -57,7 +57,7 @@ public class Omnivore extends Players{
 		// droite
 		if((this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)].currentPlayer==null){
-				res.add(board[(this.X)+1][(this.Y)]);
+				res2.add(board[(this.X)+1][(this.Y)]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)].currentPlayer)){
@@ -71,7 +71,7 @@ public class Omnivore extends Players{
 		// bas droite
 		if((this.X)+1<max && (this.Y)-1>0){
 			if(board[(this.X)+1][(this.Y)-1].currentPlayer==null){
-				res.add(board[(this.X)+1][(this.Y)-1]);
+				res2.add(board[(this.X)+1][(this.Y)-1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)-1].currentPlayer)){
@@ -85,7 +85,7 @@ public class Omnivore extends Players{
 		// bas
 		if((this.Y)-1>0){
 			if(board[(this.X)][(this.Y)-1].currentPlayer==null){
-				res.add(board[(this.X)][(this.Y)-1]);
+				res2.add(board[(this.X)][(this.Y)-1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)][(this.Y)-1].currentPlayer)){
@@ -99,7 +99,7 @@ public class Omnivore extends Players{
 		// bas gauche
 		if((this.Y)-1>0 && (this.X)-1>0){
 			if(board[(this.X)-1][(this.Y)-1].currentPlayer==null){
-				res.add(board[(this.X)-1][(this.Y)-1]);
+				res2.add(board[(this.X)-1][(this.Y)-1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)-1].currentPlayer)){
@@ -113,7 +113,7 @@ public class Omnivore extends Players{
 		// gauche
 		if((this.X)-1>0){
 			if(board[(this.X)-1][(this.Y)].currentPlayer==null){
-				res.add(board[(this.X)-1][(this.Y)]);
+				res2.add(board[(this.X)-1][(this.Y)]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)].currentPlayer)){
@@ -127,7 +127,7 @@ public class Omnivore extends Players{
 		// haut gauche
 		if((this.X)-1>0 && (this.Y)+1<max){
 			if(board[(this.X)-1][(this.Y)+1].currentPlayer==null){
-				res.add(board[(this.X)-1][(this.Y)+1]);
+				res2.add(board[(this.X)-1][(this.Y)+1]);
 				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)+1].currentPlayer)){
@@ -140,7 +140,6 @@ public class Omnivore extends Players{
 		}
 		if(neighbors>=1 && voidCells>=3 && couldEat>=1)
 			return res;
-		ArrayList<Cell> res2 = new ArrayList<>();
 		return res2;
 	}
 }

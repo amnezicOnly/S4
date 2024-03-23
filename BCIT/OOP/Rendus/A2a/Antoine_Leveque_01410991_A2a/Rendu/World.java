@@ -1,7 +1,4 @@
-// import de la classe random
 import java.util.*;
-
-
 
 public class World{
 	int nbCellsX;
@@ -27,49 +24,50 @@ public class World{
 		for(int j = 0; j<nbCellsY; j++){
 			for(int i = 0; i<nbCellsX; i++){	// pour chaque cellule du plateau
 				if((cells[i][j]).currentPlayer!=null && (cells[i][j]).alreadySeen==false){	// si la case n'est pas vide
-					// On récupère la liste des cellules voisines qui peuvent être mangées
-					ArrayList<Cell> eatable = (cells[i][j]).currentPlayer.hasEnoughNeighbor(cells);
-					int longueur = eatable.size();
-					boolean state = false;
-					
-					if(!(cells[i][j]).currentPlayer.stillAlive()){
+					// On vérifie qu'elle est toujours vivante
+					if((cells[i][j]).currentPlayer.stillAlive()==false){
 						(cells[i][j]).currentPlayer = null;
-						state = true;
+						(cells[i][j]).alreadySeen = true;
+					}	
+
+					// Si toujours vivante
+					if((cells[i][j]).alreadySeen==false){
+						// On regarde là où le joueur peut aller
+						ArrayList<Cell> eatable = (cells[i][j]).currentPlayer.hasEnoughNeighbor(cells);
+						int longueur = eatable.size();
+						// S'il peut aller quelque part
+						if(longueur>0){
+							// On prend une cell random dans sa liste de choix possibles
+							Random random = new Random();
+							int randomInt = random.nextInt(longueur);
+							int tempX = eatable.get(randomInt).getX();
+							int tempY = eatable.get(randomInt).getY();
+							(cells[i][j]).alreadySeen = true;
+							// Si c'est une Plant, on crée un nouveau joueur
+							if((cells[i][j]).currentPlayer instanceof Plant){
+								(cells[tempX][tempY]).currentPlayer = new Plant(tempX,tempY);
+							}
+							else{	// Sinon c'est qu'il doit juste se déplacer
+								(cells[i][j]).currentPlayer.maxLaps--;
+								// Si le joueur mange quelquechose
+								if((cells[tempX][tempY]).currentPlayer!=null)
+									(cells[i][j]).currentPlayer.maxLaps = 5;
+								// On place le joueur sur la nouvelle case et on l'efface de l'ancienne
+								(cells[tempX][tempY]).currentPlayer = (cells[i][j]).currentPlayer;
+								(cells[i][j]).currentPlayer = null;		
+							}
+							// la nouvelle case est déjà vue
+							(cells[tempX][tempY]).alreadySeen = true;
+						}				
 					}
-					// si eatable n'est pas vide
-					if(longueur!=0 && state == false){
-						// on prend un nombre random compris entre 0 et realLength inclus
-						Random random = new Random();
-						int randomInt = random.nextInt(longueur);
-						int tempX = eatable.get(randomInt).getX();
-						int tempY = eatable.get(randomInt).getY();
-						// en fonction du type de joueur sur la case, on remplace une case par un Plant ou un Herbivore
-						if((cells[i][j]).currentPlayer instanceof Plant){
-							(cells[tempX][tempY]).currentPlayer = new Plant(tempX,tempY);
-							(cells[tempX][tempY]).alreadySeen = true;
-							(cells[i][j]).alreadySeen = true;
-						}
-						else{
-							if((cells[tempX][tempY]).currentPlayer!=null && (cells[i][j]).currentPlayer.couldEat((cells[tempX][tempY]).currentPlayer))
-								(cells[i][j]).currentPlayer.maxLaps = 5;
-							(cells[tempX][tempY]).currentPlayer = (cells[i][j]).currentPlayer;
-							(cells[tempX][tempY]).currentPlayer.setX(tempX);
-							(cells[tempX][tempY]).currentPlayer.setY(tempY);
-							(cells[tempX][tempY]).alreadySeen = true;
-							(cells[i][j]).alreadySeen = true;
-							(cells[i][j]).currentPlayer = null;
-							
-						}
-					}				
 				}
 			}
 		}
 
-        for(int i=0; i<nbCellsX; i++){
-            for(int j=0; j<nbCellsY; j++){
-                (cells[i][j]).alreadySeen = false;
-            }
-        }
-
+        	for(int j=0; j<nbCellsY; j++){
+            		for(int i=0; i<nbCellsX; i++){
+                		(cells[i][j]).alreadySeen = false;
+            		}
+        	}
 	}
 }
