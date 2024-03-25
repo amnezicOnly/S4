@@ -23,8 +23,10 @@ public class Cell{
 		this.currentPlayer = player;
 		this.currentPlayer.setX(this.I);
 		this.currentPlayer.setY(this.J);
-		if(ate)
+		if(ate){
+			System.out.println("A mangé");
 			this.currentPlayer.resetMaxLaps();
+		}
 		this.alreadySeen = true;
 	}
 

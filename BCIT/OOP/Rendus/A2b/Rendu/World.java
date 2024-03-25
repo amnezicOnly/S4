@@ -43,8 +43,9 @@ public class World{
 						Cell newCell = (cells[i][j]).currentPlayer.nextCells(cells);
 						// if it could go somewhere
 						if(newCell!=null){
+							boolean ate = newCell.currentPlayer!=null;
 							// we move the currentPlayer to the new position
-							newCell.setPlayer((cells[i][j]).currentPlayer,newCell.currentPlayer!=null);
+							newCell.setPlayer((cells[i][j]).currentPlayer,ate);
 							// if currentPlayer isn't a Plant, we completely move the currentPlayer
 							if(!(cells[i][j].currentPlayer instanceof Plant))
 								cells[i][j].currentPlayer = null;
