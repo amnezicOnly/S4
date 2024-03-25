@@ -1,5 +1,5 @@
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public abstract class Players{
 	int X;
@@ -25,5 +25,5 @@ public abstract class Players{
 	
 	public abstract boolean couldEat(Players player);
 	public abstract boolean stillAlive();
-	public abstract ArrayList<Cell> hasEnoughNeighbor(Cell[][] board);
+	public abstract Cell nextCell(Cell[][] board);
 }

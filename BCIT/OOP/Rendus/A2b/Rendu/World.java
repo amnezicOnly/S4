@@ -34,43 +34,40 @@ public class World{
 
 					// If it's still alive
 					if((cells[i][j]).alreadySeen==false){
-						// We get the list of the cells where the current player could go
-						ArrayList<Cell> eatable = (cells[i][j]).currentPlayer.hasEnoughNeighbor(cells);
-						int longueur = eatable.size();
-						// if the list isn't empty
-						if(longueur>0){
-							// we took one cell randomly
-							Random random = new Random();
-							int randomInt = random.nextInt(longueur);
-							int tempX = eatable.get(randomInt).getX();
-							int tempY = eatable.get(randomInt).getY();
-							(cells[i][j]).alreadySeen = true;
-							// if the current player is a Plant, we create a new Plant
-							if((cells[i][j]).currentPlayer instanceof Plant){
-								(cells[tempX][tempY]).currentPlayer = new Plant(tempX,tempY);
-							}
-							// otherwise, we just move the current player to another available cell
-							else{
-								// if the current player eat something, we put the lap counter to five
-								if((cells[tempX][tempY]).currentPlayer!=null)
-									(cells[i][j]).currentPlayer.maxLaps = 5;
-								// We move the current player to the new cell and remove him from the old one
-								(cells[tempX][tempY]).currentPlayer = (cells[i][j]).currentPlayer;
-								(cells[i][j]).currentPlayer = null;		
-							}
-							// we mark that this cell has already been seen
-							(cells[tempX][tempY]).alreadySeen = true;
-						}				
+						// we mark that we deal with it
+						 (cells[i][j]).alreadySeen = true;
+						// we catch a cell where the currentPlayer could go	
+						Cell newCell = (cells[i][j]).currentPlayer.nextCell(cells);
+						// if it could go somewhere
+						if(newCell!=null){
+							// we catch the coordinates
+							int tempX = newCell.getX();
+							int tempY = newCell.getY();
+							// if the currentPlayer finally eat something, we reset the maxLaps counter to 5
+							if(cells[tempX][tempY].currentPlayer!=null)
+								// the next line is the only way to make the Omnivore objects follow the maxLaps rule, but I don't actually know why yet
+								if(cells[i][j].currentPlayer instanceof Omnivore){}
+								cells[i][j].currentPlayer.maxLaps = 5;
+							// we delete the old currentPlayer on the new cell
+							cells[tempX][tempY].currentPlayer = null;
+							// we put the currentPlayer on the new cell
+							cells[tempX][tempY].currentPlayer = cells[i][j].currentPlayer;
+							// if currentPlayer ins't a Plant, we completely move the currentPlayer
+							if(!(cells[i][j].currentPlayer instanceof Plant))
+								cells[i][j].currentPlayer = null;
+							// we mark that we deal with the new cell
+						 	(cells[tempX][tempY]).alreadySeen = true;				
+						}
 					}
 				}
 			}
 		}
 
 		// we change the status of each cell of the board for the next lap
-        for(int j=0; j<nbCellsY; j++){
-            for(int i=0; i<nbCellsX; i++){
-                	(cells[i][j]).alreadySeen = false;
-            	}
-        }
+        	for(int j=0; j<nbCellsY; j++){
+            		for(int i=0; i<nbCellsX; i++){
+                		(cells[i][j]).alreadySeen = false;
+            		}
+        	}
 	}
 }

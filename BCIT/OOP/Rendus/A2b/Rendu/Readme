@@ -1,8 +1,8 @@
 There are some modifications I've made :
-	- I added a color attribute in the Players class in order to ease the drawing of the board for each lap
-	- I added a couldEat method in Players class in order to know easier if the currentPlayer could eat a specific cell
-	- I removed the String[] lifeForms of the class Players because I never used it
-	- in hasEnoughNeigbor in each Players class, I added some variables to conform with the rules that let a player eat a cell, because in the last milestone, we didn't make a true difference between cells a player could eat and free cells
-	- in hasEnoughNeigbor in each Players class, I divided each case of cell to ease the count of each type of cell
-	- I changed the return type of hasEnoughNeigbor from Cell[] to List<Cell> because it's way more convenient than an array
-	- in newLap() method in World class, I changed a if block because I made a special case for Herbivors to check if they have at least 1 turn left but because new classes need to check this condition too, I just check the condition, for all classes
+	- I added a color attribute in the Players class in order to ease the drawing of the board for each lap.
+	- I added a couldEat method in Players class in order to know easier if the currentPlayer could eat a specific cell.
+	- I removed the String[] lifeForms of the class Players because it wasn't useful.
+	- In hasEnoughNeigbor in each Players class, I added some variables to conform with the rules that let a player eat a cell, because in the last milestone, we didn't make a true difference between cells a player could eat and free cells.
+	- In hasEnoughNeigbor in each Players class, I divided each case of cell to ease the count of each type of cell.
+	- I changed, in class Players and its subclasses, the method Cell[] hasEnoughNeighbor(...) by the Cell nextCell(...) method in order to ease the complexity of the World class and to be more flexible to futur rules modifications. This function returns directly the cell where the currentPlayer will go, or null otherwise.
+	- In newLap() method in World class, I changed what's inside the double loop because of the modifications of nextCell method.

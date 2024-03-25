@@ -1,5 +1,5 @@
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Carnivore extends Players{
 	public Carnivore(int x, int y){
@@ -18,36 +18,42 @@ public class Carnivore extends Players{
 		return (player instanceof Herbivore || player instanceof Omnivore);
 	}
 
-	public ArrayList<Cell> hasEnoughNeighbor(Cell[][] board){
+	public Cell nextCell(Cell[][] board){
+		/*we create two lists : 
+			- one with the list of the cells which currentPlayer couldEat
+			- one with the list of the free cells around currentPlayer
+		we check for each neighbor cell (North, North-East, East, South-East, South, South-West, West, North-West)
+		-->for each case :
+		 	- if the cell is free, we add it to the second list
+			- if the cell is eatable by the currentPlayer, we add it to the first list
+			- if the cell is the same type of the currentPlayer, we increment by one the neighbors value
+		if the condition to eat something are okay, we return a random element of the first list
+		otherwise, if the currentPlayer can move, we return the second list
+		otherwise, we return null
+		*/
 		ArrayList<Cell> res = new ArrayList<>();
-		ArrayList<Cell> res2 = new ArrayList<>();	
-		int couldEat = 0;
-		int voidCells = 0;
+		ArrayList<Cell> res2 = new ArrayList<>();
 		int neighbors = 0;
 		int max = board.length;
-		// N
+		// North
 		if((this.Y)+1<max){
 			if(board[(this.X)][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)][(this.Y)+1]);
-				voidCells++;
 			}
 			else if(couldEat(board[(this.X)][(this.Y)+1].currentPlayer)){
 				res.add(board[(this.X)][(this.Y)+1]);
-				couldEat++;
 			}
 			else if(board[(this.X)][(this.Y)+1].currentPlayer instanceof Carnivore){
 				neighbors++;
 			}
 		}
-		// N-E
+		// North-East
 		if((this.Y)+1<max && (this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)+1]);
-				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)+1].currentPlayer)){
 				res.add(board[(this.X)+1][(this.Y)+1]);
-				couldEat++;
 			}
 			else if(board[(this.X)+1][(this.Y)+1].currentPlayer instanceof Carnivore){
 				neighbors++;
@@ -57,88 +63,79 @@ public class Carnivore extends Players{
 		if((this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)]);
-				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)].currentPlayer)){
 				res.add(board[(this.X)+1][(this.Y)]);
-				couldEat++;
 			}
 			else if(board[(this.X)+1][(this.Y)].currentPlayer instanceof Carnivore){
 				neighbors++;
 			}
 		}
 		// S-E
-		if((this.X)+1<max && (this.Y)-1>0){
+		if((this.X)+1<max && (this.Y)-1>=0){
 			if(board[(this.X)+1][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)-1]);
-				voidCells++;
 			}
 			else if(couldEat(board[(this.X)+1][(this.Y)-1].currentPlayer)){
 				res.add(board[(this.X)+1][(this.Y)-1]);
-				couldEat++;
 			}
 			else if(board[(this.X)+1][(this.Y)-1].currentPlayer instanceof Carnivore){
 				neighbors++;
 			}
 		}
 		// S
-		if((this.Y)-1>0){
+		if((this.Y)-1>=0){
 			if(board[(this.X)][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)][(this.Y)-1]);
-				voidCells++;
 			}
 			else if(couldEat(board[(this.X)][(this.Y)-1].currentPlayer)){
 				res.add(board[(this.X)][(this.Y)-1]);
-				couldEat++;
 			}
 			else if(board[(this.X)][(this.Y)-1].currentPlayer instanceof Carnivore){
 				neighbors++;
 			}
 		}
 		// S-W
-		if((this.Y)-1>0 && (this.X)-1>0){
+		if((this.Y)-1>=0 && (this.X)-1>0){
 			if(board[(this.X)-1][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)-1]);
-				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)-1].currentPlayer)){
-				res2.add(board[(this.X)-1][(this.Y)-1]);
-				couldEat++;
+				res.add(board[(this.X)-1][(this.Y)-1]);
 			}
 			else if(board[(this.X)-1][(this.Y)-1].currentPlayer instanceof Carnivore){
 				neighbors++;
 			}
 		}
 		// W
-		if((this.X)-1>0){
+		if((this.X)-1>=0){
 			if(board[(this.X)-1][(this.Y)].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)]);
-				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)].currentPlayer)){
-				res2.add(board[(this.X)-1][(this.Y)]);
-				couldEat++;
+				res.add(board[(this.X)-1][(this.Y)]);
 			}
 			else if(board[(this.X)-1][(this.Y)].currentPlayer instanceof Carnivore){
 				neighbors++;
 			}
 		}
 		// N-W
-		if((this.X)-1>0 && (this.Y)+1<max){
+		if((this.X)-1>=0 && (this.Y)+1<max){
 			if(board[(this.X)-1][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)+1]);
-				voidCells++;
 			}
 			else if(couldEat(board[(this.X)-1][(this.Y)+1].currentPlayer)){
 				res.add(board[(this.X)-1][(this.Y)+1]);
-				couldEat++;
 			}
 			else if(board[(this.X)-1][(this.Y)+1].currentPlayer instanceof Carnivore){
 				neighbors++;
 			}
 		}
-		if(neighbors>=1 && voidCells>=3 && couldEat==2)
-			return res;
-		return res2;
+		Random random = new Random();
+		if(neighbors>=1 && res2.size()>=3 && res.size()==2)
+			return res.get(random.nextInt(res.size()));
+		if(res2.size()>0)
+			return res2.get(random.nextInt(res2.size()));
+		return null;
 	}
 }

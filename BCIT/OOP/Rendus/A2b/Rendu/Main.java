@@ -34,6 +34,8 @@ public class Main {
             			Component cell = components[(j*width)+i];
             			if((cells[i][j]).currentPlayer!=null)
             				cell.setBackground((cells[i][j]).currentPlayer.color);
+            			else
+            				cell.setBackground(Color.WHITE);
             		}
         	}
 	}
