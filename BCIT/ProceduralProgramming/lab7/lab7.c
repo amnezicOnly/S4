@@ -1,34 +1,67 @@
 #include <stdio.h>
-// À PEUT ÊTRE ENLEVER
 #include <stdlib.h>
 
 typedef struct Student{
 	char* lastName;
 	char* firstName;
-	int studentID;
+	char* studentID;
 	int midterm;
 	int final;
 	int average;
 } Student;
 
+void printText(char* text){
+	size_t i =0;
+	while(text[i]!='\0'){
+		printf("%c",text[i]);
+		i++;
+	}
+}
+
 void printArray(Student* students, size_t size){
-	for(size_t i=0; i<size; i++)
-		printf("(%d)-->",students[i].studentID);
+	printf("size: %zu\n", size);
+	for(size_t i=0; i<size; i++){
+		printf("(");
+		printText(students[i].studentID);
+		printf(")-->");
+	}
 	printf("NULL\n");
 }
 
-int getName(FILE* input, char** name){
+int getName(FILE* input, char** name, size_t i){
 	char temp;
-	int i = 0;
 	while((temp=fgetc(input))!=' '){
 		if(!((temp>=65 && temp<=90)||(temp>=97 && temp<=122)))
 			return 1;
-		i++;
-		if(*name==NULL)
+		if(i==0){
 			*name = malloc(sizeof(char));
-		else
+			if((*name)==NULL)
+				perror("Impossible de créer le name\n");
+		}
+		else{
 			*name = realloc(*name,i*sizeof(char));
+			if((*name)==NULL)
+				perror("Impossible d'agrandir le name\n");
+		}
+		i++;
 		(*name)[i-1] = temp;
+	}
+	return 0;
+}
+
+int getID(FILE* input, char** ID){
+	char temp = fgetc(input);
+	if(temp!='A')
+		return 1;
+	*ID = malloc(8*sizeof(char));
+	(*ID)[0]=temp;
+	short i = 1;
+	while((temp=fgetc(input))!=' '){
+		if(!((temp>='0' && temp<='9')||i>=8)){
+			return -1;
+		}
+		(*ID)[i] = temp;
+		i++;
 	}
 	return 0;
 }
@@ -57,121 +90,83 @@ int getFinal(FILE* input){
 	return res;
 }
 
-
-
 int sortedName(char* name1, char* name2){
-	int i = 0;
-	while(name1[i]!='\0' && name2[i]!='\0'){
-		if(name1[i]>name2[i])
-			return 1;
-		if(name1[i]<name2[i])
-			return -1;
+	size_t i =0;
+	while(name1[i]!='\0' && name2[i]!='\0' && name1[i]==name2[i])
 		i++;
-	}
-	
+	if(name1[i]=='\0' && name2[i]=='\0')
+		return 0;
 	if(name1[i]=='\0' && name2[i]!='\0')
-		return -1;
-	if(name2[i]=='\0' && name1[i]!='\0')
 		return 1;
-	
-	return 0;
+	if(name1[i]!='\0' && name2[i]=='\0')
+		return -1;
+	if(name1[i]<name2[i])
+		return 1;
+	else
+		return -1;
 }
 
 int addInList(Student** students, size_t* size, Student student){
 	for(size_t i = 0; i<*(size); i++){
-		if((*students)[i].studentID==student.studentID){
-			printf("ID: %d, ",(*students)[i].studentID);
+		if(sortedName(students[i]->studentID,student.studentID)==0){
 			return -1;
 		}		
 	}
-	*(size)++;
 	if(*size == 1)
 		*students = malloc(sizeof(Student));
 	else
-		*students = realloc(*students,(*size)*sizeof(Student));
+		*students = realloc(*students,((*size)+1)*sizeof(Student));
 	if(*students==NULL)
-		printf("Problème d'alloc de students\n");
-	printf("Core dumped après ça\n");
-	(*students)[(*size)-1] = student;
-	int i = *(size)-1;
-	// tri par nom de famille
-	while(i>0 && sortedName((*students)[i-1].lastName,(*students)[i].lastName)==1){
-		Student temp = (*students)[i-1];
-		(*students)[i-1] = (*students)[i];
-		(*students)[i] = temp;
-		i--;
-	}
-	//tri par prénom
-	while(i>0 && (sortedName((*students)[i-1].lastName,(*students)[i].lastName)==1||sortedName((*students)[i-1].lastName,(*students)[i].lastName)==0) && sortedName((*students)[i-1].firstName,(*students)[i].firstName)==1){
-		Student temp = (*students)[i-1];
-		(*students)[i-1] = (*students)[i];
-		(*students)[i] = temp;
-		i--;
-	}
-	// tri par studentID
-	while(i>0 && (sortedName((*students)[i-1].lastName,(*students)[i].lastName)==1||sortedName((*students)[i-1].lastName,(*students)[i].lastName)==0) && (sortedName((*students)[i-1].firstName,(*students)[i].firstName)==1 || sortedName((*students)[i-1].firstName,(*students)[i].firstName)==0) && (*students)[i-1].studentID>(*students)[i].studentID){
-		Student temp = (*students)[i-1];
-		(*students)[i-1] = (*students)[i];
-		(*students)[i] = temp;
-		i--;
-	}
-	// tri par notes de midterm
-	while(i>0 && (sortedName((*students)[i-1].lastName,(*students)[i].lastName)==1||sortedName((*students)[i-1].lastName,(*students)[i].lastName)==0) && (sortedName((*students)[i-1].firstName,(*students)[i].firstName)==1 || sortedName((*students)[i-1].firstName,(*students)[i].firstName)==0) && (*students)[i-1].studentID>(*students)[i].studentID && (*students)[i-1].midterm>(*students)[i].midterm){
-		Student temp = (*students)[i-1];
-		(*students)[i-1] = (*students)[i];
-		(*students)[i] = temp;
-		i--;
-	}
-	while(i>0 && (sortedName((*students)[i-1].lastName,(*students)[i].lastName)==1||sortedName((*students)[i-1].lastName,(*students)[i].lastName)==0) && (sortedName((*students)[i-1].firstName,(*students)[i].firstName)==1 || sortedName((*students)[i-1].firstName,(*students)[i].firstName)==0) && (*students)[i-1].studentID>(*students)[i].studentID && (*students)[i-1].midterm>=(*students)[i].midterm && (*students)[i-1].final>(*students)[i].final){
-		Student temp = (*students)[i-1];
-		(*students)[i-1] = (*students)[i];
-		(*students)[i] = temp;
-		i--;
-	}
+		perror("Problème d'alloc de students\n");
+	(*students)[(*size)] = student;
+	(*size)++;
 }
-
 
 int fillData(FILE* input, Student* students, size_t* size){
 	// à chaque ligne, le programme va récupérer les noms avec getName et les numéros avec getNum
 	// puis il va les rajouter dans la liste students avec la fonction addInList
 	char temp;
-	int i = 0;
-	printf("Test dans fillData avant la boucle while\n");
-	while((temp=fgetc(input))!=EOF){
-		char* lastName = NULL;
+	char temp2;
+	int i = 1;
+	while((temp=fgetc(input))!='E' && ((temp2=fgetc(input))!='\n')){
+		printf("i: %d\n",i);
+		char* lastName = malloc(sizeof(char));
+		if(lastName==NULL)
+			perror("Impossible de créer un nouveau lastName dans fillData\n");
+		if(!((temp>='a' && temp<='z')||(temp>='A'&&temp<='Z')))
+			return -1;
+		lastName[0] = temp;
+		if(!((temp2>='a' && temp2<='z')||(temp2>='A'&&temp2<='Z')||(temp2!=' '))){
+			return -1;
+		}
+		if(temp2!=' '){
+			lastName = realloc(lastName,2*sizeof(char));
+			lastName[1] = temp2;
+		}
 		char* firstName = NULL;
-		int studentID;
+		char* studentID;
 		int midterm;
 		int final;
 
-		printf("Rentre dans la boucle while de fillData\n");
-		if(getName(input,&lastName)!=0)
+		if(getName(input,&lastName,2)!=0)
 			return -1;
-		printf("Last name: %s, ",lastName);
-		if(getName(input,&firstName)!=0)
+		if(getName(input,&firstName,0)!=0)
 			return -1;
-		printf("first name: %s, ",firstName);
-		if(fgetc(input)!='A')
-			return -1;
-		studentID = getNum(input);
-		printf("ID: A0%d, ",studentID);
-		if(studentID==-1)
+		int studentIDcheck = getID(input,&studentID);
+		if(studentIDcheck==-1)
 			return -1;
 		midterm = getNum(input);
-		printf("midterm: %d, ",midterm);
 		if(midterm<0 || midterm>100)
 			return -1;
 		final = getFinal(input);
-		printf("final: %d\n",final);
 		if(final<0 || final>100)
 			return -1;
 		Student student = {lastName,firstName,studentID,midterm,final,(midterm+final)/2};
-		i++;
-		printf("Ici on est bon\n");
 		if(addInList(&students,size,student)==-1)	// erreur ici
 			return -1;
+		i++;
 	}
-	printf("i: %d\n",i);
+	//printf("i: %d\n",i);
 	// Si pas de problème
 	return 0;	
 }
@@ -201,13 +196,13 @@ int main(){
 	// création d'une liste d'objets Student
 	Student* students = NULL;
 	size_t size = 0;
-	printf("Avant utilisation de fillData dans le main\n");
 	// Remplis la liste avec toutes les infos
 	int status = fillData(input,students,&size);
-	printf("Après utilisation de fillData dans le main\n");
+	printf("status: %d, size: %zu\n",status,size);
 
 	//printf("Here it's ok\n");
 	if(status==1){
+		perror("Rentre dans status==1\n");
 		free(students);
 		fclose(input);
 		fputs("Error\n",output);
@@ -216,6 +211,8 @@ int main(){
 	}
 
 	printArray(students,size);
-
+	free(students);
+	fclose(input);
+	fclose(output);
     	return 0;
 }

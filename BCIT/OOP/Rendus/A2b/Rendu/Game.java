@@ -18,7 +18,7 @@ public class Game{
 				if(temp>=80){
 					world.updateCell(world.cells,i,j,new Herbivore(i,j));
 				}
-				if(temp>=60 && temp<80){
+				else if(temp>=60){
 					world.updateCell(world.cells,i,j,new Plant(i,j));
 				}
 				else if(temp>=50){

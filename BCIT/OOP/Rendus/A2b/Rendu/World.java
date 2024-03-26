@@ -62,6 +62,8 @@ public class World{
         	for(int j=0; j<nbCellsY; j++){
             		for(int i=0; i<nbCellsX; i++){
                 		(cells[i][j]).alreadySeen = false;
+                		if(i==j && i==nbCellsY-1)
+                			System.out.println("Passe bien par là");
             		}
         	}
 	}

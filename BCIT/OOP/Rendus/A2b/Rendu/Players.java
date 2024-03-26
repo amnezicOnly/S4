@@ -30,10 +30,7 @@ public abstract class Players{
 	
 	public Cell nextCells(Cell[][] board){
 		//System.out.println("X: "+this.X+", Y: "+this.Y);
-		ArrayList<Cell> res = new ArrayList<>();
-		ArrayList<Cell> res2 = new ArrayList<>();
-		ArrayList<Cell> res3 = new ArrayList<>();
-		int max = board.length;
+		
 		/*we create 3 lists : 
 			- one with the list of the cells which currentPlayer this.couldEat
 			- one with the list of the free cells around currentPlayer
@@ -45,7 +42,11 @@ public abstract class Players{
 			- if the cell is the same type of the currentPlayer, we add it to the third list
 		we return the cell where currentPlayer will go on
 		*/
-		// haut
+		ArrayList<Cell> res = new ArrayList<>();
+		ArrayList<Cell> res2 = new ArrayList<>();
+		ArrayList<Cell> res3 = new ArrayList<>();
+		int max = board.length;
+		// North
 		if((this.Y)+1<max){
 			if(board[(this.X)][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)][(this.Y)+1]);
@@ -57,7 +58,7 @@ public abstract class Players{
 				res3.add(board[(this.X)][(this.Y)+1]);
 			}
 		}
-		// haut droite
+		// North East
 		if((this.Y)+1<max && (this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)+1]);
@@ -69,7 +70,7 @@ public abstract class Players{
 				res3.add(board[(this.X)+1][(this.Y)+1]);
 			}
 		}
-		// droite
+		// East
 		if((this.X)+1<max){
 			if(board[(this.X)+1][(this.Y)].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)]);
@@ -81,7 +82,7 @@ public abstract class Players{
 				res3.add(board[(this.X)+1][(this.Y)]);
 			}
 		}
-		// bas droite
+		// South East
 		if((this.X)+1<max && (this.Y)-1>=0){
 			if(board[(this.X)+1][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)+1][(this.Y)-1]);
@@ -93,7 +94,7 @@ public abstract class Players{
 				res3.add(board[(this.X)+1][(this.Y)-1]);
 			}
 		}
-		// bas
+		// South
 		if((this.Y)-1>=0){
 			if(board[(this.X)][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)][(this.Y)-1]);
@@ -105,7 +106,7 @@ public abstract class Players{
 				res3.add(board[(this.X)][(this.Y)-1]);
 			}
 		}
-		// bas gauche
+		// South West
 		if((this.Y)-1>=0 && (this.X)-1>=0){
 			if(board[(this.X)-1][(this.Y)-1].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)-1]);
@@ -117,7 +118,7 @@ public abstract class Players{
 				res3.add(board[(this.X)-1][(this.Y)-1]);
 			}
 		}
-		// gauche
+		// West
 		if((this.X)-1>=0){
 			if(board[(this.X)-1][(this.Y)].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)]);
@@ -129,7 +130,7 @@ public abstract class Players{
 				res3.add(board[(this.X)-1][(this.Y)]);
 			}
 		}
-		// haut gauche
+		// South West
 		if((this.X)-1>=0 && (this.Y)+1<max){
 			if(board[(this.X)-1][(this.Y)+1].currentPlayer==null){
 				res2.add(board[(this.X)-1][(this.Y)+1]);
