@@ -4,44 +4,57 @@
 
 typedef struct Employee{
 	int ID;
-	char* firstName;
-	char* lastName;
+	char* name;
 	float salary;
 } Employee;
 
-void listEmployee(FILE* output, Employee* employees, size_t size){
-	printf("size: %zu\n",size);
+int line = 1;
+
+void listEmployees(FILE* output, Employee* employees, size_t size){
 	for(size_t i=0; i<size; i++)
-		printf("ID: %d\n",employees[i].ID);
+		fprintf(output,"%d,%s,%.2f\n",employees[i].ID,employees[i].name,employees[i].salary);
 }
 
-int getID(FILE* input, int ID){
+void freeEmployees(Employee* employees, size_t size){
+	for(size_t i = 0; i<size; i++)
+		free(employees[i].name);
+	free(employees);
+}
+
+int getID(FILE* input, int* ID){
 	char temp;
 	while((temp=fgetc(input))!=','){
-		if(temp<'0' || temp>'9' || ID>1000)
+		if(temp<'0' || temp>'9' || (*ID)>1000)
 			return -1;
-		ID*=10;
-		ID+=(temp-'0');
+		(*ID)*=10;
+		(*ID)+=(temp-'0');
 	}
 	if(temp!=',')
 		return -1;
-	return ID;
+	return 0;
 }
 
-int getName(FILE* input, char** name, int type){
+int getName(FILE* input, char** name){
 	char temp;
 	size_t i = 0;
-	while((temp=fgetc(input))!=' ' && temp!=','){
+	int state = 1;
+	while((temp=fgetc(input))!=',' || temp==EOF){
 		if(i==0)
 			*name = malloc(sizeof(char));
 		else
 			*name = realloc(*name,(i+1)*sizeof(char));
 		if(*name==NULL)
-			perror("Impossible de créer ou d'agrandir le nom dans getName\n");
+			return 0;
+		if(temp==' ')
+			state = 0;
+		if(!((temp>='a' && temp<='z')||(temp>='A' && temp<='Z'))){
+			if(temp!=' ')
+				return -1;
+		}
 		(*name)[i] = temp;
 		i++;
 	}
-	return ((type==0 && temp!=' ') || (type==1 && temp!=','));
+	return (state==0 && temp==',');
 }
 
 int sortNames(char* name1, char* name2){
@@ -49,16 +62,18 @@ int sortNames(char* name1, char* name2){
 	while(name1[i]!='\0' && name2[i]!='\0' && name1[i]==name2[i])
 		i++;
 	
+	if(name1[i]=='\0' && name2[i]=='\0')
+		return 0;
 	if(name1[i]=='\0' && name2[i]!='\0')
 		return 1;
 	if(name1[i]!='\0' && name2[i]=='\0')
 		return -1;
-	if(name1[i]=='\0' && name2[i]=='\0')
-		return 0;
-	if(name1[i]!='\0' && name2[i]!='\0' && name1[i]<name2[i])
-		return 1;
-	else
+	
+	else{
+		if(name1[i]<name2[i])
+			return 1;
 		return -1;
+	}
 }
 
 float getSalary(FILE* input){
@@ -79,89 +94,106 @@ float getSalary(FILE* input){
 	return res/100;
 }
 
-int addToList(Employee** employees, size_t* size, int ID, char* firstName, char* lastName, float salary){
+int addToList(Employee** employees, size_t* size, int id, char* Name, float Salary){
 	for(size_t i=0; i<(*size); i++){
-		if((*employees)[i].ID==ID)
+		if((*employees)[i].ID==id)
 			return -1;
 	}
 	
-	if((*size)==0)
-		*employees = malloc(sizeof(Employee));
-	else
-		*employees = realloc((*employees),((*size)+1)*sizeof(Employee));
-	if(*employees==NULL)
-		perror("Impossible d'ajouter un nouvel employé.\n");
-	(*employees)[(*size)].ID = ID;
-	(*employees)[(*size)].firstName = firstName;
-	(*employees)[(*size)].lastName = lastName;
-	(*employees)[(*size)].salary = salary;
-	(*size)++;
-	
-	size_t i = (*size)-1;
-	while(i>0 && sortNames((*employees)[i].firstName,(*employees)[i-1].firstName)){
-		i--;
+	if((*size)==0){
+		*employees = (Employee*)malloc(sizeof(Employee));
+		if(employees==NULL)
+			return -1;
 	}
+	else{
+		Employee* temp = (Employee*)realloc(*employees, (*size + 1) * sizeof(Employee));
+		if(temp==NULL)
+			return -1;
+		*employees = temp;
+	}
+		
+		
+	Employee* newEmployee = (Employee*)malloc(sizeof(Employee));
+	if(newEmployee==NULL)
+		return -1;
+	
+	newEmployee->ID = id;
+    	newEmployee->name = Name;
+    	newEmployee->salary = Salary;
+    	
+    	(*employees)[*size] = *newEmployee;
+    	(*size)++;
+    	
+    	
+    	size_t i = (*size)-1;
+    	while(i>0 && sortNames(((*employees)[i]).name, ((*employees)[i-1]).name)>=0){
+		Employee temp = (*employees)[i];
+		(*employees)[i] = (*employees)[i-1];
+	    	(*employees)[i-1] = temp;
+	    	i--;
+	}
+	while(i>0 && sortNames(((*employees)[i]).name, ((*employees)[i-1]).name)==0 && ((*employees)[i-1]).ID>((*employees)[i]).ID){
+		Employee temp = (*employees)[i];
+		(*employees)[i] = (*employees)[i-1];
+	    	(*employees)[i-1] = temp;
+	    	i--;
+	}
+    	free(newEmployee);    	
+    	
+    	 return 1;
 }
 
-int catchData(FILE* input, Employee* employees, size_t* size){
+int catchData(FILE* input, Employee** employees, size_t* size){
 	char temp;
-	int i = 1;
 	while((temp=fgetc(input))!='E' && temp!=EOF){
-		//printf("Début traitement ligne %d\n",i);
+		if(temp<'0' || temp>'9')
+			return -1;
 		int ID = temp-'0';
-		ID = getID(input,ID);
-		if(ID<0){
-			printf("Erreur getID.\n");
+		int statusID = getID(input,&ID);
+		if(statusID==-1){
 			return -1;
-		}			
+		}		
 		
-		char* firstName = NULL;
-		int firstNameStatus = getName(input,&firstName,0);
-		if(firstNameStatus==-1){
-			printf("Erreur getName 0.\n");
-			return -1;
-		}
-		
-		char* lastName = NULL;
-		int lastNameStatus = getName(input,&lastName,1);
-		if(lastNameStatus==-1){
-			printf("Erreur getName1.\n");
+		char* name = NULL;
+		int nameStatus = getName(input,&name);
+		line++;
+		if(nameStatus!=1){
 			return -1;
 		}
 			
 		float salary = getSalary(input);
 		if(salary<0){
-			printf("Erreur getSalary.\n");
 			return -1;
 		}
 		
-		//Employee employee = {ID,firstName,lastName,salary};
-		int addStatus = addToList(&employees, size, ID, firstName, lastName, salary);
+		int addStatus = addToList(employees, size, ID, name, salary);
 		if(addStatus==-1){
-			printf("Erreur addToList.\n");
 			return -1;
-		}
-		//printf("Fin traitement ligne %d\n",i);
-		//printf("%d,%s %s, %.2f\n",employees[i-1].ID, employees[i-1].firstName, employees[i-1].lastName, employees[i-1].salary);
-		return 0;		
+		}	
 	}
+	if(temp!='E')
+		return -1;
+	return 0;
 }
 
 
-int main(){
-	FILE* input = fopen("input.txt","r");
+int main(int argc, char** argv){
+	if(argc!=2)
+		return 1;
+	
+	FILE* input = fopen(argv[1],"r");
 	if(input==NULL)
-		perror("Unable to open input.txt.\n");
+		return 1;
 	
 	FILE* output = fopen("output.txt","w");
 	if(output==NULL)
-		perror("Unable to open output.txt.\n");
+		return 1;
 		
 	Employee* employees = NULL;
 	size_t size = 0;
 	
-	int processStatus = catchData(input,employees,&size);
-	if(processStatus==-1){
+	int processStatus = catchData(input,&employees,&size);
+	if(processStatus==-1 || size==0){
 		fputs("Error in input.txt file.\n",output);
 		fclose(input);
 		fclose(output);
@@ -169,11 +201,9 @@ int main(){
 		return 0;
 	}
 	
-	printf("size: %zu\n",size);
-	
-	listEmployee(output,employees,size);
+	listEmployees(output,employees,size);
 	fclose(input);
 	fclose(output);
-	free(employees);
+	freeEmployees(employees,size);
 	return 0;
 }
