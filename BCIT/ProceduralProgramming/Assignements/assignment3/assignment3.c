@@ -1,6 +1,7 @@
 #include<stdio.h>
 // À PEUT ÊTRE ENLEVER
 #include<stdlib.h>
+#include<string.h>
 
 typedef struct Employee{
 	int ID;
@@ -21,26 +22,29 @@ void freeEmployees(Employee* employees, size_t size){
 	free(employees);
 }
 
-int checkName(char* name, size_t size){
+int verifyName(char* name, size_t size){
 	int state = 0;
 	for(size_t i=0; i<size ; i++){
 		if(name[i]==' '){
 			if(state==0)
 				state++;
-			else
+			else{
+				printf("Erreur 6.1\n");
 				return -1;
+			}
 		}
 		else if(!((name[i]>='a' && name[i]<='z')||(name[i]>='A' && name[i]<='Z'))){
-			return -1;
+				printf("Erreur 6.2, temp: %d\n",name[i]);
+				return -1;
 		}
 	}
 	return 0;
 }
 
-int getNumber(char* id, size_t size){
+int getID(char* id, size_t size){
 	int res = 0;
 	for(size_t i=0; i<size; i++){
-		if((id[i]<'0' || id[i]>'9') || ())
+		if(id[i]<'0' || id[i]>'9')
 			return -1;
 		res*=10;
 		res+=(id[i]-'0');
@@ -67,22 +71,21 @@ int sortNames(char* name1, char* name2){
 	}
 }
 
-float getSalary(FILE* input){
-	char temp;
-	float res = 0;
-	while((temp=fgetc(input))!='.'){
-		if(temp<'0' || temp>'9')
-			return -1;
-		res*=10;
-		res+=(temp-'0');
+int getSalary(char* salary, size_t size){
+	int res = 0;
+	int state = 0;
+	for(size_t i=0; i<size; i++){
+		if(salary[i]>='0' && salary[i]<='9'){
+			res*=10;
+			res+=(salary[i]-'0');
+		}
+		if(salary[i]=='.'){
+			if(state!=0)
+				return -1;
+			state++;
+		}
 	}
-	while((temp=fgetc(input))!='\n'){
-		if(temp<'0' || temp>'9')
-			return -1;
-		res*=10;
-		res+=(temp-'0');
-	}
-	return res/100;
+	return res;
 }
 
 int addToList(Employee** employees, size_t* size, int id, char* Name, float Salary){
@@ -134,7 +137,7 @@ int addToList(Employee** employees, size_t* size, int id, char* Name, float Sala
     	 return 1;
 }
 
-int catchData(FILE* input, Student** students, size_t* size, int filter){
+int catchData(FILE* input, Employee** employees, size_t* size){
 	char temp0[50];
     	char temp1[50];
     	char temp2[50];
@@ -144,91 +147,70 @@ int catchData(FILE* input, Student** students, size_t* size, int filter){
     	while (fgets(line, sizeof(line), input)){
     		if(strcmp(line, "E\n") == 0)
     			return 0;
-    		sscanf(line, "%s,%s,%s", temp0, temp1, temp2);
+    		sscanf(line, "%49[^,],%49[^,],%49s", temp0, temp1, temp2);
+    		printf("ID: %s  Name: %s  Salary: %s\n",temp0,temp1,temp2);
+    		
+    		// ID
+    		int sizeID = strlen(temp0)+1;
+    		if(sizeID!=4){
+    			printf("Erreur 1\n");
+    			return -1;
+    		}
+    		char* cID = malloc(sizeID);
+    		if(cID==NULL){
+    			printf("Erreur 2\n");
+    			return -1;
+    		}
+    		strcpy(cID, temp2);
+    		int ID = getID(cID,sizeID-1);
+    		if(ID<0){
+    			printf("Erreur 3\n");
+    			return -1;
+    		}
     		
     		//name
-    		int sizeName = strlen(temp0)+1;
+    		int sizeName = strlen(temp1)+1;
     		if(sizeName==0){
+    			printf("Erreur 4\n");
     			return -1;
     		}
     		char* name = malloc(sizeName);
     		if(name==NULL){
+    			printf("Erreur 5\n");
     			return -1;
     		}
     		strcpy(name, temp0);
-    		int nameStatus = verifyName(name, sizeName-1, 0);
+    		int nameStatus = verifyName(name, sizeName-1);
     		if(nameStatus!=0){
+    			printf("Erreur 6\n");
     			return -1;
     		}
     		
-    		// ID
-    		int sizeID = strlen(temp2)+1;
-    		if(sizeID!=9){
+    		// salary
+    		int sizeSalary = strlen(temp2)+1;
+    		if(sizeSalary==1){
+    			printf("Erreur 7\n");
     			return -1;
     		}
-    		char* ID = malloc(sizeID);
-    		if(ID==NULL){
+    		char* cSalary = malloc(sizeSalary);
+    		if(cSalary==NULL){
+    			printf("Erreur 8\n");
     			return -1;
     		}
-    		if(temp2[0]!='A'){
+    		strcpy(cSalary, temp2);
+    		int salary = getSalary(cSalary,sizeSalary-1);
+    		if(salary<0){
+    			printf("Erreur 9\n");
     			return -1;
     		}
-    		strcpy(ID, temp2);
-    		nameStatus = verifyName(ID, sizeID-1, 1);
-    		if(nameStatus!=0){
-    			return -1;
-    		}
+    		salary = (float)salary;
+    		salary/=100;
     		
-    		// midterm
-    		int sizeMidterm = strlen(temp3);
-    		if(!(sizeMidterm==1 || sizeMidterm==2 || sizeMidterm==3)){
+    		int checkAdd = addToList(employees, size, ID, name, salary);
+    		if(checkAdd!=0){
+    			printf("Erreur 10\n");
     			return -1;
     		}
-    		int midterm = getGrade(temp3, sizeMidterm);
-    		if(midterm<0 || midterm>100){
-    			return -1;
-    		}
-    			
-    		// final
-    		int sizeFinal= strlen(temp4);
-    		if(!(sizeFinal==1 || sizeFinal==2 || sizeFinal==3)){
-    			return -1;
-    		}
-    		int final = getGrade(temp4, sizeFinal);
-    		if(final<0 || final>100){
-    			return -1;
-    		}
-    			
-    		int average = (midterm+final)/2;
-    		
-		if(filter==1 && average>=90){
-			int addStatus = addToList(students, size, firstName, lastName, ID, midterm, final);
-			if(addStatus==-1){
-				return -1;
-			}
-		}
-		else if(filter==2 && (average>=80 && average<90)){
-			int addStatus = addToList(students, size, firstName, lastName, ID, midterm, final);
-			if(addStatus==-1){
-				return -1;
-			}
-		}
-		else if(filter==3 && (average>=70 && average<80)){
-			int addStatus = addToList(students, size, firstName, lastName, ID, midterm, final);
-			if(addStatus==-1){
-				return -1;
-			}
-		}else if(filter==4 && (average>=60 && average<70)){
-			int addStatus = addToList(students, size, firstName, lastName, ID, midterm, final);
-			if(addStatus==-1){
-				return -1;
-			}
-		}else if(filter==5 && average<60){
-			int addStatus = addToList(students, size, firstName, lastName, ID, midterm, final);
-			if(addStatus==-1){
-				return -1;
-			}
-		}
 	}
 	return 0;
 }
