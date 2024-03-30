@@ -72,8 +72,6 @@ int addToList(Employee** employees, size_t* size, int id, char* Name, float Sala
     	(*employees)[*size] = *newEmployee;
     	(*size)++;
     	
-    	//listEmployees(output,*employees,(*size));
-    	
     	
     	size_t i = (*size)-1;
     	while(i>0 && sortNames(((*employees)[i]).name, ((*employees)[i-1]).name)>0){
@@ -98,54 +96,61 @@ int catchData(FILE* input, FILE* output, Employee** employees, size_t* size){
 	while((temp = fgetc(input))!='E' && temp!=EOF){
 		//printf("%c\n",temp);
 		if(temp<'0' || temp>'9'){
-			printf("Erreur 1\n");
+			//printf("Erreur 1\n");
 			return -1;
 		}
 		
 		int ID = temp-'0';
 		while((temp = fgetc(input))!=',' && temp!='\n' && temp!=EOF){
 			if(temp<'0' || temp>'9'){
-				printf("Erreur 2\n");
+				//printf("Erreur 2\n");
 				return -1;
 			}
 			ID*=10;
 			ID+=temp-'0';
 		}
 		if(temp!=','){
-			printf("Erreur 3\n");
+			//printf("Erreur 3\n");
 			return -1;
 		}
 		
 		temp = fgetc(input);
-		printf("%c(%d)\n",temp,temp);
+		//printf("%c(%d)\n",temp,temp);
 		if(!((temp>='a' && temp<='z')||(temp>='A' && temp<='Z'))){
-			printf("Erreur 4\n");
+			//printf("Erreur 4\n");
 			return -1;
 		}
 		size_t sizeName = 0;
 		char* name = malloc(sizeName*sizeof(char));
 		if(name==NULL){
-			printf("Erreur 5\n");
+			//printf("Erreur 5\n");
 			return -1;
 		}
 		name[sizeName] = temp;
 		sizeName++;
 		int state = 0;
 		while((temp = fgetc(input))!=',' && temp!='\n' && temp!=EOF){
-			printf("%c(%d)\n",temp,temp);
-			if(temp==' ')
+			printf("%c(%d)",temp,temp);
+			if(temp==' '){
+				if(state!=0){
+					printf("Erreur 6\n");
+					return -1;
+				}
 				state++;
+			}
 			if(((temp>='a' && temp<='z')||(temp>='A' && temp<='Z')) || (temp==' ' && state==1)){
 				name[sizeName] = temp;
 				sizeName++;
 			}
 			else{
-				printf("Erreur 7\n");
+				//printf("Erreur 7\n");
 				return -1;
 			}
 		}
-		if(temp!=',' || state!=1){
-			printf("Erreur 8\n");
+    		printf("Name: %s\n",name);
+		//printf("\n");
+		if(temp!=','){
+			//printf("Erreur 8\n");
 			return -1;
 		}
 		
@@ -156,7 +161,7 @@ int catchData(FILE* input, FILE* output, Employee** employees, size_t* size){
 				if(state==0)
 					state++;
 				else{
-					printf("Erreur 9\n");
+					//printf("Erreur 9\n");
 					return -1;
 				}
 			}
@@ -165,7 +170,7 @@ int catchData(FILE* input, FILE* output, Employee** employees, size_t* size){
 				salary+=temp-'0';
 			}
 			else{
-				printf("Erreur 10\n");
+				//printf("Erreur 10\n");
 				return -1;
 			}
 		}
@@ -175,93 +180,11 @@ int catchData(FILE* input, FILE* output, Employee** employees, size_t* size){
 		
 		int checkAdd = addToList(employees, size, ID, name, salary, output);
     		if(checkAdd!=0){
-    			printf("Erreur 11\n");
+    			//printf("Erreur 11\n");
     			return -1;
     		}
 	}
 	
-	
-   
-
-
-	/*
-	char temp0[50];
-    	char temp1[50];
-    	char temp2[50];
-    	char line[100];
-    	//int i = 2;
-
-    	while (fgets(line, sizeof(line), input)){
-    		if(strcmp(line, "E\n") == 0)
-    			return 0;
-    		sscanf(line, "%49[^,],%49[^,],%49s", temp0, temp1, temp2);
-    		//printf("ID: %s, Name: %s, Salary: %s\n",temp0,temp1,temp2);
-    		
-    		// ID
-    		//printf("cID: %s\n",temp0);
-    		int sizeID = strlen(temp0)+1;
-    		if(sizeID!=4){
-    			printf("Erreur 1\n");
-    			return -1;
-    		}
-    		char* cID = malloc(sizeID);
-    		if(cID==NULL){
-    			printf("Erreur 2\n");
-    			return -1;
-    		}
-    		strcpy(cID, temp0);
-    		int ID = getID(cID,sizeID-1);
-    		if(ID<0){
-    			printf("Erreur 3\n");
-    			return -1;
-    		}
-    		
-    		//name
-    		int sizeName = strlen(temp1)+1;
-    		if(sizeName==0){
-    			printf("Erreur 4\n");
-    			return -1;
-    		}
-    		char* name = malloc(sizeName);
-    		if(name==NULL){
-    			printf("Erreur 5\n");
-    			return -1;
-    		}
-    		strcpy(name, temp1);
-    		int nameStatus = verifyName(name, sizeName-1);
-    		if(nameStatus!=0){
-    			printf("Erreur 6\n");
-    			return -1;
-    		}
-    		
-    		// salary
-    		int sizeSalary = strlen(temp2)+1;
-    		if(sizeSalary==1){
-    			printf("Erreur 7\n");
-    			return -1;
-    		}
-    		char* cSalary = malloc(sizeSalary);
-    		if(cSalary==NULL){
-    			printf("Erreur 8\n");
-    			return -1;
-    		}
-    		strcpy(cSalary, temp2);
-    		int salary = getSalary(cSalary,sizeSalary-1);
-    		if(salary<0){
-    			printf("Erreur 9\n");
-    			return -1;
-    		}
-    		salary = (float)salary;
-    		salary/=100;
-    		
-    		//printf("ID: %d\n",ID);
-    		
-    		int checkAdd = addToList(employees, size, ID, name, salary);
-    		if(checkAdd!=0){
-    			printf("Erreur 10\n");
-    			return -1;
-    		}
-	}*/
 	if(temp!='E')
 		return -1;
 	return 0;
@@ -284,7 +207,6 @@ int main(int argc, char** argv){
 	size_t size = 0;
 	
 	int processStatus = catchData(input,output,&employees,&size);
-	//printf("processStatus: %d, size: %zu\n",processStatus, size);
 	if(processStatus==-1 || size==0){
 		fputs("Error\n",output);
 		fclose(input);
