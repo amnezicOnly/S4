@@ -10,24 +10,21 @@ public class Plant extends Players{
 	}
 
 
-	public boolean stillAlive(){
+	protected boolean stillAlive(){
 		return true;
 	}
 	
-	public boolean couldEat(Players player){
-		return player==null;
+	protected boolean couldEat(Players player){
+		return false;
 	}
 
-	public Cell nextCell(ArrayList<Cell>[] result){
-		int numEatable = (result[0]).size();
-		int numMove = (result[1]).size();
-		int numSame = (result[2]).size();
-		Random random = new Random();
-		if(numSame>=2 && numMove>=3)
-			return (result[1]).get(random.nextInt(numMove));
-		return null;
+	protected int getTypeNextCell(int numFree, int eatable, int sameClass){
+		////System.out.println("X: "+X+", Y: "+Y+", numFree: "+numFree+", eatable: "+eatable+", sameClass: "+sameClass);
+		if(sameClass>=2 && numFree>=3)
+			return 0;
+		return -1;
 	}
 	
-	public void resetMaxLaps(){}
+	protected void resetMaxLaps(){}
 	
 }

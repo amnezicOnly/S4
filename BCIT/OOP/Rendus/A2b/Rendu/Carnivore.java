@@ -9,28 +9,24 @@ public class Carnivore extends Players{
 		this.color = Color.RED;
 	}
 
-	public boolean stillAlive(){
+	protected boolean stillAlive(){
 		this.maxLaps--;
 		return this.maxLaps>=0;
 	}
 	
-	public boolean couldEat(Players player){
+	protected boolean couldEat(Players player){
 		return (player instanceof Herbivore || player instanceof Omnivore);
 	}
 
-	public Cell nextCell(ArrayList<Cell>[] result){
-		int numEatable = (result[0]).size();
-		int numMove = (result[1]).size();
-		int numSame = (result[2]).size();
-		Random random = new Random();
-		if(numSame>=1 && numMove>=3 && numEatable>=2)
-			return (result[0]).get(random.nextInt(numEatable));
-		if(numMove>0)
-			return (result[1]).get(random.nextInt(numMove));
-		return null;
+	protected int getTypeNextCell(int numFree, int eatable, int sameClass){
+		if(sameClass>=1 && numFree>=3 && eatable>=2)
+			return 1;
+		if(numFree>0)
+			return 0;
+		return -1;
 	}
 	
-	public void resetMaxLaps(){
+	protected void resetMaxLaps(){
 		this.maxLaps = 5;
 	}
 }

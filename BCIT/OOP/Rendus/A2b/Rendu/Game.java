@@ -12,23 +12,24 @@ public class Game{
 	
 	// initialize the first lap with RandomGenerator
 	public void firstLap(World world){
+		RandomGenerator.reset();
 		for(int j=0; j<nbCellsY; j++){
 			for(int i=0; i<nbCellsX; i++){
 				int temp = RandomGenerator.nextNumber(100);
 				if(temp>=80){
-					world.updateCell(world.cells,i,j,new Herbivore(i,j));
+					world.updateCell(i,j,new Herbivore(i,j));
 				}
 				else if(temp>=60){
-					world.updateCell(world.cells,i,j,new Plant(i,j));
+					world.updateCell(i,j,new Plant(i,j));
 				}
 				else if(temp>=50){
-					world.updateCell(world.cells,i,j,new Carnivore(i,j));
+					world.updateCell(i,j,new Carnivore(i,j));
 				}
 				else if(temp>=45){
-					world.updateCell(world.cells,i,j,new Omnivore(i,j));
+					world.updateCell(i,j,new Omnivore(i,j));
 				}
 				else{
-					world.updateCell(world.cells,i,j,null);
+					world.updateCell(i,j,null);
 				}
 					
 			}

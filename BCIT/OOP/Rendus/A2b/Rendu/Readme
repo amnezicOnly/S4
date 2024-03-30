@@ -1,8 +1,17 @@
 There are some modifications I've made :
-	- I added a color attribute in the Players class in order to ease the drawing of the board for each lap.
-	- I added a couldEat method in Players class in order to know easier if the currentPlayer could eat a specific cell.
-	- I removed the String[] lifeForms of the class Players because it wasn't useful.
-	- In hasEnoughNeigbor in each Players class, I added some variables to conform with the rules that let a player eat a cell, because in the last milestone, we didn't make a true difference between cells a player could eat and free cells.
-	- In hasEnoughNeigbor in each Players class, I divided each case of cell to ease the count of each type of cell.
-	- I changed, in class Players and its subclasses, the method Cell[] hasEnoughNeighbor(...) by the Cell nextCell(...) method in order to ease the complexity of the World class and to be more flexible to futur rules modifications. This function returns directly the cell where the currentPlayer will go, or null otherwise.
-	- In newLap() method in World class, I changed what's inside the double loop because of the modifications of nextCell method.
+	- in some classes (like Players and its subclasses), I changed the visibility of some methods and attributes
+	- in Cell.java:
+		- I removed the setPlayer method beacause it was useless
+		- I added the getNextCell method, which returns the cell that the currentPlayer could eat or could go on (whatever the type of currentPlayer, we have to store information about the neighbor cells). I also give a int bound argument to this method to indicate to many cell around the current one I have to deal with (here, because we just focus on the neighbor cells, bound=1)
+	- in Players and its subclasses :
+		- I added the color attribute
+		- I added the following methods :
+			* couldEat : return if the currentPlayer could eat the player give in argument
+			* resetMaxLaps : called when a Players object eat something (each Players subclass could have its own maxLaps value)
+			* getTypeNextCell : return 0 or 1 depending of the number of each type of cell aroud the currentPlayer one (each Players subclass has its own rules to develop or move)
+			* I remove method hasEnoughNeighbor method
+			* 
+		- in Players subclasses : 
+	- in World.java : I modified the content of the double loop of the newLap() method to make it more flexible for possible future changes
+	- in Main.java : because I added the Color attribute to Players (this subclasses actually), I don't need the getColor method anymore
+	
