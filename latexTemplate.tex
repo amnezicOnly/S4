@@ -12,10 +12,11 @@
 
 
 %% to include images
+%%\graphicspath{path}   %% pour donner le chemin du dossier contenant toutes les images si ce n'est pas le dossier courant
 %\usepackage{graphicx}
 %% usage :
 \begin{comment}
-	\begin{figure}
+    \begin{figure}%%[h] %% use [h] to put the picture at the exact same place where it is in the .tex file
 		\centering (not necessary but it's prettier)
 		\includegraphics[scale=(1 by default)]{path to the image/imageName.extension}
 		\if you want to put another image side to side, just add a line like the previous

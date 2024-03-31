@@ -1,4 +1,4 @@
-CHapitre 5 :
+Chapitre 5 :
 - shell : command line interpreter (+++ Bash)
 - CLI : command Line Interface
 - output displayed on the terminal
@@ -43,6 +43,8 @@ Chapitre 8:
     - les regex prennent en compte les extensions des fichiers
     - ne regardent les fichiers cachés ssi .*
     - cp -i vérifie qu'on veut si on veut overwrite un fichier et -n nous en empêche
+    - utilisation de rm -r
+    - file globbing
 
 Chapitre 10 :
     - pour lire un gros fichier depuis la CLI, il vaut mieux utiliser la commande pager (ou more et less)
@@ -52,3 +54,30 @@ Chapitre 10 :
     - on peut faire cat > fileName pour créer un fichier et écrire dans ce fichier directement depuis le terminal
     - tr 'a-z' 'A-Z' < example.txt > newexample.txt
     - head -1 /etc/rc.d/* > outfile 2> errfile  
+            - chapitre 10:
+    - les channels
+    - grep command peut être utilisé avec des glob characters
+    - See Section 10.8.6
+
+
+
+
+
+
+
+
+Chapitre 13:
+    - Linux kernel mounts the following pseudo-filesystems : /sys et /proc
+    - PID if the init process :
+    - ps command shows only processes running in the current shell by default
+    - log files can contains data that is not text
+    - load average = 1.0 != system fully loaded
+    - To make changes permanent for kernel parameter files found under /proc/sys, the following file can have entries added to it :
+Chatpitre 15:
+    - tout 
+Chapitre 16:
+    - tout
+Chapitre 17:
+    - tout
+Chapitre 18:
+    - tout 
