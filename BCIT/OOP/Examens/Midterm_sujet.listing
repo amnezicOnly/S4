@@ -1,0 +1,24 @@
+public class Experiment{
+	public satic void heat() throws Exception{
+		if(Math.random(2)==1)
+			throw new Exception();
+	}
+	
+	public static void test() throws Exception{
+		try{
+			heat();
+			System.out.println(matter heated");
+		} catch (Exception e) {
+			System.out.println(exception occurded");
+		} finally {
+			System.out.println("clean up site");
+		}
+		System.out.println("end of test");
+	}
+	
+	public staic void main(String[] args){
+		Experiment e = new Experiment();
+		e.test();
+	}
+}
+	

@@ -85,6 +85,37 @@ Collections :
     
     - on ne peut pas créer de Set, juste des sous classes de set : Set<TYPE> set = new SOUSCLASSE<>();
     - si on ajoute un élément déjà existant dans un set, ça ne fait juste rien
+    
+    
+Threads :
+	- la classe qui les utilise doit avoir extends Thread implements Runnable
+	- pour créer un Thread : <class name> <thread name> = new <class name>();
+	- pour lancer un thread : <thread name>.start() : lance et exécute la méthode run() de <thread name>
+		--> pour éviter qu'il se chevauche avec d'autres Threads, on peut utiliser la méthode <thread name>.join() jsute après le lancement du thread
+	- la classe Runnable ne permet pas de renvoyer des valeurs tandis que la classe Callable oui :
+		--> pour les lancer, on utiliser la méthode .call() à la place de start() mais fait la même chose
+		--> on peut le récupérer grâce à <callable objet>..get()
+	- la classe Executors (À REVOIR)
+	- la méthode <thread name>.sleep permet de mettre en pause un certain Thread. Lorsqu'il attend, le thread suivant se met en route
+		--> .join() comprend qu'il ne faut pas considérer un thread en pause comme un thread fini (doit être utilisé dans le bloc try d'un try-catch (erreur de compilation sinon)
+		--> .yield() (À REVOIR)
+
+Race conditions, locks et deadlocks :
+	- quand 2 threads cherchent modifier le même espace mémoire au même moment --> comportement indéfini
+	- exemple de race condition : (une fonction qui ajoute un élément dans une liste chainée) :
+		--> thread1 commence et la chaine est vide donc il a un comportement A. thread1.sleep()
+		--> thread2 commence et ajoute un élément un élément dans la chaine
+		--> la chaine n'est donc plus vide
+		--> le comportement de thread1 peut causer des erreurs car il se basait sur le fait que la chaine soit vide alors qu'elle ne l'est plus après le passage de thread2
+	- pour éviter d'avoir des problèmes de ce genre, on peut utiliser des locks :
+		--> si l'exécution du thread renvoie une erreur, l'état du thread est indéfini
+		--> synchronized au début de la déclaration de la fonction : synchronized void foo(){}
+		--> synchronized (objectName) à l'intérieur de la fonction : void foo(){ synchronized(objectName){...} }
+	- revoir .notitfy(All)(), et les deadlocks
+
+Expressiosn lambdas :
+	- à partir du moment où on a une interface :
+		--> <interface> <nomObjet> = ([liste des paramètres]) -> <ce que ça fait et retourne>
 	
 	
 	
