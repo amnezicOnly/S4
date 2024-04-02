@@ -34,18 +34,9 @@
 \end{comment}
 
 
-%% to display code easily (insert --shell-escape option when compile, otherwise, it won't compile)
-%\usepackage{mint}
-%% usage :
-\begin{comment}
-	- first, you have to have python3-pygments installed on your computer
-	\begin{minted}{<language you choose>
-		Your code
-	\end{minted}
-\end{comment}
-
 %% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
-%\usepackage{listings} 
+\usepackage{listings}
+\usepackage{xcolor}
 %% usage :
 \begin{comment}
 	- listings package let you highly customize how you code will be displayed on the document
@@ -53,10 +44,22 @@
 	\lstdefinestyle{mystyle}{
 		Your customizations
 	}
-	\begin{lstlisting}[language=<the language you'll use)
+	\begin{lstlisting}
 		Your code
 	\end{lstlisting}
 \end{comment}
+%% To display some code, I recommend this configuration
+\lstdefinestyle{mystyle}{
+	showspaces=false,
+	showtabs=false,
+	showstringspaces=false,
+	numbers=left,
+	language=Java,
+	basicstyle=\footnotesize\ttfamily,
+	frame=single,
+	frameround=tttt
+}
+\lstset{style=mystyle}
 
 %% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
 %\usepackage{amssymb,amsmath,amsfonts,extarrows}
@@ -71,14 +74,91 @@
 %% but you can add nothing between the brackets to leave it blank
 \author{}
 \date{}
-\title{}
+\title{COMP 2522 - Winter 2024 - Quizz 3}
 
 \begin{document}
 \maketitle
-\newpage
+%%\newpage
 %% not necessary
 %% compile twice the first time to display table of content
-\tableofcontents
-\newpage
+%%\tableofcontents
+%%\newpage
+Note : I put one page per question but the answer can be very short for some of them.
+\begin{enumerate}
+	\item Give the output for the code below as is (note line 18 commented out) (2 marks)
+	\begin{lstlisting}
+public class CoolException{
+	void f() throws Exception{
+		throw new Exception();
+	}
+	
+	void bar() throws Exception{
+		throw new Exception();
+	}
+	
+	void foo() throws Exception{
+		System.out.println("starting foo()");
+		try{
+			System.out.println("in try before f()");
+			f();
+			System.out.println("in try after f()");
+		} catch (Exception e) {
+			System.out.println("exception occured");
+			// bar();
+		}
+		System.out.println("end of foo");
+	}
+	
+	public static void main(String[] args){
+		CoolException c = new CoolException();
+		try{
+			c.foo();
+		} catch (Exception e) {
+			System.out.println("main caught exception");
+		}
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Give the output for the question 1 if the commented-out code was no longer commented out. (2 marks)\newline
+	\underline{Answer :}
+	\newpage
+	\item Give the output of the code below. (4 marks)
+	\begin{lstlisting}
+class Shape{
+	public void draw(){
+		System.out.println("drawing shape");
+	}
+	public Shape(){
+		System.out.println("creating shape");
+		draw();
+	}
+}
+
+class Rectangle extends Shape{
+	int w = 9;
+	int h = 15;
+	public void draw(){
+		System.out.println("drawing rectangle size = "+w+" "+h);
+	}
+	
+	public Rectangle(int width, int height){
+		System.out.println("creating shape");
+		System.out.println("width = "+w);
+		System.out.println("height = "+h);
+		w = width;
+		h = height;
+	}
+}
+
+public class Drawing{
+	public static void main(String[] args){
+		Shape s = new Rectangle (100,200);
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+\end{enumerate}
 
 \end{document}

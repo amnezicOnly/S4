@@ -34,21 +34,9 @@
 \end{comment}
 
 
-%% to display code easily (insert --shell-escape option when compile, otherwise, it won't compile)
-%\usepackage{mint}
-%% usage :
-\begin{comment}
-	- first, you have to have python3-pygments installed on your computer
-	\begin{minted}{(language you choose)}
-		Your code
-	\end{minted}
-\end{comment}
-
 %% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
 \usepackage{listings}
 \usepackage{xcolor}
-
-
 %% usage :
 \begin{comment}
 	- listings package let you highly customize how you code will be displayed on the document
@@ -56,14 +44,29 @@
 	\lstdefinestyle{mystyle}{
 		Your customizations
 	}
-	\begin{lstlisting}[language=(the language you'll use)
+	\begin{lstlisting}[language=<the language you'll use>]
 		Your code
 	\end{lstlisting}
 \end{comment}
+\lstdefinestyle{mystyle}{
+	showspaces=false,
+	showtabs=false,
+	showstringspaces=false,
+	breaklines=true,
+	numbers=left,
+	language=Java,
+	basicstyle=\footnotesize\ttfamily,
+	frame=single,
+	frameround=tttt
+}
+\lstset{style=mystyle}
 
 %% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
 %\usepackage{amssymb,amsmath,amsfonts,extarrows}
 %% usage : just type the backslash chararacter and the name of the symbol you want, depending of document on the the previous link
+
+%% usage : to continue the same index counter for several splitted lists
+\usepackage{enumitem}
 
 %% Have to find the goal of it
 %\usepackage{soul}
@@ -73,23 +76,29 @@
 %% won't compile if at least one of these three next line is deleted
 %% but you can add nothing between the brackets to leave it blank
 \author{}
-\date{}
-\title{}
+\date{February 29th 2024}
+\title{COMP 2522 : Midterm Exam (OOP using Java)}
 
 \begin{document}
 \maketitle
+\begin{enumerate}
+	\item The exam is \underline{closed book}. You may not use notes, texts, manuals during exam.
+	\item Cheating will be results in disqualification from the exam and possibly expulsion from the course.
+	\item No talking during exam. Please raise your hand if you have a question and wait for an instructor.
+	\item There are 16 pages. Make sure you have all the pages \textbf{BEFORE} you start the exam.
+	\item There are 4 parts to the exam. Section A is a multiple choice (8 marks); Section B is Give the output using multiple choices (16 marks); Section C is Find the error (4 marks); Section D is coding (6 marks). Max 34 marks. Make sure your FULL NAME and \textbf{SET} is on the exam.
+	\item LISTEN TO THE INSTRUCTOR FOR FURTHER INSTRUCTIONS AND POSSIBLE CHANGES DURING THE EXAM. ALSO CHECK THE PROJECTOE DISPLAY OR WHITEBOARD.
+	\item Time limit : \textbf{60 minutes}.
+	\item Good luck !
+\end{enumerate}
 \newpage
 %% not necessary
 %% compile twice the first time to display table of content
-\tableofcontents
-\newpage
+%%\tableofcontents
+%%\newpage
 
 \section{Part A : Multiple choice (8 marks). Circle the best answer. 1 mark each}
 \begin{enumerate}
-	\item
-	\begin{enumerate}
-		\item 
-	\end{enumerate}
 	\item Interfaces allows for :
 	\begin{enumerate}
 		\item Multiple type matching
@@ -98,7 +107,7 @@
 		\item all of the above
 		\item none of the above
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, numbers=left]
+	\begin{lstlisting} 
 public class Head{
 	Brain brain;
 	private class Brain{}
@@ -116,7 +125,8 @@ public class Head{
 		\item Head.Brain brain = new Brain();
 		\item cannot be made, there is no constructor for a Brain object
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, numbers=left]
+	\newpage
+	\begin{lstlisting} 
 package midterm;
 public class A{
 	private void snafu(){}
@@ -126,20 +136,20 @@ public class A{
 	\end{lstlisting}
 	\hrulefill
 	\hrulefill
-	\begin{lstlisting}[language=Java, numbers=left]
+	\begin{lstlisting} 
 package finalexam;
 import midterm.A;
 public class B extends A{}
 	\end{lstlisting}
 	\hrulefill
 	\hrulefill
-	\begin{lstlisting}[language=Java, numbers=left]
+	\begin{lstlisting} 
 package midterm;
 public class C{
 	A a = new A();
 }
 	\end{lstlisting}
-	\item Using the above declarations, what methods can class B access from it's parents :
+	\item Using the above declarations, what methods can class B access from its parents :
 	\begin{enumerate}
 		\item foo();
 		\item bar();
@@ -147,7 +157,7 @@ public class C{
 		\item foo(); and bar();
 		\item foo(); bar(); and snafu();
 	\end{enumerate}
-	\item Using the above declarations, what methods can be accessed usign reference "a" :
+	\item Using the above declarations, what methods can be accessed usign reference "\textbf{a}" :
 	\begin{enumerate}
 		\item a.foo();
 		\item a.bar();
@@ -155,7 +165,7 @@ public class C{
 		\item a.foo(); and a.bar();
 		\item a.foo(); , a.bar(); and a.snafu();
 	\end{enumerate}
-	\item Using the above declaration, in class B what \textbf{modifications} are allowed to the access modifiers to EXPLICITLT OVERRIDE methods from A? \textbf{Assume class B definition was mived to the same package "midterm" as class A.}
+	\item Using the above declaration, in class B what \textbf{modifications} are allowed to the access modifiers to EXPLICITLY OVERRIDE methods from A? \textbf{Assume class B definition was moved to the same package "midterm" as class A.}
 	\begin{enumerate}
 		\item void foo(){} changed to protected void foo(){}, protected void bar(){} changed to public void bar(){}
 		\item void foo(){} changed to private void foo(){}, protected void bar(){} changed to void bar(){}
@@ -163,7 +173,7 @@ public class C{
 		\item all of the above are valid
 		\item none of the above are valid
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, numbers=left]
+	\begin{lstlisting} 
 String[] names = {"hello","goodbye"};
 Object[] ptr = names;
 ptr[1] = 12.5;
@@ -176,7 +186,7 @@ ptr[1] = 12.5;
 		\item runtime error line 3
 		\item allowed because the two arrays are related through inheritance
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, numbers=left]
+	\begin{lstlisting} 
 interface Transaction{
 	public void run(){}
 }
@@ -186,26 +196,26 @@ class BankTransaction implements Transaction{
 }
 
 class Test{
-	public static void task(ArrayList(Transaction) list){
-		for(Trasaction trans : list)
+	public static void task(ArrayList<Transaction> list){
+		for(Transaction trans : list)
 			trans.run();
 	}
 	
 	public static void main(String[] args){
-		ArrayList(BankTransaction) t = new ArrayList()();
+		ArrayList<BankTransaction> t = new ArrayList<>();
 		task(t);
 	}
 }
 	\end{lstlisting}
 	\item The above code :
 	\begin{enumerate}
-		\item will NOT compile, safest fix is task(ArrayList(X) list)
-		\item will NOT compile, safest fix is task(ArrayList(? extends Transaction) list)
+		\item will NOT compile, safest fix is task(ArrayList \textless X\textgreater list)
+		\item will NOT compile, safest fix is task(ArrayList \textless ? extends Transaction\textgreater list)
 		\item will NOT compile, safest fix is task(ArrayList list)
-		\item will NOT compile, safest fix is task(ArrayList(X implements Transaction) list)
+		\item will NOT compile, safest fix is task(ArrayList \textless X implements Transaction\textgreater list)
 		\item will compile and run as expected
 	\end{enumerate}
-	\item Benefit(s) of usign Generics are :
+	\item Benefit(s) of using Generics are :
 	\begin{enumerate}
 		\item casting not required on returned values
 		\item strong type checking during compile time rather than runtime
@@ -216,7 +226,7 @@ class Test{
 \end{enumerate} 
 
 \section{Part B : Give the output. All the code here compiles and runs (16 marks)}
-\begin{lstlisting}[language=Java, left=numbers]
+\begin{lstlisting}
 class Tansaction{
 	public void amount(){
 		System.out.println("amount");
@@ -256,7 +266,7 @@ public class Withdrawal extends Debit{
 	}
 }
 \end{lstlisting}
-\begin{enumerate}[label=\arabic* --,resume]
+\begin{enumerate}[resume]
 	\item Give the \textbf{output} for the above code : (2 mark)
 	\begin{enumerate}
 		\item Debit created, debit amount, Transaction created with a fee of 2, fee=4
@@ -265,13 +275,13 @@ public class Withdrawal extends Debit{
 		\item Transaction created, amount, debit amount, withdrawal and fee of 2, Debit created, debit amount, withdrawal and fee 2, Withdrawal created with fee of 2, fee=4
 		\item Transaction created, withdrawal and fee 0, Debit created, withdrawal and fee 0, Withdrawal created with a fee of 2, fee=4
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, left=numbers]
+	\begin{lstlisting}
 Class Cycle{
 	int numWheels = 1;
-	int wheelSize;
+	int wheelsize;
 	Cycle(){
-		output("number of wheel = " + numWheels + ", wheel size = "+ wheelSize);
-		wheelSize = 24;
+		output("number of wheels = " + numWheels + ", wheel size = "+ wheelsize);
+		wheelsize = 24;
 	}
 	
 	static int age = output("Cycle.age in years initialized");
@@ -286,7 +296,7 @@ class MountainBike extends Cycle{
 	int numWheels = Cycle.output("MountainBike.numWheels initialized");
 	MountainBike(){
 		Cycle.output("snumWheels = " + numWheels);
-		Cycle.output("wheel size = " + wheelSize);
+		Cycle.output("wheel size = " + wheelsize);
 	}
 	
 	static int hydrolicBrakes = Cycle.output("MountainBike.hydrolicBrakes initialized");
@@ -305,17 +315,18 @@ public class Trail{
 		\item Started program, Cycle.age in years initialized, MountainBike.hydrolicBrakes initialized, number of wheels = 1, wheel size = 0, snumWheels = 1, wheel size = 24
 		\item Cycle.age in years initialized, MountainBike.hydrolicBrakes initialized, Started program, number of wheels = 0, wheel size = 0, MountainBike.numWheels initialized, snumWheels = 1, wheel size = 24
 		\item Cycle.age in years initialized, MountainBike.hydrolicBrakes initialized, Started program, number of wheels = 1, wheel size = 0, snumWheels = 1, wheel size = 24
-		\item Started program, Cycle.age in years initialized, MountainBike.hydrolicBrakes initialized, number of wheels = 1, wheel size = 0, MountainBike.numWheels initialized, snumWheels = 2, wheel size = 4
+		\item Started program, Cycle.age in years initialized, MountainBike.hydrolicBrakes initialized, number of wheels = 1, wheel size = 0, MountainBike.numWheels initialized, snumWheels = 2, wheel size = 24
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, left=numbers]
+	\newpage
+	\begin{lstlisting}
 public class Swapper{
-	public static (T) void swap(T a, T b){
+	public static <T> void swap(T a, T b){
 		T temp = a;
 		a = b;
 		b = temp;
 	}
 	
-	public static (T) T swap(T a, T b, T c){
+	public static <T> T swap(T a, T b, T c){
 		T temp = a;
 		a = b;
 		b = c;
@@ -323,7 +334,7 @@ public class Swapper{
 		return c;
 	}
 	
-	public static (T) void swap(T[] pool, int x, int y){
+	public static <T> void swap(T[] pool, int x, int y){
 		T temp = pool[x];
 		pool[x] = pool[y];
 		pool[y] = temp;
@@ -355,7 +366,8 @@ public class Swapper{
 		\item hello, hello, 2
 		\item hello, goodbye, 2
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, left=numbers]
+	\newpage
+	\begin{lstlisting}
 interface Car{
 	void start();
 }
@@ -404,12 +416,13 @@ public class ParkingLot{
 		\item F, G, C, R
 		\item F, F, G, F, C, F, R
 		\item F, F, F, G, F, C, G, F
-		\item G, G, C, G, R
+		\item F, G, C, G, R
 		\item syntax error, code line "Car x;" is illegal
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, left=numbers]
+	\newpage
+	\begin{lstlisting}
 public class Experiment{
-	public satic void heat() throws Exception{
+	public static void heat() throws Exception{
 		if(Math.random(2)==1)
 			throw new Exception();
 	}
@@ -417,9 +430,9 @@ public class Experiment{
 	public static void test() throws Exception{
 		try{
 			heat();
-			System.out.println(matter heated");
+			System.out.println("matter heated");
 		} catch (Exception e) {
-			System.out.println(exception occurded");
+			System.out.println("exception occurred");
 		} finally {
 			System.out.println("clean up site");
 		}
@@ -432,7 +445,7 @@ public class Experiment{
 	}
 }
 	\end{lstlisting}
-	\item Give the output of the above code \textbf{IF method heat() \underline{throws} an exception} : (2 marks)
+	\item Give the output of the above code \textbf{IF method heat() \underline{throws} an exception}: (2 marks)
 	\begin{enumerate}
 		\item matter heated, exception occurded, clean up site
 		\item exception occurred, matter heated, clean up site, end of test
@@ -440,7 +453,7 @@ public class Experiment{
 		\item exception occurred, end of test
 		\item exception occurred, clean up site, end of test
 	\end{enumerate}
-	\item Give the output of the above code \textbf{IF method heat() \underline{DOES NOT} throw an exception} : (2 marks)
+	\item Give the output of the above code \textbf{IF method heat() \underline{DOES NOT} throw an exception}: (2 marks)
 	\begin{enumerate}
 		\item matter heated, clean up site
 		\item matter heated, clean up site, end of test
@@ -448,16 +461,17 @@ public class Experiment{
 		\item end of test
 		\item matter heated, end of test, clean up site
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, left=numbers, showspaces=false]
+	\newpage
+	\begin{lstlisting}
 class WarpException extends Exception{}
 class DissolveExcepion extends Exception{}
 
 class Morpher{
-	public static void warp() thorws WarpException{
+	public static void warp() throws WarpException{
 		throw new WarpException();
 	}
 	
-	public static void dissolve() thorws DissolveException{
+	public static void dissolve() throws DissolveException{
 		throw new DissolveException();
 	}
 	
@@ -477,11 +491,12 @@ class Morpher{
 	\begin{enumerate}
 		\item WarpException, warped, dissolve applied, DissolveException, finished
 		\item dissolve applied, WarpException, DissolveException
-		\item dissole applied, DissolveException
+		\item dissolve applied, DissolveException
 		\item dissolve applied, finished
 		\item warped, dissolve applied, finished, WarpException, DissolveException
 	\end{enumerate}
-	\begin{lstlisting}[language=Java, numbers=left]
+	\newpage
+	\begin{lstlisting} 
 class Cup{
 	Cup(int marker){
 		System.out.println("Cup("+marker+")");
@@ -497,7 +512,7 @@ class Cups{
 	static Cup c2 = new Cup(2);
 	
 	Cups(){
-		System.out.println("Cups()"=;
+		System.out.println("Cups()");
 	}
 }
 
@@ -521,9 +536,9 @@ public class ExplicitStatic{
 		\item Cup(1), Cup(2), Cups(), Cups(), Inside main(), Cups(), f(99)
 	\end{enumerate}
 \end{enumerate}
-
-\section{Part C : Error code. Code here has one error. Explian why the code is in error  and provide a fix so that the intent of the author remains. (4 marks)}
-\begin{lstlisting}[language=Java, left=numbers]
+\newpage
+\section{Part C : Error code. Code here has one error. Explain why the code is in error  and provide a fix so that the intent of the author remains. (4 marks)}
+\begin{lstlisting}
 class Container{	// DO NOT CHANGE THIS CLASS
 	protected String id;
 	public Container(String n){
@@ -544,27 +559,97 @@ public class ShippingContainer extends Container{
 	}
 }
 \end{lstlisting}
-\begin{enumerate}
-	\item The above code doesn't \underline{\textbf{compile}}. Explaib \textbf{why and fix the code} so it compiles and runs \textbf{as expected}. (2 marks)
-	\begin{lstlisting}[language=Java, left=numbers]
+\begin{enumerate}[resume]
+	\item The above code doesn't \underline{\textbf{compile}}. Explain \textbf{why and fix the code} so it compiles and runs \textbf{as expected}. (2 marks)
+	\newpage
+	\begin{lstlisting}
 public class Table{
-	public static void addNumbers(List(Integer) list){
-		for(int i=1; i(=10 ; i++)
+	public static void addNumbers(List<Integer> list){
+		for(int i=1; i<=10 ; i++)
 			list.add(i);
 	}
 	
 	public static void main(String[] args){
-		List(Integer) test = newArrayList(Integer)();
+		List<Integer> test = newArrayList<>();
 		addNumbers(test);
-		List(Number) data = new ArrayList()();
+		List<Number> data = new ArrayList<>();
 		addNumbers(data);	// ERROR
 	}
 }
 	\end{lstlisting}
 	\item The above code doesn't compile. Explain why and fix the code so it will compile and run as expected. (2 marks)
 \end{enumerate}
-
+\newpage
 \section{Part D : Coding (6 marks)}
+\begin{lstlisting}
+class Agent{
+	public void spy(){
+		System.out.println("spy");
+	}
+}
+class Gambler{
+	public void gamble(){
+		System.out.println("gamble");
+	}
+}
+class Killer{
+	public void kill(){
+		System.out.println("bang");
+	}
+}
+class JamesBond{}
 
+// Do not change any of this code
+public class Spectre{
+	public void sneak(Agent a){
+		a.spy();
+		System.out.println("found secret");
+	}
+	public void cardGame(Gambler g){
+		g.gamble();
+		System.out.println("broke the bank");
+	}
+	public void getSpectre(Killer k){
+		k.kill();
+		System.out.println("dead");
+	}
+	
+	public static void main(String[] args){
+		Spectre g = new Spectre();
+		JamesBond d = new JamesBond();
+		g.sneak(b);
+		g.cardGame(b);
+		g.getSpectre(b);
+		System.out.println("Crime does not pay");
+	}
+}
+\end{lstlisting}
+\begin{enumerate}[resume]
+	\item Change the code above so that JamesBond can be passed to all the methods in class Spectre so crime will not win! \textbf{Note: Agent, Gambler, Killer are NOT similar types (MUTUALLY EXCLUSIVE!)}. Hint : a JamesBond is-a Agent, JamesBond is-a Gambler, JamesBond is-a Killer BUT \textbf{"Agent is-a Gambler" is NOT TRUE etc.} (2 marks)
+	\newpage
+	\underline{Answer :}
+	\newpage
+	\begin{lstlisting}
+interface Iterator{
+	boolean hasNext();
+	int next();
+}
+
+public class List{
+	int pos = 0;
+	int[] data;
+	
+	class MyIterator implements Iterator{
+		public int next(){
+			return data[pos++];
+		}
+		public boolean hasNext(){
+			return ((pos>0) && (pos<data.length));
+		}
+	}
+}
+	\end{lstlisting}
+	\item Give the generic version of the code above. (3 marks)
+\end{enumerate}
 
 \end{document}

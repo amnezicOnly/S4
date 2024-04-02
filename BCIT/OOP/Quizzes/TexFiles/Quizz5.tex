@@ -35,8 +35,8 @@
 
 
 %% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
-%%\usepackage{listings}
-%%\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xcolor}
 %% usage :
 \begin{comment}
 	- listings package let you highly customize how you code will be displayed on the document
@@ -49,19 +49,17 @@
 	\end{lstlisting}
 \end{comment}
 %% To display some code, I recommend this configuration
-\begin{comment}
 \lstdefinestyle{mystyle}{
 	showspaces=false,
 	showtabs=false,
 	showstringspaces=false,
 	numbers=left,
-	language=<language>,
+	language=Java,
 	basicstyle=\footnotesize\ttfamily,
 	frame=single,
 	frameround=tttt
 }
 \lstset{style=mystyle}
-\end{comment}
 
 %% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
 %\usepackage{amssymb,amsmath,amsfonts,extarrows}
@@ -76,14 +74,49 @@
 %% but you can add nothing between the brackets to leave it blank
 \author{}
 \date{}
-\title{}
+\title{COMP 2522 - Winter 2024 - Quizz 5}
 
 \begin{document}
 \maketitle
-\newpage
+%%\newpage
 %% not necessary
 %% compile twice the first time to display table of content
-\tableofcontents
-\newpage
+%%\tableofcontents
+%%\newpage
+Note : I put one page per question but the answer can be very short for some of them.
+\begin{enumerate}
+	\item Using the below explain why using Generics is beneficial. Why does it compile but not run? (2 marks)
+	\begin{lstlisting}
+String[] data = new String[1];
+Object[] ptr;
+ptr = data;
+ptr[0] = 15;
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Demonstrate how you can use Generics to improve the below copy() method and WHY it is better than the original method. (2 marks)
+	\begin{lstlisting}
+void copy(Object[] a, Object[] b){
+	System.array.copy(a,0,b,b.length); // assumes array b[] is large enough
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Write the function below as a generic function. (4 marks)
+	\begin{lstlisting}
+Interface Comparable<X>{
+	int compareTo(X x);
+}
 
+public static int min(int[] data){
+	int result = data[0];
+	for(int value : data){
+		if(result>value)
+			result = value
+	}
+	return res;
+}
+	\end{lstlisting}
+	\underline{Answer :}
+\end{enumerate}
 \end{document}

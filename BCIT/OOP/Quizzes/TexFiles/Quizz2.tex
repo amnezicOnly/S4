@@ -1,0 +1,196 @@
+\documentclass{article}
+%% to use a package, just delete the % character to enable the package in this document, only on the lines where there is a single % character (otherwise it won't compile)
+%% to understand the utility of the package, please read the comment between \begin{comment} and \end{comment} right below the package you need
+\usepackage[a4paper, total={6in, 8in}]{geometry} % for european user
+
+%% for multiple lines comment in LaTeX
+\usepackage{verbatim} % (won't compile if this line is deleted)
+%% usage :
+\begin{comment}
+	Your multiple lines comment
+\end{comment}
+
+
+%% to include images
+%\usepackage{graphicx}
+%% usage :
+\begin{comment}
+	\begin{figure}
+		\centering (not necessary but it's prettier)
+		\includegraphics[scale=(1 by default)]{path to the image/imageName.extension}
+		\if you want to put another image side to side, just add a line like the previous
+		\caption{picture(s) in a nutshell} (not necessary but it's useful) (won't compile if missing)
+	\end{figure}
+\end{comment}
+
+
+%% pour insérer des liens
+%\usepackage{hyperref}
+%% usage :
+\begin{comment}
+	\href{the complete link}{the display text}
+	or if you want to show the complete link, just use 
+	\url{the complete link}
+\end{comment}
+
+
+%% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
+\usepackage{listings}
+\usepackage{xcolor}
+%% usage :
+\begin{comment}
+	- listings package let you highly customize how you code will be displayed on the document
+	- for simple display just do this :
+	\lstdefinestyle{mystyle}{
+		Your customizations
+	}
+	\begin{lstlisting}[language=<the language you'll use>]
+		Your code
+	\end{lstlisting}
+\end{comment}
+\lstdefinestyle{mystyle}{
+	showspaces=false,
+	showtabs=false,
+	showstringspaces=false,
+	numbers=left,
+	language=Java,
+	basicstyle=\footnotesize\ttfamily,
+	frame=single,
+	frameround=tttt
+}
+\lstset{style=mystyle}
+
+%% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
+%\usepackage{amssymb,amsmath,amsfonts,extarrows}
+%% usage : just type the backslash chararacter and the name of the symbol you want, depending of document on the the previous link
+
+%% Have to find the goal of it
+\usepackage{soul}
+\let\oldemptyset\emptyset
+\usepackage[T1]{fontenc}
+
+%% won't compile if at least one of these three next line is deleted
+%% but you can add nothing between the brackets to leave it blank
+\author{}
+\date{}
+\title{COMP 2522 - Winter 2024 - Quizz 2}
+
+\begin{document}
+\maketitle
+%%\newpage
+%% not necessary
+%% compile twice the first time to display table of content
+%%\tableofcontents
+%%\newpage
+
+Note : I put one page per question but the answer can be very short for some of them.
+
+\begin{enumerate}
+	\item Is there an error at the line 6 ? Why or why not ? (2 marks)
+	\begin{lstlisting}
+class Foo{
+	private Bar b;
+	private int x;
+	class Bar{
+		public void setX(int value){
+			x = value; // Error here
+		}
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Examine the main() method below to create a Bar object from the definition provided in Q1 above. The compiler say the line in main is in error. Why ? How do you fix it ? (2 marks)
+	\begin{lstlisting}
+public static void main(String[] args){
+	Foo.bar bar = new Bar(); // Error
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Is there an error in the code below ? Why or why not ? (2 marks)
+	\begin{lstlisting}
+interface A{
+	void foo();
+}
+
+class B implements A{
+	public void foo(){}
+}
+
+class Main{
+	public static void main(String[] args){
+		A a = new B(); // Error ?	
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Using the below interface definitions and Q3, is there any conflict in class J ? (2 marks)
+	\begin{lstlisting}
+interface X{
+	void foo();
+}
+
+abstract class J implements A,X {}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Modify the classes Animal, Dog and Cat as necessary and define CatDog to have Play functions as desired. Note Cat is-NOT a Dog is-NOT a Cat. Hint : Java does not allow multiple inheritance however it gives you something that allows a class to be many different types! Use that ability ! Yu cannot chnage class Play in any way. (3 marks)
+	\begin{lstlisting}
+class Animal{
+	public void draw(){
+		System.out.println("animal");
+	}
+}
+
+class Dog{
+	public void draw(){
+		System.out.println("dog");
+	}
+	public void bark(){
+		System.out.println("woof");
+	}
+}
+
+class Cat{
+	public void draw(){
+		System.out.println("cat");
+	}
+	public void purr(){
+		System.out.println("prrr");
+	}
+}
+
+class CatDog{}
+
+// No changes needed below this line
+public class Play{
+	public void guard(Dog d){
+		d.bark();
+	}
+	public void pet(Cat c){
+		c.purr();
+	}
+	public void make(Animal a){
+		a.draw();
+	}
+	
+	public static void main(String[] args){
+		CatDog a = new CatDog();
+		Play p = new Play();
+		p.guard(a);
+		p.pet(a);
+		p.make(a);
+	}
+}
+
+// Desired output :
+// woof
+// prrr
+// catdog
+	\end{lstlisting}
+\end{enumerate}
+\newpage
+\underline{Answer :}
+\end{document}

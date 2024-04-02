@@ -35,8 +35,8 @@
 
 
 %% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
-%%\usepackage{listings}
-%%\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xcolor}
 %% usage :
 \begin{comment}
 	- listings package let you highly customize how you code will be displayed on the document
@@ -44,46 +44,125 @@
 	\lstdefinestyle{mystyle}{
 		Your customizations
 	}
-	\begin{lstlisting}
+	\begin{lstlisting}[language=<the language you'll use>]
 		Your code
 	\end{lstlisting}
 \end{comment}
-%% To display some code, I recommend this configuration
-\begin{comment}
 \lstdefinestyle{mystyle}{
 	showspaces=false,
 	showtabs=false,
 	showstringspaces=false,
 	numbers=left,
-	language=<language>,
+	language=Java,
 	basicstyle=\footnotesize\ttfamily,
 	frame=single,
 	frameround=tttt
 }
 \lstset{style=mystyle}
-\end{comment}
 
 %% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
 %\usepackage{amssymb,amsmath,amsfonts,extarrows}
 %% usage : just type the backslash chararacter and the name of the symbol you want, depending of document on the the previous link
 
 %% Have to find the goal of it
-%\usepackage{soul}
-%\let\oldemptyset\emptyset
-%\usepackage[T1]{fontenc}
+\usepackage{soul}
+\let\oldemptyset\emptyset
+\usepackage[T1]{fontenc}
 
 %% won't compile if at least one of these three next line is deleted
 %% but you can add nothing between the brackets to leave it blank
 \author{}
 \date{}
-\title{}
+\title{COMP 2522 - Winter 2024 - Quizz 1}
 
 \begin{document}
 \maketitle
-\newpage
+%%\newpage
 %% not necessary
 %% compile twice the first time to display table of content
-\tableofcontents
-\newpage
+%%\tableofcontents
+%%\newpage
 
+Note : I put one page per question but the answer can be very short for some of them.
+
+\begin{enumerate}
+	\item Give the answer to the lines indicated with comments (lines 19, 20 and 21). (3 marks)
+	\begin{lstlisting}
+class Movie{
+	public void play(){
+		System.out.println("playing movie");
+	}
+}
+
+class DVD extends Movie{
+	public void play(){
+		System.out.println("playing DVD");
+	}
+	public void menu(){
+		System.out.println("showing menu");
+	}
+}
+
+public class Main{
+	public static void main(String[] args){
+		Movie m = new DVD();
+		m.play(); // 1 : give the output or indicate an error and explain why
+		DVD d = m; // 2 : Error ? If yes, fix if possible
+		m = new DVD();
+		m.menu(); // 3 : give the output or indicate an error and explain why
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Give the output for the code below. Draw a picture if you want. (2 marks)
+	\begin{lstlisting}
+public class X{
+	static void replace(String o){
+		o = "Mystery";
+	}
+	
+	static void swap(String[] a, int i, int j){
+		String temp = a[i];
+		a[i] = a[j];
+		a[j] = temp;
+	}
+	
+	public static void main(String[] args){
+		String[] words = {"hello","goodbye","crazy"};
+		replace(words[0]);
+		System.out.println(words[0]);
+		swap(words,0,2);
+		System.out.println(words[0]);
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Which function is in error in the code? Explain WHY (don't say it's a rule, explain WHY it makes sense that function is in error). (2 marks)
+	\begin{lstlisting}
+class Y{
+	private static int x;
+	private int y;
+	
+	public void setX(int a){
+		x = a;
+	}
+	
+	public void setY(int a){
+		y = a;
+	}
+	
+	public static void changeX(int a){
+		x = a;
+	}
+	
+	public static void change(int a){
+		y = a;
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+\end{enumerate}
+\newpage
 \end{document}

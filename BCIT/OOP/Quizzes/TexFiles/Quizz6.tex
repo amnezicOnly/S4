@@ -35,8 +35,8 @@
 
 
 %% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
-%%\usepackage{listings}
-%%\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xcolor}
 %% usage :
 \begin{comment}
 	- listings package let you highly customize how you code will be displayed on the document
@@ -49,19 +49,17 @@
 	\end{lstlisting}
 \end{comment}
 %% To display some code, I recommend this configuration
-\begin{comment}
 \lstdefinestyle{mystyle}{
 	showspaces=false,
 	showtabs=false,
 	showstringspaces=false,
 	numbers=left,
-	language=<language>,
+	language=Java,
 	basicstyle=\footnotesize\ttfamily,
 	frame=single,
 	frameround=tttt
 }
 \lstset{style=mystyle}
-\end{comment}
 
 %% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
 %\usepackage{amssymb,amsmath,amsfonts,extarrows}
@@ -76,14 +74,71 @@
 %% but you can add nothing between the brackets to leave it blank
 \author{}
 \date{}
-\title{}
+\title{COMP 2522 - Winter 2024 - Quizz 6}
 
 \begin{document}
 \maketitle
-\newpage
+%%\newpage
 %% not necessary
 %% compile twice the first time to display table of content
-\tableofcontents
-\newpage
+%%\tableofcontents
+%%\newpage
+Note : I put one page per question but the answer can be very short for some of them.
+\begin{enumerate}
+	\item There is an error (as shown in) in the code below. Why is there an error? What is the solution? (2 marks)
+	\begin{lstlisting}
+class Animal{
+	public void draw(){}
+}
 
+class Dog extends Animal{}
+
+public class Test{
+	public void draw(List<Animal> list){
+		for(Animal a : list)
+			a.draw();
+	}
+	
+	public static void main(String[] args){
+		Test t = new Test();
+		List<Dog> dogs = new ArrayList<Dog>();
+		t.draw(dogs); // Error
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item The function only works with actual Groceries and not its subclasses. The programmer would like it to work with Apple and Fruit and possibly other objects as well as Groceries. Change the code so it will work and explain why ot will work. (2 marks)
+	\begin{lstlisting}
+class Groceries{}
+class Fruit extends Groceries{}
+class Apple extends Fruit{}
+
+public void bagIt(List<Groceries> items, Groceries g){
+	items.add(g);
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Which one of the following is NOT a subclass of Collection \textless String\textgreater? (1 mark)
+	\begin{enumerate}
+		\item Payload \textless String,String\textgreater
+		\item Payload \textless Integer,Integer\textgreater
+		\item Payload \textless String,Integer\textgreater
+	\end{enumerate}
+	\begin{lstlisting}
+class List<T> extends Collection<T>{}
+class ArrayList<T> extends List<T>{}
+class Payload<X,T> extends ArrayList<T>{}
+	\end{lstlisting}
+	\item The code below does not compile. Why is there a problem? Fix the code so it will work. (2 marks)
+	\begin{lstlisting}
+void swapFirst(List<? extends Number> l1, List<? extends Number> l2){
+	Number temp = l1.get(0);
+	l1.set(0,l2.get(0));
+	l2.set(0,temp);
+}
+	\end{lstlisting}
+	\underline{Answer :}
+\end{enumerate}
 \end{document}

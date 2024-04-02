@@ -35,8 +35,8 @@
 
 
 %% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
-%%\usepackage{listings}
-%%\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xcolor}
 %% usage :
 \begin{comment}
 	- listings package let you highly customize how you code will be displayed on the document
@@ -49,19 +49,18 @@
 	\end{lstlisting}
 \end{comment}
 %% To display some code, I recommend this configuration
-\begin{comment}
+
 \lstdefinestyle{mystyle}{
 	showspaces=false,
 	showtabs=false,
 	showstringspaces=false,
 	numbers=left,
-	language=<language>,
+	language=Java,
 	basicstyle=\footnotesize\ttfamily,
 	frame=single,
 	frameround=tttt
 }
 \lstset{style=mystyle}
-\end{comment}
 
 %% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
 %\usepackage{amssymb,amsmath,amsfonts,extarrows}
@@ -76,14 +75,114 @@
 %% but you can add nothing between the brackets to leave it blank
 \author{}
 \date{}
-\title{}
+\title{COMP 2522 - Winter 2024 - Quizz 3}
 
 \begin{document}
 \maketitle
-\newpage
+%%\newpage
 %% not necessary
 %% compile twice the first time to display table of content
-\tableofcontents
-\newpage
+%%\tableofcontents
+%%\newpage
+Note : I put one page per question but the answer can be very short for some of them.
+\begin{enumerate}
+	\item The code below has an error. Why is there an error ? Fix the error and then give the output. (4 marks)
+	\begin{lstlisting}
+class Structure{
+	public Structure(){
+		System.out.println("structure");
+	}
+}
+
+class Building extends Structure{
+	int size;
+	public Building(int s){
+		size = s;
+		System.out.println("building");
+	}
+}
+
+class House extends Building{
+	public House(){
+		System.out.println("house");
+	}
+}
+
+public class Construction{
+	public static void main(String[] args){
+		Structure s = new House();
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Give the output for the program below. (4 marks)
+	\begin{lstlisting}
+class I{
+	int i = 9;
+	int j;
+	I(){
+		prt("i = "+i+", j = "+j+);
+		j = 39;
+	}
+	
+	static int x1 = prt("static I.x1 initialized");
+	
+	static int prt(String s){
+		System.out.println(s);
+		return 47;
+	}
+}
+
+public class B extends I{
+	int k = prt("B.k initialized");
+	B(){
+		prt("k = "+k);
+		prt("j = "+j);
+	}
+	static int x2 = prt("B.x2 initialized");
+	
+	public static void main(String[] args){
+		System.out.println("Started program");
+		B b;
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+	\newpage
+	\item Give the output for the program below. Note the slight change from the previous question) (2 marks)
+	\begin{lstlisting}
+class I{
+	int i = 9;
+	int j;
+	I(){
+		prt("i = "+i+", j = "+j+);
+		j = 39;
+	}
+	
+	static int x1 = prt("static I.x1 initialized");
+	
+	static int prt(String s){
+		System.out.println(s);
+		return 47;
+	}
+}
+
+public class B extends I{
+	int k = prt("B.k initialized");
+	B(){
+		prt("k = "+k);
+		prt("j = "+j);
+	}
+	static int x2 = prt("B.x2 initialized");
+	
+	public static void main(String[] args){
+		new B();
+	}
+}
+	\end{lstlisting}
+	\underline{Answer :}
+\end{enumerate}
+
 
 \end{document}
