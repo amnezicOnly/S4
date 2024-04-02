@@ -1,33 +1,59 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
-typedef struct Node{
-	int data;
-	struct Node* next;
-} Node;
 
-struct Node* temp;
+typedef struct Stack{
+	size_t num_elt;
+	size_t size;
+	void* top;
+} Stack;
 
-void push(int val){
-	Node* ptr = malloc(sizeof(Node));
-	ptr->data = val;
-	ptr->next = temp;
-	temp = ptr;
+Stack* create_stack(size_t taille){
+	Stack* stack = malloc(sizeof(Stack));
+	if(stack==NULL)
+		perror("Error\n");
+	stack->num_elt = 0;
+	stack->size = taille;
+	stack->top = NULL;
+	return stack;
 }
 
-int pop(){		
-	int rv;
-	Node* ptr;
-	ptr = temp;
-	rv = temp->data;
-	temp = temp->next;
-	free(ptr);
-	return rv;
+void stack_push(Stack *s, void* data){
+	if(s->num_elt==0)
+		s->data = malloc(s->size);
+	else
+		s->data = realloc(s,((s->num_elt)+1)*(s->size));
+		
+	if(s->data==NULL)
+		perror("Error\n");
+	
+	s->size++;
+	for(size_t i=s->size-1; i>0; i--){
+		memcpy(s->top[i],s->top[i-1],s->size);
+	}
+	s->top[0] = data;
+}
+
+void stack_pop(Stack* s, void* dest){
+	if(s->num_elt==0)
+		perror("Error\n");
+	
+	
+		
 }
 
 int main(){
-	push(1);
-	int data = pop();
-	printf("%d\n",data);
+	Stack* stack = create_stack();
+	for(int i = 0; i<10; i++)
+		stack_push(stack,&i);
+	
+	int temp;
+	for(int i = 0; i<10; i++){
+		stack_pop(stack,&temp);
+		printf("Ok\n");
+		printf("Pop %d from stack\n",temp);
+	}
+
 	return 0;
 }
