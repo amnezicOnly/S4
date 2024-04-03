@@ -116,6 +116,7 @@ Race conditions, locks et deadlocks :
 Expressiosn lambdas :
 	- à partir du moment où on a une interface :
 		--> <interface> <nomObjet> = ([liste des paramètres]) -> <ce que ça fait et retourne>
-	
-	
-	
+
+
+Inner classes and interfaces :
+	-  	

@@ -1,6 +1,0 @@
-- Le main est un thread par lui-même
-- Les threads sont indépendants les uns des autres
-- Thread.join() méthode attend que le thread créé ait fini sa tâche
-- LEs threads sont indépendants donc s'ils font appel aux mêmes méthodes, elles les exéctueront en même temps (problème de decStore qui décrémente de 1 une valeur mais comme cette méthode est appelée au même moment par deux threads, la valeur décrémente de 2
-- le keyword synchronized permet de n'utliser la méthode qu'une seule fois en même temps (à revoir) : elle doit être utilisée uniquement quand on utilise plusieurs threads et que ces threads utilisent les mêmes variables à l'écriture
-- 
