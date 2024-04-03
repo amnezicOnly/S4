@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <float.h>
 
 /*
 Mes questions :
@@ -17,195 +18,293 @@ typedef struct Node{
 	struct Node* next;
 } Node;
 
-void swap(void *data1ptr, void *data2ptr, size_t nbytes) {
-	char temp[nbytes];
-	// store a copy of data1 in temporary storage
-	memcpy(temp, data1ptr, nbytes);
-	// copy data2 to location of data1
-	memcpy(data1ptr, data2ptr, nbytes);
-	// copy data in temporary storage to location of data2
-	memcpy(data2ptr, temp, nbytes);
-}
-
-void swapIndex(void *arr, size_t nelems, size_t elem_bytes, size_t index1, size_t index2) {
-	swap((char *)arr + index1 * elem_bytes, (char *)arr + index2 * elem_bytes, elem_bytes);
-}
-
-// Compare data1ptr et data2ptr
-int greaterThan(void* data1ptr, void* data2ptr){
-    	// return :
-	//	- 1 if data1ptr>data2ptr
-	//	- 0 if data1ptr==data2ptr
-	//	- -1 if data1ptr<data2ptr
+int compare(void* word1, void* word2){
+	char* text1 = (char*)word1;
+	char* text2 = (char*)word2;
+	
 	size_t i = 0;
-    char* text1 = (char*)data1ptr;
-    char* text2 = (char*)data2ptr;
-    int res = 0;
 	while(text1[i]!='\0' && text2[i]!='\0' && text1[i]==text2[i])
 		i++;
+
+	if(text1[i]=='\0' && text2[i]!='\0')
+		return -1;
 	if(text1[i]!='\0' && text2[i]=='\0')
-		res = -1;
-	else if(text1[i]=='\0' && text2[i]!='\0')
-		res = 1;
-	else if(text1[i]!='\0' && text2[i]!='\0' && text1[i]>text2[i])
-		res = 1;
-	else if(text1[i]!='\0' && text2[i]!='\0' && text1[i]<text2[i])
-		res = -1;
-	else
-		res = 0;
-		free(text1);
-		free(text2);
-	return res;
+		return 1;
+
+	if(text1[i]!='\0' && text2[i]!='\0' && text1[i]<text2[i])
+		return -1;
+
+	if(text1[i]!='\0' && text2[i]!='\0' && text1[i]<text2[i])
+		return 1;
+
+	return 0;
+}
+
+// Fonction pour fusionner deux listes triées
+Node* merge(Node* list1, Node* list2) {
+    if (list1 == NULL) return list2;
+    if (list2 == NULL) return list1;
+
+    Node* result = NULL;
+    Node* current = NULL;
+
+    while (list1 != NULL && list2 != NULL) {
+		if(compare(list1->data,list2->data)<=0){	// si list1->data<=list2->data
+            if (result == NULL) {
+                result = list1;
+                current = list1;
+            } else {
+                current->next = list1;
+                current = current->next;
+            }
+			// on avance le 
+            list1 = list1->next;
+        } else {
+            if (result == NULL) {
+                result = list2;
+                current = list2;
+            } else {
+                current->next = list2;
+                current = current->next;
+            }
+            list2 = list2->next;
+        }
+    }
+
+    if (list1 != NULL) {
+        current->next = list1;
+    } else {
+        current->next = list2;
+    }
+
+    return result;
 }
 
 // Fonction pour diviser la liste en deux moitiés
-void splitList(Node *head, Node **left, Node **right) {
-    	Node *slow = head;
-    	Node *fast = head->next;
+void splitList(Node* source, Node** frontRef, Node** backRef) {
+    Node* fast;
+    Node* slow;
+    if (source == NULL || source->next == NULL) {
+        *frontRef = source;
+        *backRef = NULL;
+    } else {
+        slow = source;
+        fast = source->next;
 
-    	// Parcourir la liste avec deux pointeurs : un qui avance d'un nœud à la fois et un qui avance de deux nœuds à la fois
-    	while (fast != NULL) {
-    		printf("Bloqué ici 1\n");
-        	fast = fast->next;
-       		if (fast != NULL) {
-            		slow = slow->next;
-            		fast = fast->next;
-        	}
-   	}
+        while (fast != NULL) {
+            fast = fast->next;
+            if (fast != NULL) {
+                slow = slow->next;
+                fast = fast->next;
+            }
+        }
 
-    	// 'slow' est maintenant au milieu de la liste, divisez-la en deux parties
-    	*left = head;
-    	*right = slow->next;
-    	slow->next = NULL;
-}
-
-
-// Fonction pour fusionner deux listes triées
-Node* merge(Node *left, Node *right) {
-    	printf("Bloqué ici 2\n");
-    	Node *result = NULL;
-
-    	// Cas de base : si l'une des deux listes est vide
-    	if (left == NULL) {
-        	return right;
-    	} else if (right == NULL) {
-        	return left;
-    	}
-
-    	// Comparer les valeurs des deux listes et fusionner les nœuds en ordre
-    	int status = greaterThan(left->data, right->data);
-    	if (status<=0) {
-        	result = left;
-        	result->next = merge(left->next, right);
-    	} else {
-        	result = right;
-        	result->next = merge(left, right->next);
-   	}
-
-    	return result;
-}
-
-// Fonction de tri fusion (merge sort) pour une liste chaînée
-Node* mergeSort(Node *head) {
-    	printf("Bloqué ici 3\n");
-    	// Cas de base : si la liste est vide ou ne contient qu'un seul élément
-    	if (head == NULL || head->next == NULL) {
-        	return head;
-    	}
-
-    	// Diviser la liste en deux moitiés
-    	Node *left;
-    	Node *right;
-    	splitList(head, &left, &right);
-
-    	// Trier récursivement les deux moitiés
-    	left = mergeSort(left);
-   	right = mergeSort(right);
-
-    	// Fusionner les deux moitiés triées
-    	return merge(left, right);
-}
-
-// Écrit la liste finale dans le fichier
-void putInFile(FILE* output, Node* linkedList){
-	Node *current = linkedList;
-    	Node *next;
-    	
-    	// pour chaque élément
-    	while (current->next != NULL) {
-    		// en fonction du type on choisit un % différent
-    		switch(type){
-	    		case '1':
-		        	short value1 = *((short*)current->data); 
-				fprintf(output,"%u,",value1);
-	    		case '2':
-		        	int value2 = *((int*)current->data);
-				fprintf(output,"%d,",value2);
-	    		case '3':
-		        	float value3 = *((float*)current->data);
-			    	fprintf(output,"%f,",value3);
-	    		case '4':
-		        	char value4 = *((char*)current->data);
-				    fprintf(output,"%c,",value4);
-	    		case '5':
-		        	char* value5 = ((char*)current->data);
-				    fprintf(output,"%s,",value5);
-	    		default:
-		          	break;
-	    	}
-		next = current->next;
-		current = next;      // Passer au noeud suivant
-   	}
-}
-
-void freeLinkedList(Node* linkedList){
-    Node *current = linkedList;
-    Node *next;
-    	
-    while (current != NULL) {
-	    next = current->next;
-	    free(current->data); // Libérer la mémoire allouée pour les données
-	    free(current);       // Libérer la mémoire allouée pour le noeud
-	    current = next;      // Passer au noeud suivant
+        *frontRef = source;
+        *backRef = slow->next;
+        slow->next = NULL;
     }
 }
 
-void addData(Node** liste, void *dataptr) {
-    	// Création d'un nouveau nœud
-    	Node *newNode = (Node*)malloc(sizeof(Node));
-    	if (newNode == NULL) {
-        	// Gérer l'échec de l'allocation
-        	exit(EXIT_FAILURE);
-    	}
-    
-    	// Affectation de la donnée pointée par dataptr au nouveau noeud
-    	newNode->data = dataptr;
-    	newNode->next = *liste;
+// Fonction principale de tri fusion
+void mergeSort(Node** headRef) {
+    Node* head = *headRef;
+    Node* a;
+    Node* b;
 
-    	*liste = newNode;
-		printf("Rentre là dedans, ajout de : ");
+    if (head == NULL || head->next == NULL) {
+        return;
+    }
+
+    splitList(head, &a, &b);
+
+    mergeSort(&a);
+    mergeSort(&b);
+
+    *headRef = merge(a, b);
 }
 
-int fileProcess(FILE* input, Node* linkedList){
-	char temp;
-	while((temp=fgetc(input))!='\n' && temp!=EOF){
-		void *value = malloc(size);
-		char* tempText = malloc(sizeof(char));
-		tempText[0] = temp;
-		size_t dataSize = 1;
-		while((temp=fgetc(input))!=',' && temp!='\n' && temp!=EOF){
-			tempText = realloc(tempText,(dataSize+1)*sizeof(char));
-			tempText[dataSize] = temp;
-			dataSize++;
-		}
-		memcpy(value, tempText, size);
-        addData(&linkedList, value);
-		printf("%s\n",tempText);
-		
+int checkShort(const char* word) {
+    long long number = strtoll(word, NULL, 10); // Convertir la chaîne en nombre entier long
+    if (number >= SHRT_MIN && number <= SHRT_MAX) {
+        return 1; // Le nombre est dans la plage des shorts
+    } else {
+        return -1; // Le nombre n'est pas dans la plage des shorts
+    }
+}
+
+/*
+int checkShort(const char* word) {
+    	char* endptr;
+    	long int number = strtol(word, &endptr, 10); // Convertir la chaîne en long int
+
+    	// Vérifier si la conversion a échoué
+    	if (endptr == word) {
+        	return -1;
+    	}
+
+    	// Vérifier si la valeur est dans la plage d'un short
+    	if (number >= SHRT_MIN && number <= SHRT_MAX) {
+        	// Convertir le long int en short
+        	short result = (short)number;
+
+        	// Convertir le short en chaîne de caractères pour la comparaison
+        	char buffer[20];
+        	snprintf(buffer, sizeof(buffer), "%d", result);
+
+        	// Comparer les deux chaînes
+        	if (strcmp(word, buffer) == 0) {
+         		return 1;
+        	}
+    	}
+    	return -1; // La conversion a échoué ou les chaînes ne correspondent pas
+}*/
+
+int checkInt(char* word){
+	char* endptr;
+    	long int number = strtol(word, &endptr, 10); // Convertir la chaîne en entier
+
+    	if (endptr == word) {
+        	return -1;
+    	}
+
+    	//printf("Nombre : %d\n", number);
+
+	char buffer[20];
+   	snprintf(buffer, sizeof(buffer), "%ld", number);
+
+    	if (strcmp(word, buffer) == 0 && number>=INT_MIN && number<=INT_MAX) {
+        	return 1;
+    	} else {
+        	return -1;
+    	}
+}
+
+int checkFloat(const char* word) {
+    	char* endptr;
+    	float number = strtof(word, &endptr); // Convertir la chaîne en float
+
+    	// Vérifier si la conversion a échoué
+    	if (endptr == word) {
+        	return -1;
+    	}
+
+    	// Convertir le float en chaîne de caractères pour la comparaison
+    	char buffer[20];
+    	snprintf(buffer, sizeof(buffer), "%f", number);
+
+    	// Comparer les deux chaînes
+    	if (strcmp(word, buffer) == 0 && (number > -FLT_MAX && number <= FLT_MAX)) {
+        	return 1;
+    	}
+
+    	return -1; // La conversion a échoué ou les chaînes ne correspondent pas
+}
+
+
+void addData(Node** liste, void *dataptr, size_t size) {
+    // Création d'un nouveau nœud
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        // Gérer l'échec de l'allocation
+        exit(EXIT_FAILURE);
+    }
+
+	
+    
+    // Affectation de la donnée pointée par dataptr au nouveau noeud
+    newNode->data = malloc(size);
+	memcpy(newNode->data, dataptr, size);
+    newNode->next = *liste;
+    *liste = newNode;
+	//char* word = (char*)(*liste)->data;
+	//printf("Ajout de: %s\n",word);
+}
+
+void printLinkedList(Node* linkedList){
+	Node* curr = linkedList;
+	while(curr!=NULL){
+		char* word = (char*)curr->data;
+		printf("(%s)-->",word);
+		curr = curr->next;
 	}
-	if(temp!='\n' || fgetc(input)!='E'){
-		printf("La ligne ne se finit pas par un retour à la ligne ou le fichier ne se finit pas par un E\n");
-		return -1;
+	printf("NULL\n");
+}
+
+int fileProcess(FILE* input, Node** linkedList){
+	char temp;
+	printf("Type: %c\n",type);
+	while((temp=fgetc(input))!='\n' && temp!=EOF){
+		int state = 0;
+		int negative = 0;
+		int virgule = 0;
+		char* word = malloc(sizeof(char));
+		word[0] = temp;
+		size_t size = 1;
+		while((temp=fgetc(input))!=',' && temp!='\n' && temp!=EOF && type!='4'){
+			if(temp=='.')
+				virgule++;			
+			word = realloc(word,(size+1)*sizeof(char));
+			word[size] = temp;
+			size++;
+		}
+		//printf("Word: %s\n",word);
+		if((type=='4' && temp!=',')||(type>='1' && type<='3' && size>=20))
+			return -1;
+
+		if(type=='1'){
+			if(checkShort(word)<0){
+				printf("Error checkShort\n");
+				return -1;
+			}
+		}
+		if(type=='2'){
+			if(checkInt(word)<0){
+				printf("Error checkInt\n");
+				return -1;
+			}
+		}
+		if(type=='3'){
+			if(virgule!=1 || checkFloat(word)<0){
+				printf("Error checkFloat\n");
+				return -1;
+			}
+		}
+		addData(linkedList,word,size);
+
+		if(temp=='\n')
+			break;
+		/*
+		if(type==1){	// short
+			short res1 = getShort(word);
+			if(res1==0 && size!=0 && word[0]!='0'){
+				printf("Rentre là0\n");
+				return -1;
+			}
+			addData(linkedList,&res1);
+		} else if(type=='2'){	// int
+			int res2 = getInt(word);
+			if(res2==0 && size!=0 && word[0]!='0'){
+				printf("Rentre là1\n");
+				return -1;
+			}
+			addData(linkedList,&res2);
+		} else if(type=='3'){	// float
+			float res3 = getShort(word);
+			if(res3==0.0 && size!=0 && word[0]!='0'){
+				printf("Rentre là2\n");
+					return -1;
+			}
+			addData(linkedList,&res3);
+		}else if (type=='4'){
+			if(!((word[0]>'a' && word[0]<='z')||(word[0]>='a' && word[0]<='Z'))){
+				printf("Rentre là3\n");
+				return -1;
+			}
+			addData(linkedList,&word[0]);
+		} else{
+			addData(linkedList,word);
+		}
+		*/
 	}
 	return 0;
 }
@@ -242,10 +341,11 @@ int main(int argc, char** argv){
 		printf("Mauvais type: %c (1)\n",type);
 		return quitError(input,output);
 	}
+	// Si c'est un nombre et pas un chiffre
 	if (fgetc(input)!='\n'){
-        	printf("Type trop grand\n");
-        	return quitError(input,output);
-    	}
+        printf("Type trop grand\n");
+        return quitError(input,output);
+    }
 
 	switch(type){
 		case '1':
@@ -267,24 +367,18 @@ int main(int argc, char** argv){
 			printf("Mauvais type: %c (2)\n",type);
 			return quitError(input,output);
 	}
-	// if there is any problem with the file
-	printf("Avant fileProcess\n");
-	int processStatus = fileProcess(input,linkedList);
-	printf("Après fileProcess\n");
-	if(processStatus!=0){
-        	freeLinkedList(linkedList);
-		return quitError(input,output);
-   	}
-		
-	// sort the linked list by merge sort
-	// linkedList = mergeSort(linkedList);
 	
-	// wrote data into the output file
-	putInFile(output,linkedList);
+	printf("Min: %u\n",SHRT_MIN);
+	printf("Max: %u\n",SHRT_MAX);
 	
-    // on free la liste chaînée correctement
-    freeLinkedList(linkedList);
 
-	// close files and quit the program
+	int check = fileProcess(input,&linkedList);
+	if(check<0){
+		return quitError(input,output);
+	}
+	printLinkedList(linkedList);
+	//sortLinkedList(linkedList);
+
+	//writeInFile(linkedList,output);
 	return quitProgram(input,output);
 }

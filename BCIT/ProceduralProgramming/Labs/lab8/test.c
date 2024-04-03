@@ -2,99 +2,147 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Structure de l'élément de la liste chaînée
+// Define a generic structure for nodes in the linked list
 typedef struct Node {
     void *data;
     struct Node *next;
 } Node;
 
-// Variables globales pour stocker le type et la taille
-char type;
-size_t size;
-
-// Fonction pour lire le fichier et remplir la liste chaînée
-Node* readFile(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        fprintf(stderr, "Erreur lors de l'ouverture du fichier.\n");
+// Function to create a new node
+Node* newNode(void *data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    if (node == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
-
-    // Lecture du type et détermination de la taille
-    fscanf(file, "%c", &type);
-    switch (type) {
-        case '1': size = sizeof(short); break;
-        case '2': size = sizeof(int); break;
-        case '3': size = sizeof(float); break;
-        case '4': size = sizeof(char); break;
-        case '5': size = sizeof(char*); break;
-        default:
-            fprintf(stderr, "Type non reconnu.\n");
-            exit(EXIT_FAILURE);
-    }
-
-    // Lecture des éléments et création de la liste chaînée
-    char buffer[1000];
-    fscanf(file, "%s", buffer); // Lecture de la deuxième ligne
-    Node *head = NULL;
-    char *token = strtok(buffer, ",");
-    while (token != NULL) {
-        Node *newNode = (Node*)malloc(sizeof(Node));
-        newNode->data = malloc(size);
-        memcpy(newNode->data, token, size);
-        newNode->next = head;
-        head = newNode;
-        token = strtok(NULL, ",");
-    }
-
-    // Vérification de la troisième ligne
-    char c;
-    fscanf(file, " %c", &c); // Lecture de la troisième ligne
-    if (c != 'E') {
-        fprintf(stderr, "Format de fichier incorrect.\n");
-        exit(EXIT_FAILURE);
-    }
-
-    fclose(file);
-    return head;
+    node->data = data;
+    node->next = NULL;
+    return node;
 }
 
-// Fonction pour afficher les éléments de la liste chaînée
-void printList(Node *head) {
-    Node *current = head;
-    while (current != NULL) {
-        switch (type) {
-            case '1': printf("%d ", *(short*)current->data); break;
-            case '2': printf("%d ", *(int*)current->data); break;
-            case '3': printf("%f ", *(float*)current->data); break;
-            case '4': printf("%c ", *(char*)current->data); break;
-            case '5': printf("%s ", *(char**)current->data); break;
+// Function to merge two sorted linked lists
+Node* merge(Node* left, Node* right, int (*cmp)(void*, void*)) {
+    Node* result = NULL;
+    
+    if (left == NULL)
+        return right;
+    else if (right == NULL)
+        return left;
+    
+    if (cmp(left->data, right->data) <= 0) {
+        result = left;
+        result->next = merge(left->next, right, cmp);
+    } else {
+        result = right;
+        result->next = merge(left, right->next, cmp);
+    }
+    
+    return result;
+}
+
+// Function to split the linked list into two halves
+void split(Node* head, Node** left, Node** right) {
+    if (head == NULL || head->next == NULL) {
+        *left = head;
+        *right = NULL;
+    } else {
+        Node* slow = head;
+        Node* fast = head->next;
+        
+        while (fast != NULL) {
+            fast = fast->next;
+            if (fast != NULL) {
+                slow = slow->next;
+                fast = fast->next;
+            }
         }
-        current = current->next;
+        
+        *left = head;
+        *right = slow->next;
+        slow->next = NULL;
+    }
+}
+
+// Merge sort function
+void mergeSort(Node** head, int (*cmp)(void*, void*)) {
+    if (*head == NULL || (*head)->next == NULL)
+        return;
+    
+    Node* left;
+    Node* right;
+    split(*head, &left, &right);
+    
+    mergeSort(&left, cmp);
+    mergeSort(&right, cmp);
+    
+    *head = merge(left, right, cmp);
+}
+
+// Comparison function for integers
+int intCompare(void *a, void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+// Function to print an integer
+void printInt(void *data) {
+    printf("%d ", *(int*)data);
+}
+
+// Function to free the memory allocated for the linked list
+void freeList(Node* head) {
+    Node* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+void printList(Node* head, void (*printFunc)(void*)) {
+    while (head != NULL) {
+        printFunc(head->data);
+        printf(" ");
+        head = head->next;
     }
     printf("\n");
 }
 
-// Fonction pour libérer la mémoire allouée pour la liste chaînée
-void freeList(Node *head) {
-    Node *current = head;
-    while (current != NULL) {
-        Node *next = current->next;
-        free(current->data);
-        free(current);
-        current = next;
-    }
-}
-
 int main() {
-    Node *head = readFile("input.txt");
-
-    // Ici, vous pouvez trier la liste avec Merge Sort
-
-    printf("Liste triée :\n");
-    printList(head);
-
+    Node* head = NULL;
+    
+    // Example data
+    int a = 5;
+    int b = 2;
+    int c = 7;
+    int d = 1;
+    int e = 9;
+    
+    // Insert data into linked list
+    head = newNode(&a);
+    head->next = newNode(&b);
+    head->next->next = newNode(&c);
+    head->next->next->next = newNode(&d);
+    head->next->next->next->next = newNode(&e);
+    
+    // Sort the linked list
+    mergeSort(&head, intCompare);
+    
+    // Print the sorted linked list
+    printList(head, printInt);
+    
+    // Free the memory allocated for the linked list
     freeList(head);
-
+    
     return 0;
 }
+
+
+
+
+/*
+Now, instead of adding manually element on the linked list with a, b, c, d and e, you have to read a file in this way :
+the first line contains a number between 1 and 5 included
+the second line contains text
+the thrird line only contains the letter 'E'
+
+*/

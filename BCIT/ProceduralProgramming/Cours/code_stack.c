@@ -9,39 +9,25 @@ typedef struct Stack{
 	void* top;
 } Stack;
 
-Stack* create_stack(size_t taille){
-	Stack* stack = malloc(sizeof(Stack));
-	if(stack==NULL)
-		perror("Error\n");
-	stack->num_elt = 0;
-	stack->size = taille;
-	stack->top = NULL;
-	return stack;
+void stack_push(stack *s, void *data) {
+	void *new_node = malloc(sizeof(void *) + s->elem_size_bytes);
+	memcpy((char *) new_node + sizeof(void *),data, s->elem_size_bytes);
+	*((void **) new_node) = s->top;
+	s->top = new_node;
+	s->nelems++;
 }
 
-void stack_push(Stack *s, void* data){
-	if(s->num_elt==0)
-		s->data = malloc(s->size);
-	else
-		s->data = realloc(s,((s->num_elt)+1)*(s->size));
-		
-	if(s->data==NULL)
-		perror("Error\n");
-	
-	s->size++;
-	for(size_t i=s->size-1; i>0; i--){
-		memcpy(s->top[i],s->top[i-1],s->size);
+void stack_pop(stack *s, void *addr) {
+	if (s->nelems == 0) {
+		exit(1);
 	}
-	s->top[0] = data;
+	void *n = s->top;
+	memcpy(addr, (char *) n + sizeof(void *), s->elem_size_bytes);
+	s->top = *(void **) n;
+	free(n);
+	s->nelems--;
 }
 
-void stack_pop(Stack* s, void* dest){
-	if(s->num_elt==0)
-		perror("Error\n");
-	
-	
-		
-}
 
 int main(){
 	Stack* stack = create_stack();
