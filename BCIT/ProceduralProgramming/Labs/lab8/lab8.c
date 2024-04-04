@@ -1,3 +1,6 @@
+// A0140991
+// Antoine Leveque
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,22 +33,61 @@ void printList(Node* head){
 	printf("\n");
 }
 
+int compareNumbers(char* word1, char* word2){
+	if(type=='3'){
+		int negative1 = 0;
+		if(word1[0]=='-')
+			negative1++;
+		int negative2 = 0;
+		if(word2[0]=='-')
+			negative2++;
+		float num1 = strtof(word1+negative1, NULL);
+		float num2 = strtof(word2+negative2, NULL);
+		if(word1[0]=='-')
+			num1*=(-1);
+		if(word2[0]=='-')
+			num2*=(-1);
+		if(num1<num2)
+			return -1;
+		return 1;
+	}
+	int negative3 = 0;
+	if(word1[0]=='-')
+		negative3++;
+	int negative4 = 0;
+	if(word2[0]=='-')
+		negative4++;
+	long int num3 = strtol(word1+negative3,NULL,20);
+	long int num4 = strtol(word2+negative4,NULL,20);
+	if(word1[0]=='-')
+		num3*=(-1);
+	if(word2[0]=='-')
+		num4*=(-1);
+	if(num3<num4)
+		return -1;
+	return 1;
+}
+
 
 int compare(void* word1, void* word2){
 	char* text1 = (char*)word1;
 	char* text2 = (char*)word2;
-	size_t i = 0;
-	while(text1[i]!='\0' && text2[i]!='\0' && text1[i]==text2[i])
-		i++;
-	if(text1[i]=='\0' && text2[i]!='\0')
-		return -1;
-	if(text1[i]!='\0' && text2[i]=='\0')
-		return 1;
-	if(text1[i]!='\0' && text2[i]!='\0' && text1[i]<text2[i])
-		return -1;
-	if(text1[i]!='\0' && text2[i]!='\0' && text1[i]<text2[i])
-		return 1;
-	return 0;
+	if(type=='1' || type=='2' || type=='3'){
+		return compareNumbers(text1,text2);
+	} else {
+		size_t i = 0;
+		while(text1[i]!='\0' && text2[i]!='\0' && text1[i]==text2[i])
+			i++;
+		if(text1[i]=='\0' && text2[i]!='\0')
+			return -1;
+		if(text1[i]!='\0' && text2[i]=='\0')
+			return 1;
+		if(text1[i]!='\0' && text2[i]!='\0' && text1[i]<text2[i])
+			return -1;
+		if(text1[i]!='\0' && text2[i]!='\0' && text1[i]<text2[i])
+			return 1;
+		return 0;
+	}
 }
 
 // Fonction pour fusionner deux listes triées
@@ -96,15 +138,15 @@ Node* merge(Node* list1, Node* list2) {
 }
 
 // Fonction pour diviser la liste en deux moitiés
-void splitList(Node* source, Node** frontRef, Node** backRef) {
+void splitList(Node* head, Node** left, Node** right) {
     Node* fast;
     Node* slow;
-    if (source == NULL || source->next == NULL) {
-        *frontRef = source;
-        *backRef = NULL;
+    if (head == NULL || head->next == NULL) {
+        *left = head;
+        *right = NULL;
     } else {
-        slow = source;
-        fast = source->next;
+        slow = head;
+        fast = head->next;
 
         while (fast != NULL) {
             fast = fast->next;
@@ -114,15 +156,15 @@ void splitList(Node* source, Node** frontRef, Node** backRef) {
             }
         }
 
-        *frontRef = source;
-        *backRef = slow->next;
+        *left = head;
+        *right = slow->next;
         slow->next = NULL;
     }
 }
 
 // Fonction principale de tri fusion
-void mergeSort(Node** headRef) {
-    Node* head = *headRef;
+void mergeSort(Node** linkedList) {
+    Node* head = *linkedList;
     Node* a;
     Node* b;
 
@@ -135,75 +177,66 @@ void mergeSort(Node** headRef) {
     mergeSort(&a);
     mergeSort(&b);
 
-    *headRef = merge(a, b);
+    *linkedList = merge(a, b);
 }
 
-int checkShort(const char* word) {
-    long long number = strtoll(word, NULL, 10); // Convertir la chaîne en nombre entier long
-    if (number >= SHRT_MIN && number <= SHRT_MAX) {
-        return 1; // Le nombre est dans la plage des shorts
-    } else {
-        return -1; // Le nombre n'est pas dans la plage des shorts
-    }
-}
-
-
-int checkInt(char* word){
-	char* endptr;
-    	long int number = strtol(word, &endptr, 10); // Convertir la chaîne en entier
-
-    	if (endptr == word) {
-        	return -1;
-    	}
-
-	char buffer[20];
-   	snprintf(buffer, sizeof(buffer), "%ld", number);
-
-    	if (strcmp(word, buffer) == 0 && number>=INT_MIN && number<=INT_MAX) {
-        	return 1;
-    	} else {
-        	return -1;
-    	}
-}
-
-int checkFloat(const char* word) {
+int checkShort(char* str, int negative) {
     	char* endptr;
-    	float number = strtof(word, &endptr); // Convertir la chaîne en float
-
-    	// Vérifier si la conversion a échoué
-    	if (endptr == word) {
-    		printf("Erreur ici\n");
-        	return -1;
+    	long num = strtol(str+negative, &endptr, 20);
+    	if (endptr == NULL || *endptr != '\0') {
+        	return -1; // La chaîne ne représente pas un nombre valide
     	}
 
-    	// Convertir le float en chaîne de caractères pour la comparaison
-    	char buffer[20];
-    	snprintf(buffer, sizeof(buffer), "%f", number);
-
-    	// Comparer les deux chaînes
-    	if (strcmp(word, buffer) == 0 && (number > -FLT_MAX && number <= FLT_MAX)){
-        	return 1;
+    	if (num < SHRT_MIN || num > SHRT_MAX) {
+    		//printf("erreur là\n");
+        	return -1; // Le nombre dépasse la plage des shorts
     	}
-	printf("Erreur là\n");
-    	return -1; // La conversion a échoué ou les chaînes ne correspondent pas
+	return 1; // Le nombre est un short valide dans la plage autorisée
+}
+
+int checkInt(char* str, int negative) {
+    	char* endptr;
+    	long num = strtol(str+negative, &endptr, 20);
+    	if (endptr == str || *endptr != '\0') {
+    	    return -1; // La chaîne ne représente pas un nombre valide
+    	}
+
+    	if (num < INT_MIN || num > INT_MAX) {
+    	    return -1; // Le nombre dépasse la plage des int
+    	}
+	return 1; // Le nombre est un int valide dans la plage autorisée
+}
+
+int checkFloat(char* str, int negative) {
+    char* endptr;
+    float num = strtof(str+negative, &endptr);
+    if (endptr == str || *endptr != '\0') {
+        return -1; // La chaîne ne représente pas un nombre valide
+    }
+
+    if (num < -FLT_MAX || num > FLT_MAX) {
+        return -1; // Le nombre dépasse la plage des floats
+    }
+
+    return 1; // Le nombre est un float valide dans la plage autorisée
 }
 
 
 void addData(Node** liste, void *dataptr, size_t size) {
-    // Création d'un nouveau nœud
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    if (newNode == NULL) {
+    	// Création d'un nouveau nœud
+   	Node *newNode = (Node*)malloc(sizeof(Node));
+    	if (newNode == NULL) {
         // Gérer l'échec de l'allocation
-        exit(EXIT_FAILURE);
-    }
+        	exit(EXIT_FAILURE);
+    	}
 
 	
     
-    // Affectation de la donnée pointée par dataptr au nouveau noeud
-    newNode->data = malloc(size);
+    	// Affectation de la donnée pointée par dataptr au nouveau noeud
+    	newNode->data = malloc(size);
 	memcpy(newNode->data, dataptr, size);
-    newNode->next = *liste;
-    *liste = newNode;
+    	newNode->next = *liste;
+    	*liste = newNode;
 }
 
 void writeInFile(Node* linkedList){
@@ -241,26 +274,22 @@ int fileProcess(Node** linkedList){
 			word[size] = temp;
 			size++;
 		}
+		//printf("%s\n",word);
 		if((type=='4' && size!=1)||(type>='1' && type<='3' && size>=20))
 			return -1;
 
-		if(type=='1'){
-			if(checkShort(word)<0){
-				printf("Error checkShort\n");
-				return -1;
-			}
+		if(type=='1' && checkShort(word,negative)<0){
+			//printf("Error checkShort\n");
+			//printf("%s\n",word);
+			return -1;
 		}
-		if(type=='2'){
-			if(checkInt(word)<0){
-				printf("Error checkInt\n");
-				return -1;
-			}
+		if(type=='2' && checkInt(word,negative)<0){
+			//printf("Error checkInt\n");
+			return -1;
 		}
-		if(type=='3'){
-			if(virgule!=1 || checkFloat(word)<0){
-				printf("Error checkFloat\n");
-				return -1;
-			}
+		if(type=='3' && checkFloat(word,negative)<0){
+			//printf("Error checkFloat\n");
+			return -1;
 		}
 		addData(linkedList,word,size);
 
@@ -328,13 +357,11 @@ int main(int argc, char** argv){
 			//printf("Mauvais type: %c (2)\n",type);
 			return quitError();
 	}
-	
 	int check = fileProcess(&linkedList);
 	if(check<0){
 		return quitError();
 	}
 
-	// ERROR
 	mergeSort(&linkedList);
 	writeInFile(linkedList);
 	return quitProgram();
