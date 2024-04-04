@@ -119,4 +119,6 @@ Expressiosn lambdas :
 
 
 Inner classes and interfaces :
-	-  	
+	-  A static inner class does not require an outer class object to create an object of a nested class
+	- Static inner class objects cannot access non-static outer class objects
+	- 	
