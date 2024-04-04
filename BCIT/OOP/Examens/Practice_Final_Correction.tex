@@ -1,0 +1,548 @@
+\documentclass{article}
+%% to use a package, just delete the % character to enable the package in this document, only on the lines where there is a single % character (otherwise it won't compile)
+%% to understand the utility of the package, please read the comment between \begin{comment} and \end{comment} right below the package you need
+\usepackage[a4paper, total={6in, 8in}]{geometry} % for european user
+
+%% for multiple lines comment in LaTeX
+\usepackage{verbatim} % (won't compile if this line is deleted)
+%% usage :
+\begin{comment}
+	Your multiple lines comment
+\end{comment}
+
+
+%% to include images
+%\usepackage{graphicx}
+%% usage :
+\begin{comment}
+	\begin{figure}
+		\centering (not necessary but it's prettier)
+		\includegraphics[scale=(1 by default)]{path to the image/imageName.extension}
+		\if you want to put another image side to side, just add a line like the previous
+		\caption{picture(s) in a nutshell} (not necessary but it's useful) (won't compile if missing)
+	\end{figure}
+\end{comment}
+
+
+%% pour insérer des liens
+%\usepackage{hyperref}
+%% usage :
+\begin{comment}
+	\href{the complete link}{the display text}
+	or if you want to show the complete link, just use 
+	\url{the complete link}
+\end{comment}
+
+
+%% to display code (for more informations, please see : https://texdoc.org/serve/listings.pdf/0)
+\usepackage{listings}
+\usepackage{xcolor}
+%% usage :
+\begin{comment}
+	- listings package let you highly customize how you code will be displayed on the document
+	- for simple display just do this :
+	\lstdefinestyle{mystyle}{
+		Your customizations
+	}
+	\begin{lstlisting}
+		Your code
+	\end{lstlisting}
+\end{comment}
+%% To display some code, I recommend this configuration
+\lstdefinestyle{mystyle}{
+	showspaces=false,
+	showtabs=false,
+	showstringspaces=false,
+	numbers=left,
+	language=Java,
+	basicstyle=\footnotesize\ttfamily,
+	frame=single,
+	frameround=tttt
+}
+\lstset{style=mystyle}
+
+%% to use maths and other sciences symbols (cf https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) (
+%\usepackage{amssymb,amsmath,amsfonts,extarrows}
+%% usage : just type the backslash chararacter and the name of the symbol you want, depending of document on the the previous link
+
+%% Have to find the goal of it
+\usepackage{soul}
+\let\oldemptyset\emptyset
+\usepackage[T1]{fontenc}
+
+%% won't compile if at least one of these three next line is deleted
+%% but you can add nothing between the brackets to leave it blank
+\author{}
+\date{}
+\title{Practice Final Correction}
+
+\begin{document}
+\maketitle
+%%\newpage
+%% not necessary
+%% compile twice the first time to display table of content
+%%\tableofcontents
+%%\newpage
+\begin{enumerate}
+\begin{lstlisting}
+class Race{
+	public static final int MAX = 5;
+ 	public static final int MIN = 1;
+
+ 	private static int data=Race.MIN;
+	public static int getData(){
+		return data;
+	}
+	public static void incData() {
+		if (data < Race.MAX)
+			data++;
+	}
+	public static void foo() throws Exception{
+		while (data < Race.MAX)
+			incData();
+	}
+}
+
+public class Car implements Runnable { 
+	public void run(){
+		Race.foo();
+	}
+	public static void main(String[] args) throws Exception{
+  		Thread t1 = new Thread(new Car());
+  		Thread t2 = new Thread(new Car());
+  		t1.start();
+  		t2.start();
+  		t1.join();
+  		t2.join();
+  		System.out.println(Race.getData());
+ 	}
+}
+\end{lstlisting}
+	\item In the above code, where might be race condition(s) occur? Speciafically which line(s) of the code ?
+	\item Where and how should the race condition(s) be prevented?
+	\item What is a deadlock? Can one occur in the above code ever? Why or why not?
+\newpage
+\begin{lstlisting}
+class Examine{
+ 	static int[] data = new int[10];
+ 	public static void dance(int value){
+  		int i=0;
+  		while(i<data.length){
+   			for(int j=0;j<100;j++);
+   				data[i] = value;
+  		}
+ 	}
+ 	static Runnable launch(int id){
+  		return new Runnable(){
+   			public void run(){
+    				dance(id);
+   		}
+ 	}
+ 	public static void main(String[] args){
+  		Thread t1 = new Thread(launch(1));
+  		Thread t2 = new Thread(launch(2));
+  		t1.start();
+  		t2.start();
+  		t1.join();
+  		t2.join();
+ 	}
+}
+\end{lstlisting}
+	\item In the above code is there a race condition? If yes, what is the race condition and where exactly is it (demonstrate the race via code walk thru)? 
+	\item Would the code when run cause an Exception? 
+\newpage
+\begin{lstlisting}
+class Grain {
+  	public String toString() { return "Grain"; }
+}
+
+class Wheat extends Grain {
+  	public String toString() { return "Wheat"; }
+}
+class Mill {
+  	Grain process() { return new Grain(); }
+}
+class WheatMill extends Mill {
+  	Wheat process() { return new Wheat(); }
+}
+public class CovariantReturn {
+  	public static void main(String[] args) {
+    		Mill m = new Mill();
+    		Grain g = m.process();
+    		System.out.println(g);
+    		m = new WheatMill();
+    		g = m.process();
+    		System.out.println(g);
+  	}
+}
+\end{lstlisting}
+	\item Is the method "process()" in WheatMill in error?
+	\newpage
+\begin{lstlisting}
+class Egg2 {
+  	protected class Yolk {   
+    		public Yolk() { print("Egg2.Yolk()"); }       
+    		public void f() { print("Egg2.Yolk.f()");}
+  	}
+  	private Yolk y = new Yolk();
+  	public Egg2() { print("New Egg2()"); }
+  	public void insertYolk(Yolk yy) { y = yy; }
+  	public void g() { y.f(); }
+} 
+
+public class BigEgg2 extends Egg2 {
+  	public class Yolk extends Egg2.Yolk {
+    		public Yolk() { print("BigEgg2.Yolk()"); }
+    		public void f() { print("BigEgg2.Yolk.f()"); }
+  	}
+  	public BigEgg2() { insertYolk(new Yolk()); }
+  	public static void main(String[] args) {
+    		Egg2 e2 = new BigEgg2();
+    		e2.g();
+  	}
+}
+\end{lstlisting}
+	\item Give the output for the above:
+	\newpage
+	
+\begin{lstlisting}
+class Parcel4 {
+  	private class PContents implements Contents {
+    		private int i = 11;
+    		public int value() { return i; }
+  	}
+  	protected class PDestination implements Destination {
+    		private String label;
+    		private PDestination(String whereTo) {
+      			label = whereTo;
+    		}
+    		public String readLabel() { return label; }
+  	}
+  	public Destination destination(String s) {
+    		return new PDestination(s);
+  	}
+  	public Contents contents() {
+    		return new PContents();
+    	}
+}
+public class TestParcel {
+	public static void main(String[] args) {
+		Parcel4 p = new Parcel4();
+		Contents c = p.contents();
+		Destination d = p.destination("Tasmania");
+		Parcel4.PContents pc = p.new PContents();//ERROR
+  	}
+}
+\end{lstlisting}
+	\item The above class has an error on the line indicated. Explain why there is an error.\newpage
+	
+\begin{lstlisting}
+public class Wrapping {
+  	private int i;
+  	public Wrapping(int x) { i = x; }
+  	public int value() { return i; }
+}
+
+public class Parcel {
+  	public Wrapping wrapping(int x) {
+    	//return an anonymous inner class object of Wrapping type
+   	//with overloaded method "public int value (){ return 47*i;}"
+  	}
+  	public static void main(String[] args) {
+    		Parcel p = new Parcel();
+    		Wrapping w = p.wrapping(10);
+  	}
+}
+\end{lstlisting}
+	\item In the above classes provide the missing code.\newline\newline\newline\newline\newline\newline
+	\item Given an ArryList is-a List and a List is-a Collection is the following true? ArrayList<String> is-a Collection<String>\newline\newline
+	\item Given interface FooBar<X,Y> extends Silly<X> which of the following ARE subtypes of Silly<String>?
+	\begin{enumerate}
+		\item FooBar<String, String>
+		\item FooBar<String, Integer>
+		\item FooBar<Integer, String>
+		\item FooBar<String, Exception>
+		\item FooBar<Integer, Integer>
+		\item FooBar<Exception, Integer>
+	\end{enumerate}
+	\item Given
+	\begin{quote}
+		static \textless T\textgreater T pick(T a, T b){return b}
+	\end{quote}
+	Is the following an error or not? If an error, explain why, if not give the return type.
+	\begin{quote}
+		Collection c = pick(new Set\textless String\textgreater (), new Stack\textless String\textgreater());
+	\end{quote}\newpage
+	\item If the code below gives an error explain why, if not explain why.
+\begin{lstlisting}
+public static void addNumbers(List<? super Integer> list){
+	for (int i=1; i<10; i++){
+		list.add(i);
+	}
+}
+// in other code:
+addNumbers(new ArrayList<Number>());
+\end{lstlisting}
+	\item If the code below gives an error explain why, if not explain why.
+\begin{lstlisting}
+void swapFirst(List<? extends Number>listA, List<? extends Number> listB){
+	Number temp = listA.get(0);
+ 	listA.set(0,listB.get(0));
+	listB.set(0,temp);
+}
+\end{lstlisting}
+\begin{lstlisting}
+class Example{
+ 	public void open() throws FileNotFoundException{
+  		System.out.println("attempting to open file");
+  		throw new FileNotFoundException();
+ 	}
+ 	public void close() throws CloseException {
+  		System.out.println("attempting to close file");
+  		throw new CloseException();
+ 	}
+ 	public static void main(String[] args) throws Exception{
+  		Example e = new Example();
+  		try{ 
+   			e.open();
+   			System.out.println("after opening file");
+  		}finally{ 
+   			System.out.println("finally");
+   			e.close();
+   			System.out.println("after closing file");
+  		}
+  	System.out.println("end of program");
+	}
+}
+\end{lstlisting}
+	\item Give the output. State any exception(s) that are displayed on exit.
+	\newpage
+\begin{lstlisting}
+class LanguageException extends Exception{}
+	class JavaException extends LanguageException{}
+	public class Test {
+ 		public void a() throws LanguageException{
+  			throw new LanguageException();
+ 		}
+ 	public void b() throws JavaException{
+  		throw new JavaException();
+ 	}
+ 	public static void main(String[] args){
+  		Test t = new Test(); 
+  		try{
+   			t.a();
+   			t.b();
+  		}
+  		catch(LanguageException l){}
+  		catch(JavaException j){}
+  		System.out.println("finished main");
+ 	}
+}
+\end{lstlisting}
+	\item Give the output. State any exception(s) that are displayed on exit.
+\begin{lstlisting}
+public class Out {
+ 	int x;
+ 	static class In {
+  		public void setX(int value){
+   			x = value;
+  		}
+ 	}
+ 	public static void main(String[] args){
+  		//your code goes here
+ 	}
+}
+\end{lstlisting}
+	\item What is the error in the above class? Why?
+	\item Give the code to create an "In" object in main()
+	\newpage
+\begin{lstlisting}
+class Cat {
+ 	Kitten k = new Kitten();
+ 	public Cat(){
+  		System.out.println("cat");
+ 	}
+ 	class Kitten{
+  		public Kitten(){
+   			System.out.println("kitten");
+  		}
+ 	}
+}
+public class Lion extends Cat {
+ 	public Lion(){
+  		System.out.println("Lion");
+ 	}
+ 	class Kitten {
+  		public Kitten(){
+   			System.out.println("young Lion");
+  		}
+ 	}
+ 	public static void main(String[] args){
+  		new Lion();
+ 	}
+}
+\end{lstlisting}
+	\item Give the output
+\begin{lstlisting}
+class Cat {
+ 	Kitten k;
+ 	public Cat(){
+  		System.out.println("cat");
+ 	}
+ 	class Kitten{
+  		public Kitten(){
+   			System.out.println("kitten");
+  		}
+ 	}
+ 	public void produce(Kitten kk){
+   		k = kk;
+ 	}
+}
+public class Lion extends Cat {
+ 	public Lion(){
+  		System.out.println("Lion");
+  		produce(new Kitten());
+ 	}
+ 	class Kitten {
+  		public Kitten(){
+   			System.out.println("young Lion");
+  		}
+ 	}
+ 	public static void main(String[] args){
+  		new Lion();
+ 	}
+}
+\end{lstlisting}
+	\item Give the output or if there Is an error, fix it and give the output.
+\begin{lstlisting}
+class A {
+ 	private int x;
+ 	public void setZ(int zz){
+ 		z = zz;
+ 	}
+ 	class B{
+  		private int y;
+  		class C{
+   			private int z;
+   			public void setX(int xx){
+   				x = xx;
+   			}
+  		}
+ 	}
+}
+\end{lstlisting}
+	\item Examine the code above. Is there an error? If so what is the error and why? If not, explain
+\begin{lstlisting}
+class A{
+ 	class B{
+  		class C{}
+ 	}
+	public static void main(String[] args){
+ 		//code
+	}
+}
+\end{lstlisting}
+	\item Give the code necessary to create a C object in main()
+\begin{lstlisting}
+class X {
+ 	int z = 5;
+ 	static class Y{
+  		public int getZ(){return z;}
+ 	}
+ 	public static void main(String[] args){
+ 		//code
+ 	}
+}
+\end{lstlisting}
+	\item What is the an error in the code above?
+	\item If the error was removed in the above code, give the  code to create a Y object
+	\newpage
+\begin{lstlisting}
+class X{
+ 	int y;
+ 	public void foo(){
+  		for(int i=0; i<10; i++){
+   			if (y < 5)
+    				y++;
+ 		}
+ 	}
+}
+\end{lstlisting}
+	\item For the above code give the places where a race condition exists.
+\begin{lstlisting}
+class A implements Runnable {
+ 	ReentrantLock lock = new ReentrantLock();
+ 	List s ;
+ 	public A(List store){
+ 		s = store;
+ 	}
+ 	public void run(){
+ 		for(int i=0;i<10; i++){
+   			if(lock.trylock())
+    				s.add(i);
+    		}
+ 	}
+}
+
+class B implements Runnable{
+ 	ReentrantLock lock = new ReentrantLock();
+ 	List s;
+ 	public B(List store){
+ 		s = store;
+ 	}
+ 	public void run(){
+  		for(int x = 20; x<30; x++){
+   			if(lock.tryLock())
+    				s.add(x);
+    		}
+ 	}
+}
+public class Test {
+ 	public static void main(String[] args){
+  		List store = new LinkedList();
+  		A a = new A(store);
+  		B b = new B(store);
+  		new Thread(a).start();
+  		new Thread(b).start();
+  		Thread.sleep(2000);
+ 	}
+}
+\end{lstlisting}
+	\item Does the above code protect the shared List? Why or why not?
+	\newpage
+\begin{lstlisting}
+public class LTest {
+ 	public static void main(String[] args){
+  		new Thread(new Runnable(){
+     			public void run(){
+      				System.out.println("hello world!");
+     			}
+     		}).start();
+ 
+ 	}
+}
+\end{lstlisting}
+	\item Write the above using a Lambda expression\newpage
+\begin{lstlisting}
+public class Table{
+ 	enum TYPE {MULT, ADD}
+ 	public void display(int start, int end, TYPE t){
+  		for (int i = start; i<end; i++){
+   			for (int j = start; j <end; j++){
+    				if (t == TYPE.MULT)
+     					System.out.printf("%3d ",(i*j));
+    				else 
+     					System.out.printf("%3d ",(i+j));
+   			}
+   			System.out.println("");
+  		}
+ 	}
+ 	public static void main(String[] args){
+  		Table t = new Table();
+  		t.display(1,10,TYPE.MULT);
+ 	}
+}
+\end{lstlisting}
+	\item Modify to use a Lambda expression and give the expression to get the same output as the code above with your new display() method.
+\end{enumerate}
+\end{document}

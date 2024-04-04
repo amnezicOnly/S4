@@ -172,6 +172,7 @@ int checkFloat(const char* word) {
 
     	// Vérifier si la conversion a échoué
     	if (endptr == word) {
+    		printf("Erreur ici\n");
         	return -1;
     	}
 
@@ -180,10 +181,10 @@ int checkFloat(const char* word) {
     	snprintf(buffer, sizeof(buffer), "%f", number);
 
     	// Comparer les deux chaînes
-    	if (strcmp(word, buffer) == 0 && (number > -FLT_MAX && number <= FLT_MAX)) {
+    	if (strcmp(word, buffer) == 0 && (number > -FLT_MAX && number <= FLT_MAX)){
         	return 1;
     	}
-
+	printf("Erreur là\n");
     	return -1; // La conversion a échoué ou les chaînes ne correspondent pas
 }
 
@@ -226,14 +227,12 @@ int fileProcess(Node** linkedList){
 		word[0] = temp;
 		size_t size = 1;
 		while((temp=fgetc(input))!=',' && temp!='\n' && temp!=EOF){
-			if(temp=='.')
-				virgule++;
 			if(temp=='-'){
 				if(negative!=0)
 					return -1;
 				negative++; 
 			}
-			if(temp==','){
+			if(temp=='.'){
 				if(virgule!=0)
 					return -1;
 				virgule++;
