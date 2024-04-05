@@ -105,7 +105,7 @@ Les commandes de bases : (on aura la commande avec ses principales options)
     \item unset variable pour supprimer la variable
 \end{itemize}
 
-La variable \textit{PATH} contient l'ensemble des dossiers contenant les exécutables des commandes. Pour ajouter un dossier à \textit{PATH}, il suffit de faire PATH=aNewPath:$\$$PATH .\newline
+\noindent La variable \textit{PATH} contient l'ensemble des dossiers contenant les exécutables des commandes. Pour ajouter un dossier à \textit{PATH}, il suffit de faire PATH=aNewPath:$\$$PATH .\newline
 
 \noindent \underline{Display variables :}
 \begin{itemize}
@@ -148,14 +148,14 @@ Pour obtenir de l'aide sur une command, il suffit de faire : man \textit{command
     \item Kernel routines
 \end{enumerate}
 
-Pour :
+\noindent Pour :
 \begin{itemize}
     \item connaitre quelles pages possède man \textit{command} : man -f \textit{command} (== whatis \textit{command})
     \item aller à une page n de man \textit{command} : man n \textit{command}
     \item chercher un manuel en rapport avec une action \textit{action} : man -k \textit{action} (== apropos \textit{action})
 \end{itemize}
 
-Il est aussi possible de retrouver cette documentation dans les dossier /usr/shar/doc ou usr/doc
+\noindent Il est aussi possible de retrouver cette documentation dans les dossier /usr/shar/doc ou usr/doc
 
 \newpage
 \section{Navigating the filesystem}
@@ -164,7 +164,7 @@ Pour lister le contenu d'un dossier, on utilise la commande \textit{ls} avec ces
 \begin{itemize}
     \item -l : long listing
     \item -a : affichage des fichiers cachés
-    \item -r : ordre désalphabétique
+    \item -r : ordre inverse
     \item -h : human readable (taille des fichiers exprimés en o/ko/mo/go) 
     \item -d : listing de dossier(s) uniquement
     \item -R : listing récursif
@@ -179,7 +179,7 @@ Le file globbing est une manière d'englober un ensemble de combinaison de carac
 \begin{itemize}
     \item * : signifie qu'il y a 0 ou + caractères (!= RegEx car il indique n'importe quel caractère)
     \item ? : signifie qu'il y a exactement un caractère (??? comprend tous les mots qui possèdent exactement 3 lettres par exemple)
-    \item \[ \] : représente un ensemble de caractère : \[az\] représente tous les mots qui ne contiennent qu'un 'a' ou qu'un 'z' alors que \[a-z\] représentent tous les mots qui ne contiennent qu'une lettre entre 'a' et 'z' inclus. Les rangées se basent sur le tableau ascii donc [a-Z] comprendra aussi les caractères entre 'z' et 'A' dans la table ascii (accessible via la commande ascii -d))
+    \item $[$ $]$ : représente un ensemble de caractère : $[$az$]$ représente tous les mots qui ne contiennent qu'un 'a' ou qu'un 'z' alors que $[$a-z$]$ représentent tous les mots qui ne contiennent qu'une lettre entre 'a' et 'z' inclus. Les rangées se basent sur le tableau ascii donc [a-Z] comprendra aussi les caractères entre 'z' et 'A' dans la table ascii (accessible via la commande ascii -d))
     \item ! ou $\hat{}$ : représente la négation
 \end{itemize}
 
@@ -192,11 +192,11 @@ Pour afficher seulement une partie d'un document, on peut utiliser les deux comm
     \item tail (-n le nombre de ligne qu'on veut afficher) : affiche n (20 par défaut) lignes à partie de la fin du fichier 
 \end{itemize}
 
-Lorsqu'on travaille avec du texte, il est très pratique d'utiliser des pipes ( | ). Ça s'utilise comme ça :
+\noindent Lorsqu'on travaille avec du texte, il est très pratique d'utiliser des pipes ( | ). Ça s'utilise comme ça:
 \begin{quote}
     \textit{command1} | \textit{command2}
 \end{quote}
-Cette instruction va exécuter \textit{command1} et va renvoyer le résultat pour être utilisé par \textit{command2}.
+\noindent Cette instruction va exécuter \textit{command1} et va renvoyer le résultat pour être utilisé par \textit{command2}.
 
 Une notion importante est ce qu'on appelle les channels, il en existe 3 :
 \begin{itemize}
@@ -206,7 +206,7 @@ Une notion importante est ce qu'on appelle les channels, il en existe 3 :
 \end{itemize}
 
 
-Il peut être intéressant de trier les données que l'on a dans un fichier. Il existe deux commandes pour aider à sélectionner les bonnes donnés et les trier correctement :
+\noindent Il peut être intéressant de trier les données que l'on a dans un fichier. Il existe deux commandes pour aider à sélectionner les bonnes donnés et les trier correctement :
 \begin{itemize}
     \item sort :
         \begin{itemize}
@@ -231,7 +231,7 @@ Il peut être intéressant de trier les données que l'on a dans un fichier. Il 
 \section{Where data is stored}
 Les informations sur les programmes en cours sont stockés dans le pseudo-dossier /proc. Les informations sur les composants électroniques sont stockés dans le dossier /dev ou /sys. Lorsque l'ordinateur démarre, il commence l'init process et lui assigne un PID (program ID) de 1, les suivant ont une valeur dans leur ordre d'exécution.\newline
 
-On peut voir chaque programme en cours et ses enfants et récurivement avec la commande \textit{pstree} ou \textit{ps --forest}. Pour afficher l'ensemble des programmes en cours, on utilise la commande \textit{ps aux} ou \textit{ps -ef}. Pour voir les programmes en cours d'un autre utilisateur (si on fait partie du groupe root, on peut utiliser la commande suivante : \textit{ps -u <login>}.\newline
+\noindent On peut voir chaque programme en cours et ses enfants et récurivement avec la commande \textit{pstree} ou \textit{ps --forest}. Pour afficher l'ensemble des programmes en cours, on utilise la commande \textit{ps aux} ou \textit{ps -ef}. Pour voir les programmes en cours d'un autre utilisateur (si on fait partie du groupe root, on peut utiliser la commande suivante : \textit{ps -u <login>}.\newline
 
 On peut aussi utiliser la commande \textit{top}:
 \begin{itemize}
@@ -335,7 +335,7 @@ Pour changer les permissions de manière générale, on utilise la commande \tex
     \includegraphics[scale=0.3]{Images/Permissions.png}
 \end{figure}
 
-Avec l'écriture numérique, il suffit de faire : \textit{chown value1value2value2 file} avec value1,2 et 3 la valeur des permissions pour, respectivement, l'owner, le group owner et les autres, sachant que :
+Avec l'écriture numérique, il suffit de faire : \textit{chown value1value2value3 file} avec value1,2 et 3 la valeur des permissions pour, respectivement, l'owner, le group owner et les autres, sachant que :
 \begin{itemize}
     \item r = 4
     \item w = 2

@@ -76,6 +76,7 @@ public class NestingInterfaces {
   }	
   public static void main(String[] args) {
     A a = new A();
+    // Pas compris non plus
     // Can't access A.D:
     //! A.D ad = a.getD();
     // Doesn't return anything but A.D:
@@ -87,3 +88,7 @@ public class NestingInterfaces {
     a2.receiveD(a.getD());
   }
 } ///:~
+
+
+
+

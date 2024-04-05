@@ -23,12 +23,13 @@ public class Sequence {
   }
   public Selector selector() {
     return new SequenceSelector();
+    // comment renvoyer un new SequenceSelector alors que c'est une classe privée ?
   }	
   public static void main(String[] args) {
     Sequence sequence = new Sequence(10);
     for(int i = 0; i < 10; i++)
       sequence.add(Integer.toString(i));
-    Selector selector = sequence.selector();
+    Selector selector = sequence.selector(); // ???
     while(!selector.end()) {
       System.out.print(selector.current() + " ");
       selector.next();

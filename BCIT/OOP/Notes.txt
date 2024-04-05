@@ -121,4 +121,25 @@ Expressiosn lambdas :
 Inner classes and interfaces :
 	-  A static inner class does not require an outer class object to create an object of a nested class
 	- Static inner class objects cannot access non-static outer class objects
-	- 	
+	- les classes internes anonymes :
+		* ce pattern là :
+			interface/(abstract) class ClassA{
+				// méthodes ou non
+				foo(){code0}/;
+			}
+			
+			ClassA objetA = new ClassA(){
+				// fonctions internes anonymes
+				// ne pourront être appelées qu'avec objetA
+				foo(){
+					// code1 here
+				}
+				foo2(){
+					// code2 here
+				}
+			}
+		* doivent étendre/implémenter une classe déjà existante
+		* pour appeler foo (code1) il faut faire objetA.foo()
+		* on ne peut pas accéder à objetA.foo2() car foo2 n'est pas déclarée dans ClassA; on doit l'appeler en Class
+		* on ne peut pas utiliser le keyword super dans une classe interne anonyme (erreur de compil)
+		* 
