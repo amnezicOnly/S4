@@ -113,7 +113,7 @@ Race conditions, locks et deadlocks :
 		--> synchronized (objectName) à l'intérieur de la fonction : void foo(){ synchronized(objectName){...} }
 	- revoir .notitfy(All)(), et les deadlocks
 
-Expressiosn lambdas :
+Expressions lambdas :
 	- à partir du moment où on a une interface :
 		--> <interface> <nomObjet> = ([liste des paramètres]) -> <ce que ça fait et retourne>
 
@@ -143,3 +143,7 @@ Inner classes and interfaces :
 		* on ne peut pas accéder à objetA.foo2() car foo2 n'est pas déclarée dans ClassA; on doit l'appeler en Class
 		* on ne peut pas utiliser le keyword super dans une classe interne anonyme (erreur de compil)
 		* 
+	- pour créer un objet objet d'une classe2 à l'intérieur d'une classe1 :
+		* mettre en statique la classe2
+		* classe1.classe objet = new class1.classe2();
+	- pour appeler un méthode de class2 : objet.method();

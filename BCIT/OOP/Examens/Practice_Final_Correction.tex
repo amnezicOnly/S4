@@ -74,7 +74,7 @@
 %% but you can add nothing between the brackets to leave it blank
 \author{}
 \date{}
-\title{Practice Final Correction}
+\title{Practice Final}
 
 \begin{document}
 \maketitle
@@ -118,9 +118,9 @@ public class Car implements Runnable {
  	}
 }
 \end{lstlisting}
-	\item In the above code, where might be race condition(s) occur? Speciafically which line(s) of the code ?
-	\item Where and how should the race condition(s) be prevented?
-	\item What is a deadlock? Can one occur in the above code ever? Why or why not?
+	\item In the above code, where might be race condition(s) occur? Specifically which line(s) of the code ?\newline
+	\item Where and how should the race condition(s) be prevented?\newline
+	\item What is a deadlock? Can one occur in the above code ever? Why or why not?\newline
 \newpage
 \begin{lstlisting}
 class Examine{
@@ -148,8 +148,8 @@ class Examine{
  	}
 }
 \end{lstlisting}
-	\item In the above code is there a race condition? If yes, what is the race condition and where exactly is it (demonstrate the race via code walk thru)? 
-	\item Would the code when run cause an Exception? 
+	\item In the above code is there a race condition? If yes, what is the race condition and where exactly is it (demonstrate the race via code walk thru)?\newline
+	\item Would the code when run cause an Exception?\newline
 \newpage
 \begin{lstlisting}
 class Grain {
@@ -176,7 +176,7 @@ public class CovariantReturn {
   	}
 }
 \end{lstlisting}
-	\item Is the method "process()" in WheatMill in error?
+	\item Is the method "process()" in WheatMill in error?\newline
 	\newpage
 \begin{lstlisting}
 class Egg2 {
@@ -203,6 +203,8 @@ public class BigEgg2 extends Egg2 {
 }
 \end{lstlisting}
 	\item Give the output for the above:
+\begin{lstlisting}
+\end{lstlisting}
 	\newpage
 	
 \begin{lstlisting}
@@ -234,7 +236,8 @@ public class TestParcel {
   	}
 }
 \end{lstlisting}
-	\item The above class has an error on the line indicated. Explain why there is an error.\newpage
+	\item The above class has an error on the line indicated. Explain why there is an error.\newline
+	\newpage
 	
 \begin{lstlisting}
 public class Wrapping {
@@ -254,7 +257,9 @@ public class Parcel {
   	}
 }
 \end{lstlisting}
-	\item In the above classes provide the missing code.\newline\newline\newline\newline\newline\newline
+	\item In the above classes provide the missing code.
+\begin{lstlisting}
+\end{lstlisting}
 	\item Given an ArryList is-a List and a List is-a Collection is the following true? ArrayList<String> is-a Collection<String>\newline\newline
 	\item Given interface FooBar<X,Y> extends Silly<X> which of the following ARE subtypes of Silly<String>?
 	\begin{enumerate}
@@ -267,12 +272,13 @@ public class Parcel {
 	\end{enumerate}
 	\item Given
 	\begin{quote}
-		static \textless T\textgreater T pick(T a, T b){return b}
+		static \textless T\textgreater  T pick(T a, T b)$\{$return b$\}$
 	\end{quote}
 	Is the following an error or not? If an error, explain why, if not give the return type.
 	\begin{quote}
 		Collection c = pick(new Set\textless String\textgreater (), new Stack\textless String\textgreater());
-	\end{quote}\newpage
+	\end{quote}
+	\newpage
 	\item If the code below gives an error explain why, if not explain why.
 \begin{lstlisting}
 public static void addNumbers(List<? super Integer> list){
@@ -311,19 +317,22 @@ class Example{
    			e.close();
    			System.out.println("after closing file");
   		}
-  	System.out.println("end of program");
+  		System.out.println("end of program");
 	}
 }
 \end{lstlisting}
 	\item Give the output. State any exception(s) that are displayed on exit.
+\begin{lstlisting}
+\end{lstlisting}
 	\newpage
 \begin{lstlisting}
 class LanguageException extends Exception{}
-	class JavaException extends LanguageException{}
-	public class Test {
- 		public void a() throws LanguageException{
-  			throw new LanguageException();
- 		}
+class JavaException extends LanguageException{}
+
+public class Test {
+ 	public void a() throws LanguageException{
+  		throw new LanguageException();
+ 	}
  	public void b() throws JavaException{
   		throw new JavaException();
  	}
@@ -341,6 +350,8 @@ class LanguageException extends Exception{}
 \end{lstlisting}
 	\item Give the output. State any exception(s) that are displayed on exit.
 \begin{lstlisting}
+\end{lstlisting}
+\begin{lstlisting}
 public class Out {
  	int x;
  	static class In {
@@ -353,8 +364,10 @@ public class Out {
  	}
 }
 \end{lstlisting}
-	\item What is the error in the above class? Why?
+	\item What is the error in the above class? Why? \newline
 	\item Give the code to create an "In" object in main()
+\begin{lstlisting}
+\end{lstlisting}
 	\newpage
 \begin{lstlisting}
 class Cat {
@@ -383,6 +396,8 @@ public class Lion extends Cat {
 }
 \end{lstlisting}
 	\item Give the output
+\begin{lstlisting}
+\end{lstlisting}
 \begin{lstlisting}
 class Cat {
  	Kitten k;
@@ -413,7 +428,9 @@ public class Lion extends Cat {
  	}
 }
 \end{lstlisting}
-	\item Give the output or if there Is an error, fix it and give the output.
+	\item Give the output or if there is an error, fix it and give the output.
+\begin{lstlisting}
+\end{lstlisting}
 \begin{lstlisting}
 class A {
  	private int x;
@@ -431,7 +448,7 @@ class A {
  	}
 }
 \end{lstlisting}
-	\item Examine the code above. Is there an error? If so what is the error and why? If not, explain
+	\item Examine the code above. Is there an error? If so what is the error and why? If not, explain.\newline
 \begin{lstlisting}
 class A{
  	class B{
@@ -442,7 +459,11 @@ class A{
 	}
 }
 \end{lstlisting}
-	\item Give the code necessary to create a C object in main()
+	\item Give the code necessary to create a C object in main().
+\begin{lstlisting}
+public static void main(String[] args){
+}
+\end{lstlisting}
 \begin{lstlisting}
 class X {
  	int z = 5;
@@ -454,8 +475,12 @@ class X {
  	}
 }
 \end{lstlisting}
-	\item What is the an error in the code above?
-	\item If the error was removed in the above code, give the  code to create a Y object
+	\item What is the an error in the code above?\newline
+	\item If the error was removed in the above code, give the  code to create a Y object.
+\begin{lstlisting}
+public static void main(String[] args){
+}
+\end{lstlisting}
 	\newpage
 \begin{lstlisting}
 class X{
@@ -468,7 +493,7 @@ class X{
  	}
 }
 \end{lstlisting}
-	\item For the above code give the places where a race condition exists.
+	\item For the above code give the places where a race condition exists.\newline
 \begin{lstlisting}
 class A implements Runnable {
  	ReentrantLock lock = new ReentrantLock();
@@ -508,7 +533,7 @@ public class Test {
  	}
 }
 \end{lstlisting}
-	\item Does the above code protect the shared List? Why or why not?
+	\item Does the above code protect the shared List? Why or why not?\newline
 	\newpage
 \begin{lstlisting}
 public class LTest {
@@ -522,7 +547,11 @@ public class LTest {
  	}
 }
 \end{lstlisting}
-	\item Write the above using a Lambda expression\newpage
+	\item Write the above using a Lambda expression.
+\begin{lstlisting}
+
+\end{lstlisting}	
+\newpage
 \begin{lstlisting}
 public class Table{
  	enum TYPE {MULT, ADD}
@@ -544,5 +573,7 @@ public class Table{
 }
 \end{lstlisting}
 	\item Modify to use a Lambda expression and give the expression to get the same output as the code above with your new display() method.
+\begin{lstlisting}
+\end{lstlisting}
 \end{enumerate}
 \end{document}

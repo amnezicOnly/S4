@@ -118,9 +118,12 @@ public class Car implements Runnable {
  	}
 }
 \end{lstlisting}
-	\item In the above code, where might be race condition(s) occur? Specifically which line(s) of the code ?
-	\item Where and how should the race condition(s) be prevented?
-	\item What is a deadlock? Can one occur in the above code ever? Why or why not?
+	\item In the above code, where might be race condition(s) occur? Specifically which line(s) of the code ?\newline
+	Yes, there are race conditions : on lines 26 and 27 there are two consecutives threads ran without join them before so t1 and t2 run at the same time. 
+	\item Where and how should the race condition(s) be prevented?\newline
+	We should put try catch block with t1.start and t1.join then a try catch block with t2.start and t2.join.
+	\item What is a deadlock? Can one occur in the above code ever? Why or why not?\newline
+	???
 \newpage
 \begin{lstlisting}
 class Examine{
@@ -148,8 +151,10 @@ class Examine{
  	}
 }
 \end{lstlisting}
-	\item In the above code is there a race condition? If yes, what is the race condition and where exactly is it (demonstrate the race via code walk thru)? 
-	\item Would the code when run cause an Exception? 
+	\item In the above code is there a race condition? If yes, what is the race condition and where exactly is it (demonstrate the race via code walk thru)?\newline
+	There is a race condition because there are two threads (t1 and t2) run at the same time (lines 19 and 20).
+	\item Would the code when run cause an Exception?\newline
+	Yes, because, by calling the run() method in the launch method, we try to run a thread without starting it.
 \newpage
 \begin{lstlisting}
 class Grain {
@@ -176,7 +181,8 @@ public class CovariantReturn {
   	}
 }
 \end{lstlisting}
-	\item Is the method "process()" in WheatMill in error?
+	\item Is the method "process()" in WheatMill in error?\newline
+	??? Pourquoi il n'y a pas une erreur à la ligne 19 parce que tous les Mill ne sont pas des WheatMill
 	\newpage
 \begin{lstlisting}
 class Egg2 {
@@ -203,6 +209,12 @@ public class BigEgg2 extends Egg2 {
 }
 \end{lstlisting}
 	\item Give the output for the above:
+\begin{lstlisting}
+$ New Egg2()
+$ BigEgg2.Yolk()
+$ Egg2.Yolk.f()
+\end{lstlisting}
+	\noindent Ne pas oublier que on appelle d'abord le constructeur des parents de la classe courante avant d'appeler le constructeur de la classe courante ; On a une variable qui appelle un constructeur dans la classe (à revoir parce que changer la ligne de la définition de la variable ne change rien : pourquoi ?)
 	\newpage
 	
 \begin{lstlisting}
@@ -234,7 +246,14 @@ public class TestParcel {
   	}
 }
 \end{lstlisting}
-	\item The above class has an error on the line indicated. Explain why there is an error.\newpage
+	\item The above class has an error on the line indicated. Explain why there is an error.\newline
+	(revoir les inner et outer classes statiques ou non : ) On essaye d'accéder au constructeur d'un objet qui est une classe privée sans utiliser un objet de cette classe.\newline
+	Deux solutions :
+	\begin{itemize}
+		\item mettre PContents en statique puis Parcel4.PContents pc = new Parcel4.PContents();
+		\item créer un objet Contents à partir de la méthode contents() puis cast l'objet en Parcel4.PContents
+	\end{itemize}
+	\newpage
 	
 \begin{lstlisting}
 public class Wrapping {
@@ -254,9 +273,12 @@ public class Parcel {
   	}
 }
 \end{lstlisting}
-	\item In the above classes provide the missing code.\newline\newline\newline\newline\newline\newline
+	\item In the above classes provide the missing code.
+\begin{lstlisting}
+// Passe
+\end{lstlisting}
 	\item Given an ArryList is-a List and a List is-a Collection is the following true? ArrayList<String> is-a Collection<String>\newline\newline
-	\item Given interface FooBar<X,Y> extends Silly<X> which of the following ARE subtypes of Silly<String>?
+	\item Given interface FooBar<X,Y> extends Silly<X> which of the following ARE subtypes of Silly<String>? b and d (X has to be String and Y has to be not String)
 	\begin{enumerate}
 		\item FooBar<String, String>
 		\item FooBar<String, Integer>
@@ -267,12 +289,14 @@ public class Parcel {
 	\end{enumerate}
 	\item Given
 	\begin{quote}
-		static \textless T\textgreater T pick(T a, T b){return b}
+		static \textless T\textgreater  T pick(T a, T b)$\{$return b$\}$
 	\end{quote}
 	Is the following an error or not? If an error, explain why, if not give the return type.
 	\begin{quote}
 		Collection c = pick(new Set\textless String\textgreater (), new Stack\textless String\textgreater());
-	\end{quote}\newpage
+	\end{quote}
+	\noindent There is an error because the two arguments of pick() method have to be the same type but Set<> and Stack<> aren't the same type.
+	\newpage
 	\item If the code below gives an error explain why, if not explain why.
 \begin{lstlisting}
 public static void addNumbers(List<? super Integer> list){
@@ -283,6 +307,7 @@ public static void addNumbers(List<? super Integer> list){
 // in other code:
 addNumbers(new ArrayList<Number>());
 \end{lstlisting}
+	\noindent The code above doesn't give an error because an ArrayList is a List and ? super Integer includes Number.
 	\item If the code below gives an error explain why, if not explain why.
 \begin{lstlisting}
 void swapFirst(List<? extends Number>listA, List<? extends Number> listB){
@@ -291,6 +316,7 @@ void swapFirst(List<? extends Number>listA, List<? extends Number> listB){
 	listB.set(0,temp);
 }
 \end{lstlisting}
+\noindent There is no compile-time error because we only deal with Number objects.
 \begin{lstlisting}
 class Example{
  	public void open() throws FileNotFoundException{
@@ -311,11 +337,17 @@ class Example{
    			e.close();
    			System.out.println("after closing file");
   		}
-  	System.out.println("end of program");
+  		System.out.println("end of program");
 	}
 }
 \end{lstlisting}
 	\item Give the output. State any exception(s) that are displayed on exit.
+\begin{lstlisting}
+$ attempting to open file
+$ finally
+$ attempting to close file
+$ error CloseException
+\end{lstlisting}
 	\newpage
 \begin{lstlisting}
 class LanguageException extends Exception{}
@@ -342,6 +374,10 @@ public class Test {
 \end{lstlisting}
 	\item Give the output. State any exception(s) that are displayed on exit.
 \begin{lstlisting}
+// Reponse a la question 16
+$ finished main
+\end{lstlisting}
+\begin{lstlisting}
 public class Out {
  	int x;
  	static class In {
@@ -354,8 +390,14 @@ public class Out {
  	}
 }
 \end{lstlisting}
-	\item What is the error in the above class? Why?
+	\item What is the error in the above class? Why? \newline
+	The error is because we try to modify the value of Out.x with the Out.In.SetX() method. Why?
 	\item Give the code to create an "In" object in main()
+\begin{lstlisting}
+public static void main(String[] args){
+	Out.In in = new Out.In();
+}
+\end{lstlisting}
 	\newpage
 \begin{lstlisting}
 class Cat {
@@ -384,6 +426,12 @@ public class Lion extends Cat {
 }
 \end{lstlisting}
 	\item Give the output
+\begin{lstlisting}
+// Reponse question 19 (code au dessus)
+$ kitten
+$ cat
+$ Lion
+\end{lstlisting}
 \begin{lstlisting}
 class Cat {
  	Kitten k;
@@ -414,7 +462,15 @@ public class Lion extends Cat {
  	}
 }
 \end{lstlisting}
-	\item Give the output or if there Is an error, fix it and give the output.
+	\item Give the output or if there is an error, fix it and give the output.
+\begin{lstlisting}
+// Reponse question 20 (code au dessus)
+$ cat
+$ Lion
+$ young Lion
+// Faux : on ne peut pas mettre un Lion.Kitten dans un Cat.Kitten
+\end{lstlisting}
+\noindent To fix it, we have to make the Cat.Kitten class static, then we create a new Cat.Kitten() in Lion constructor, then the output is cat, Lion, kitten
 \begin{lstlisting}
 class A {
  	private int x;
@@ -432,7 +488,8 @@ class A {
  	}
 }
 \end{lstlisting}
-	\item Examine the code above. Is there an error? If so what is the error and why? If not, explain
+	\item Examine the code above. Is there an error? If so what is the error and why? If not, explain. \newline
+	First, in class A, the method setZ() set z attribute to zz value but there is no z atribute and in setX() of class C, we set x attribute to xx value but x is a private attribute of class A so it's not accessible from class C.
 \begin{lstlisting}
 class A{
  	class B{
@@ -443,7 +500,12 @@ class A{
 	}
 }
 \end{lstlisting}
-	\item Give the code necessary to create a C object in main()
+	\item Give the code necessary to create a C object in main().
+\begin{lstlisting}
+public static void main(String[] args){
+	// Passe
+}
+\end{lstlisting}
 \begin{lstlisting}
 class X {
  	int z = 5;
@@ -455,8 +517,15 @@ class X {
  	}
 }
 \end{lstlisting}
-	\item What is the an error in the code above?
-	\item If the error was removed in the above code, give the  code to create a Y object
+	\item What is the an error in the code above?\newline
+	We can't access to z attribute in class Y.
+	\item If the error was removed in the above code, give the  code to create a Y object.
+\begin{lstlisting}
+public static void main(String[] args){
+ 		X x = new X();
+ 		int value = X.Z.getZ(x);
+}
+\end{lstlisting}
 	\newpage
 \begin{lstlisting}
 class X{
@@ -469,7 +538,8 @@ class X{
  	}
 }
 \end{lstlisting}
-	\item For the above code give the places where a race condition exists.
+	\item For the above code give the places where a race condition exists.\newline
+	The race condition exist on the if(y\textless 5) because we modify the value of y. If two threads access at the same time to the y value and y==4, y will be incremented by the number of current threads on it. So, at the end of the calls of foo, y might be greater or equal to 5.
 \begin{lstlisting}
 class A implements Runnable {
  	ReentrantLock lock = new ReentrantLock();
@@ -509,7 +579,8 @@ public class Test {
  	}
 }
 \end{lstlisting}
-	\item Does the above code protect the shared List? Why or why not?
+	\item Does the above code protect the shared List? Why or why not?\newline
+	Passe
 	\newpage
 \begin{lstlisting}
 public class LTest {
@@ -523,7 +594,11 @@ public class LTest {
  	}
 }
 \end{lstlisting}
-	\item Write the above using a Lambda expression\newpage
+	\item Write the above using a Lambda expression.
+\begin{lstlisting}
+
+\end{lstlisting}	
+\newpage
 \begin{lstlisting}
 public class Table{
  	enum TYPE {MULT, ADD}
