@@ -44,6 +44,7 @@ public class Game{
 		setCards();
 		distributionCartes();
 		setSixCards();
+		return true;
 	}
 	
 	<T> void swap(ArrayList<T> liste, int i, int j){
@@ -62,7 +63,7 @@ public class Game{
 	void game(){
 		boolean ready = firstLap();
 		int stillPlaying = players.size();
-		Card joker = new Card(1,3);
+		Card joker = new Card(Color.values()[1],Range.values()[0]);
 		ArrayList<Integer> jouables;
 		// tant qu'il y a au moins 2 joueurs
 		while(stillPlaying>1){
@@ -79,21 +80,15 @@ public class Game{
 				}
 				// Sinon : il reprend toutes les cartes de la liste current (la pile) et donc ne peut pas avoir fini
 				if(jouables.size()==0){
-					players.get(i).getCards(current);
-					players.get(i).checkCarre();
-					current.clear();
+					// TODO
 				}
 				else{
-					// Si oui, il pose la carte qu'il a choisi (pour l'instant simulé par un random
-					current.add((players.get(i)).throwCard(random.nextInt(jouables.size())));
+					// Si oui, il pose la carte qu'il a choisi (pour l'instant simulé par un random)
+					int index = random.nextInt(jouables.size());
+					// Si la carte posée est un 10, on jette le tas et on refait jouer le joueur actuel
 					if(current.get(current.size()-1).getRange()==10){
-						// Si c'est un 10
-						// on jette le tas
 						current.clear();
 						// on fait rejouer le joueur qui vient de poser le 10 si c'est possible
-						type = players.get(i).getType();
-						if(type<3)
-							jouables = players.get(i).couldPlay(joker,type);
 					}
 					// S'il n'a plus de carte, cela veut dire qu'il ne joue plus
 					if(players.get(i).hasFinished()){

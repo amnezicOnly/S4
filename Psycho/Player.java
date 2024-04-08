@@ -56,9 +56,9 @@ public class Player{
 	protected void addInMainCard(Card card){
 		int i = 0;
 		while(i<main.size()){
-			while(i<main.size() && main.get(i).getRange()<card.getRange())
+			while(i<main.size() && Card.compare(main.get(i),card)<0)
 				i++;
-			while(i<main.size() && main.get(i).getRange()==card.getRange() && main.get(i).getColor()<=card.getColor())
+			while(i<main.size() && Card.compare(main.get(i),card)<0 && main.get(i).getColor()<=card.getColor())
 				i++;
 			break;
 		}
