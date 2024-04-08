@@ -119,7 +119,7 @@ Expressions lambdas :
 
 
 Inner classes and interfaces :
-	-  A static inner class does not require an outer class object to create an object of a nested class
+	- A static inner class does not require an outer class object to create an object of a nested class
 	- Static inner class objects cannot access non-static outer class objects
 	- les classes internes anonymes :
 		* ce pattern là :
@@ -147,3 +147,12 @@ Inner classes and interfaces :
 		* mettre en statique la classe2
 		* classe1.classe objet = new class1.classe2();
 	- pour appeler un méthode de class2 : objet.method();
+	- Si on a la configuration suivante :
+		class A{
+			T foo(){}
+		}
+		class B extends A{
+			U foo(){}
+		}
+		--> U doit être égal à T, une méthode qui override cette méthode de sa classe parente ne pas avoir un type de retour différent de celui de la même méthode dans la classe parente
+	- Inner classes may be private or protected while regular classes may only be public or package

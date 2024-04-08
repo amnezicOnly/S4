@@ -182,7 +182,8 @@ public class CovariantReturn {
 }
 \end{lstlisting}
 	\item Is the method "process()" in WheatMill in error?\newline
-	??? Pourquoi il n'y a pas une erreur à la ligne 19 parce que tous les Mill ne sont pas des WheatMill
+	??? Pourquoi il n'y a pas une erreur à la ligne 19 parce que tous les Mill ne sont pas des WheatMill.\newline
+	Le type de retour de Wheat.process() et de Mill.process() sont différents (problème de type de retour covariant (cf ligne 157 de Notes.txt)) donc on doit modifier le type de retour d'une des deux méthodes, donc ici on devrait mettre dans la classe WheatMill : Grain process${$ ... $}$
 	\newpage
 \begin{lstlisting}
 class Egg2 {
