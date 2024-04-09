@@ -119,8 +119,11 @@ public class Car implements Runnable {
 }
 \end{lstlisting}
 	\item In the above code, where might be race condition(s) occur? Specifically which line(s) of the code ?\newline
+	The race condition is on line 10 because multiple threads try to access to data and Race.MAX at the same time and try to increment it at the same time. Example : if data = 4, two threads may add one to data at the sale time then data = 6 but shouldn't be greater than 5.
 	\item Where and how should the race condition(s) be prevented?\newline
+	We can block the method by synchronized them.
 	\item What is a deadlock? Can one occur in the above code ever? Why or why not?\newline
+	A deadlock is a situation where a thread threadA wait a other thread threadB to give a signal, but theadB wait for threadA to give a signal (endless loop).
 \newpage
 \begin{lstlisting}
 class Examine{
@@ -149,6 +152,7 @@ class Examine{
 }
 \end{lstlisting}
 	\item In the above code is there a race condition? If yes, what is the race condition and where exactly is it (demonstrate the race via code walk thru)?\newline
+	
 	\item Would the code when run cause an Exception?\newline
 \newpage
 \begin{lstlisting}
@@ -177,6 +181,7 @@ public class CovariantReturn {
 }
 \end{lstlisting}
 	\item Is the method "process()" in WheatMill in error?\newline
+	No error with recent versions of Java.
 	\newpage
 \begin{lstlisting}
 class Egg2 {

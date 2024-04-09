@@ -112,6 +112,23 @@ Race conditions, locks et deadlocks :
 		--> synchronized au début de la déclaration de la fonction : synchronized void foo(){}
 		--> synchronized (objectName) à l'intérieur de la fonction : void foo(){ synchronized(objectName){...} }
 	- revoir .notitfy(All)(), et les deadlocks
+	- on peut synchroniser sur les objets directement ou sur une classe en particulier :
+		* sur l'objet : synchronized <return type> foo() --> obj.synchronizedMethod()
+		* sur la classe : static synchronized <return type> foo() --> MyClass.obj.staticSynchronizedMethod()
+			--> ne compilera pas si on l'appelle avec un objet
+	- myObject.lock() et myObject.unlock() permet de faire comme synchronized mais en permettant de décider exactement quand lock et unlock l'objet
+	- notion de tryLock à revoir
+	- .wait() :
+		* La méthode wait() est appelée sur un objet dans le contexte d'un bloc synchronized.
+		* Elle met le thread appelant en attente (suspendu) jusqu'à ce qu'un autre thread appelle notify() ou notifyAll() sur le même objet.
+		* Le thread doit posséder le verrou sur l'objet avant d'appeler wait().
+	- .notify() et .notifyAll() :
+		* Les méthodes notify() et notifyAll() sont également appelées sur un objet dans le contexte d'un bloc synchronized.
+		* notify() réveille un seul thread en attente (suspendu) sur l'objet, tandis que notifyAll() réveille tous les threads en attente sur l'objet.
+		* Ces méthodes ne libèrent pas le verrou sur l'objet.
+	- on ne peut lock() que des objets
+	- revoir Restaurant.java pour retravailler la classe ExecutorService
+	- revoir les sémaphores
 
 Expressions lambdas :
 	- à partir du moment où on a une interface :
