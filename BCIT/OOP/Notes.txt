@@ -61,6 +61,7 @@ Type Generic :
     		return val;
 	}
 	get(5) // c'est la méthode int get qui sera appelée car la méthode <T extends Number> T get n'accepte pas de int directement
+	- avec super on peut juste rajouter des éléments et avec extends on peut juste récupérer des éléments
 
 
 Collections :

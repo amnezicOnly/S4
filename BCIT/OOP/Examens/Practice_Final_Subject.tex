@@ -53,7 +53,7 @@
 	showspaces=false,
 	showtabs=false,
 	showstringspaces=false,
-	numbers=left,
+	%%numbers=left,
 	language=Java,
 	basicstyle=\footnotesize\ttfamily,
 	frame=single,
@@ -84,7 +84,7 @@
 %%\tableofcontents
 %%\newpage
 \begin{enumerate}
-\begin{lstlisting}
+\begin{lstlisting}[numbers=left]
 class Race{
 	public static final int MAX = 5;
  	public static final int MIN = 1;
@@ -122,7 +122,7 @@ public class Car implements Runnable {
 	\item Where and how should the race condition(s) be prevented?
 	\item What is a deadlock? Can one occur in the above code ever? Why or why not?
 \newpage
-\begin{lstlisting}
+\begin{lstlisting}[numbers=left]
 class Examine{
  	static int[] data = new int[10];
  	public static void dance(int value){
@@ -136,7 +136,8 @@ class Examine{
   		return new Runnable(){
    			public void run(){
     				dance(id);
-   		}
+   			}
+ 		};
  	}
  	public static void main(String[] args){
   		Thread t1 = new Thread(launch(1));
@@ -148,8 +149,8 @@ class Examine{
  	}
 }
 \end{lstlisting}
-	\item In the above code is there a race condition? If yes, what is the race condition and where exactly is it (demonstrate the race via code walk thru)? 
-	\item Would the code when run cause an Exception? 
+	\item In the above code is there a race condition? If yes, what is the race condition and where exactly is it (demonstrate the race via code walk thru)?\newline
+	\item Would the code when run cause an Exception?
 \newpage
 \begin{lstlisting}
 class Grain {
@@ -181,19 +182,19 @@ public class CovariantReturn {
 \begin{lstlisting}
 class Egg2 {
   	protected class Yolk {   
-    		public Yolk() { print("Egg2.Yolk()"); }       
-    		public void f() { print("Egg2.Yolk.f()");}
+    		public Yolk() { System.out.println("Egg2.Yolk()"); }       
+    		public void f() { System.out.println("Egg2.Yolk.f()");}
   	}
   	private Yolk y = new Yolk();
-  	public Egg2() { print("New Egg2()"); }
+  	public Egg2() { System.out.println("New Egg2()"); }
   	public void insertYolk(Yolk yy) { y = yy; }
   	public void g() { y.f(); }
 } 
 
 public class BigEgg2 extends Egg2 {
   	public class Yolk extends Egg2.Yolk {
-    		public Yolk() { print("BigEgg2.Yolk()"); }
-    		public void f() { print("BigEgg2.Yolk.f()"); }
+    		public Yolk() { System.out.println("BigEgg2.Yolk()"); }
+    		public void f() { System.out.println("BigEgg2.Yolk.f()"); }
   	}
   	public BigEgg2() { insertYolk(new Yolk()); }
   	public static void main(String[] args) {
@@ -203,7 +204,6 @@ public class BigEgg2 extends Egg2 {
 }
 \end{lstlisting}
 	\item Give the output for the above:
-	\newpage
 	
 \begin{lstlisting}
 class Parcel4 {
@@ -214,7 +214,7 @@ class Parcel4 {
   	protected class PDestination implements Destination {
     		private String label;
     		private PDestination(String whereTo) {
-      			label = whereTo;
+      			label = "whereTo";
     		}
     		public String readLabel() { return label; }
   	}
@@ -234,7 +234,8 @@ public class TestParcel {
   	}
 }
 \end{lstlisting}
-	\item The above class has an error on the line indicated. Explain why there is an error.\newpage
+	\item The above class has an error on the line indicated. Explain why there is an error.
+	\newpage
 	
 \begin{lstlisting}
 public class Wrapping {
@@ -254,8 +255,8 @@ public class Parcel {
   	}
 }
 \end{lstlisting}
-	\item In the above classes provide the missing code.\newline\newline\newline\newline\newline\newline
-	\item Given an ArryList is-a List and a List is-a Collection is the following true? ArrayList<String> is-a Collection<String>\newline\newline
+	\item In the above classes provide the missing code.
+	\item Given an ArryList is-a List and a List is-a Collection is the following true? ArrayList\textless String\textgreater is-a Collection\textless String\textgreater
 	\item Given interface FooBar<X,Y> extends Silly<X> which of the following ARE subtypes of Silly<String>?
 	\begin{enumerate}
 		\item FooBar<String, String>
@@ -267,12 +268,13 @@ public class Parcel {
 	\end{enumerate}
 	\item Given
 	\begin{quote}
-		static \textless T\textgreater T pick(T a, T b){return b}
+		static \textless T\textgreater  T pick(T a, T b)$\{$return b$\}$
 	\end{quote}
 	Is the following an error or not? If an error, explain why, if not give the return type.
 	\begin{quote}
 		Collection c = pick(new Set\textless String\textgreater (), new Stack\textless String\textgreater());
-	\end{quote}\newpage
+	\end{quote}
+	\newpage
 	\item If the code below gives an error explain why, if not explain why.
 \begin{lstlisting}
 public static void addNumbers(List<? super Integer> list){
@@ -283,7 +285,7 @@ public static void addNumbers(List<? super Integer> list){
 // in other code:
 addNumbers(new ArrayList<Number>());
 \end{lstlisting}
-	\item If the code below gives an error explain why, if not explain why.
+	\item If the code below gives an error explain why, if not explain why.\newline
 \begin{lstlisting}
 void swapFirst(List<? extends Number>listA, List<? extends Number> listB){
 	Number temp = listA.get(0);
@@ -311,7 +313,7 @@ class Example{
    			e.close();
    			System.out.println("after closing file");
   		}
-  	System.out.println("end of program");
+  		System.out.println("end of program");
 	}
 }
 \end{lstlisting}
@@ -322,7 +324,7 @@ class LanguageException extends Exception{}
 class JavaException extends LanguageException{}
 
 public class Test {
- 	public void a() throws LanguageException{
+	public void a() throws LanguageException{
   		throw new LanguageException();
  	}
  	public void b() throws JavaException{
@@ -414,7 +416,7 @@ public class Lion extends Cat {
  	}
 }
 \end{lstlisting}
-	\item Give the output or if there Is an error, fix it and give the output.
+	\item Give the output or if there is an error, fix it and give the output.
 \begin{lstlisting}
 class A {
  	private int x;
@@ -432,7 +434,7 @@ class A {
  	}
 }
 \end{lstlisting}
-	\item Examine the code above. Is there an error? If so what is the error and why? If not, explain
+	\item Examine the code above. Is there an error? If so what is the error and why? If not, explain. (On a pas corrigé celle là non plus mais je pense que c'est ça)\newline
 \begin{lstlisting}
 class A{
  	class B{
@@ -443,7 +445,8 @@ class A{
 	}
 }
 \end{lstlisting}
-	\item Give the code necessary to create a C object in main()
+	\item Give the code necessary to create a C object in main().
+	\newpage
 \begin{lstlisting}
 class X {
  	int z = 5;
@@ -456,7 +459,7 @@ class X {
 }
 \end{lstlisting}
 	\item What is the an error in the code above?
-	\item If the error was removed in the above code, give the  code to create a Y object
+	\item If the error was removed in the above code, give the  code to create a Y object.
 	\newpage
 \begin{lstlisting}
 class X{
@@ -523,7 +526,8 @@ public class LTest {
  	}
 }
 \end{lstlisting}
-	\item Write the above using a Lambda expression\newpage
+	\item Write the above using a Lambda expression.
+\newpage
 \begin{lstlisting}
 public class Table{
  	enum TYPE {MULT, ADD}
