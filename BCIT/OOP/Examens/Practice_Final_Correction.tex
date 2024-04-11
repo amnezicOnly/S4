@@ -84,7 +84,7 @@
 %%\tableofcontents
 %%\newpage
 \begin{enumerate}
-\begin{lstlisting}[numbers=left]
+\begin{lstlisting}
 class Race{
 	public static final int MAX = 5;
  	public static final int MIN = 1;
@@ -125,7 +125,7 @@ public class Car implements Runnable {
 	\item What is a deadlock? Can one occur in the above code ever? Why or why not?\newline
 	A deadlock is a situation where a thread threadA wait a other thread threadB to give a signal, but threadB wait for threadA to give a signal (endless loop).
 \newpage
-\begin{lstlisting}[numbers=left]
+\begin{lstlisting}
 class Examine{
  	static int[] data = new int[10];
  	public static void dance(int value){

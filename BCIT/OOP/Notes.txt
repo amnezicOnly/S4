@@ -1,72 +1,37 @@
-Exceptions :
-- Throwable n'est pas une sous classe de Erreur
-- n'exécute ce qu'il y a après le finally uniquement si l'erreur envoyé a été catch et qu'il n'y a pas de throw Exception dans le catch/finally
-
 Héritage/Polymorphisme :
-- Quand on crée un objet, appelle les constructeurs de tous ses parents (du plus haut au plus bas)
-- Si un constructeur parent nécessite des arguments, dans le constructeur de la classe courante, il faut appeler super(arguments nécessaires)
 - on peut faire Type1 obj = new Type2() même si la classe Type1 est abstraite, ssi la classe Type2 n'est pas abstraite
-- Une variable final doit être définie lors de sa déclaration ou dans son constructeur au plus tard
-- Une méthode doit avoir un également ou + publique que la condition de cette même méthode dans sa classe parente
-- mot clé final :
-	* si c'est un type primitif (int, string, float...) on ne peut pas changer sa valeur après sa définition
-	* si c'est un objet, on ne peut pas changer sa classe mais on peut changer son/ses attribut(s)
-- quand une classe est final, elle ne peut pas faire hériter
-- on ne peut pas appeler une foncton privée en dehors de sa classe, même avec un super.
-- si une classe A possède un attribut privé, on ne peut pas y accéder/le modifier en dehors de cette classe, même dans une autre classe qui hérite de A (sauf pour les inner class)
+class A {
+    private int x;
 
-Inner classes :
-- si une classe A possède un attribut privé, on peut y accéder/le modifier dans une inner classe A, sans getter/setter
+    class B {
+        private int x;
 
+        class C {
+            int getX() {
+                return x; // Cet x fait référence au champ x de la classe B
+            }
+        }
+    }
+} --> renverra le x de la classe B
 
 Interfaces :
 - Les variables d'une interface doivent être définies et une fois définies elles sont statiques et finales
-- Une classe qui implémente partiellement une interface doit être explicitement abstract
-- On peut avoir un argument dans une fonction qui est un interface mais on ne pourra pas l'utiliser dans cette fonction car ce n'est pas un objet instantiable
 - Une fois définies, les méthodes doivent être explicitement publiques
 
-Polymorphism :
-
-
-Mot clé static :
-- Dans l'ordre, on exécute les variables/méthodes statiques, les constructeurs, et ensuite, dans l'ordre dans le code, les variables et les méthodes classiques
-- Les variables statiques ne sont lues/exécutées qu'une seule fois
-- Une variable finale ne peut pas être NULL
-- Une variable static n'est considérée que si sa classe est appelée
-- Le résultat d'une fonction statique ne peut être qu'un résultat statique et inversement
-
-
-
-- Une méthode final ne peut pas être override
-
-
 Type Generic :
-- On ne peut pas appeler une même classe générique T pour deux classes différentes sur une même ligne de code 
-- On ne peut pas associer une valeur avec un type explicite à une variable générique
 - dans le prototype de la fonction doit apparaître, entre < >, tous les types génériques qui sont demandés en argument (séparés par des virgules si plusieurs)
 	--> il n'est pas nécessaire si le type est déjà défini au niveau de la classe (ex : public class A <T extends Number>)
 - si on utilise des types qui ont des héritage, il faut faire <T extends A> ce qui va associer à T toutes les classes héritées de A (direct ou indirect) et A elle même
-	--> <? extends A> permet d'utiliser toutes les sous-classes de A mais pas A lui même
-- on ne peut pas mettrer les types primitifs entre crochets : <int>,<char>... ne vont pas fonctionner, mais on peut utiliser <String>
-- un type générique peut avoir plusieurs upper bounds : il faudra l'exprimer comme ça : <T extends Class & Interface1 & ... & InterfaceN> (toujours la classe (héritance simple en java) avant les interfaces, sinon erreur lors de la compilation)
+	--> <? extends A> permet d'utiliser toutes les sous-classes de A mais pas A lui même ???
 - Une classe normale peut implémenter une interface générique et une classe générique peut implémenter une interface classique
-- une classe/interface générique peut avoir plusieurs méthodes qui portent le même nom si et seulement si leur signature sont toutes différentes
+- une classe/interface générique peut avoir plusieurs méthodes qui portent le même nom ssi leur signature sont toutes différentes
 - une classe normale peut contenir des méthodes génériques et inversement
-- dans ce cas là :
-	public <T extends Number> T get(T val){
-    		return val;
-	}
-
-	public int get(int val){
-    		return val;
-	}
-	get(5) // c'est la méthode int get qui sera appelée car la méthode <T extends Number> T get n'accepte pas de int directement
-	- avec super on peut juste rajouter des éléments et avec extends on peut juste récupérer des éléments
+- <? extends T> : Vous pouvez obtenir des éléments du conteneur mais vous ne pouvez pas y ajouter de nouveaux éléments.
+- <? super T> : Vous pouvez ajouter des éléments au conteneur mais vous ne pouvez pas garantir le type spécifique que vous pouvez obtenir de ce conteneur.
 
 
 Collections :
     - Si on copie une array qui contient des objets, on fera simplement une copie des références des objets, donc pas de nouveaux objets créés
-    - (ListTest.java : 27) liste1.addAll(liste2) ajoute tous les éléments de la liste 2 dans la liste 1
     - On ne peut pas utiliser de boucle for each si on compte modifier la liste. On peut par contre utiliser :
         - une boucle for ou while avec un index int
         - utiliser un objet Iterator (on ne peut pas les utiliser sur des tableaux)
@@ -76,91 +41,37 @@ Collections :
         while(iterator.hasNext() / iterator.hasPrevious){
             TYPE elt = iterator.next()/iterator.previous();
             // fonction de la boucle
-        }
-    - See UsingToArray.java to see how to convert an array to a List. Note that the list returned by the Array class does not allow add, remove, etc. operations (just set()).
-    - queue.peek() retourne l'élément le plus petit de queue (cf PriorityQueue)
-    - Dans Java, la classe Collections est une classe utilitaire fournie dans le package java.util. Elle contient diverses méthodes statiques pour effectuer des opérations sur des collections, telles que la recherche, le tri, la manipulation, etc
-    - 
-    
-    - revoir les slides 4, 
-    
-    - on ne peut pas créer de Set, juste des sous classes de set : Set<TYPE> set = new SOUSCLASSE<>();
-    - si on ajoute un élément déjà existant dans un set, ça ne fait juste rien
-    
+        }    
     
 Threads :
 	- la classe qui les utilise doit avoir extends Thread implements Runnable
-	- pour créer un Thread : <class name> <thread name> = new <class name>();
+	- pour créer un Thread :
+		* si on étend Thread : Thread t = new Thread() puis t.start()
+		* si on implémente Runnable: on crée un objet Runnable qu'on passe en argument quand on crée un objet Thread
 	- pour lancer un thread : <thread name>.start() : lance et exécute la méthode run() de <thread name>
 		--> pour éviter qu'il se chevauche avec d'autres Threads, on peut utiliser la méthode <thread name>.join() jsute après le lancement du thread
 	- la classe Runnable ne permet pas de renvoyer des valeurs tandis que la classe Callable oui :
 		--> pour les lancer, on utiliser la méthode .call() à la place de start() mais fait la même chose
-		--> on peut le récupérer grâce à <callable objet>..get()
-	- la classe Executors (À REVOIR)
+		--> on peut le récupérer grâce à <callable objet>.get()
 	- la méthode <thread name>.sleep permet de mettre en pause un certain Thread. Lorsqu'il attend, le thread suivant se met en route
 		--> .join() comprend qu'il ne faut pas considérer un thread en pause comme un thread fini (doit être utilisé dans le bloc try d'un try-catch (erreur de compilation sinon)
-		--> .yield() (À REVOIR)
+		--> .yield() (À REVOIR) (si j'ai bien compris, il appelle tous les threads, même ceux pas en attente, alors que notifyAll appelle uniquement tous les threads en attente)
 
 Race conditions, locks et deadlocks :
-	- quand 2 threads cherchent modifier le même espace mémoire au même moment --> comportement indéfini
-	- exemple de race condition : (une fonction qui ajoute un élément dans une liste chainée) :
-		--> thread1 commence et la chaine est vide donc il a un comportement A. thread1.sleep()
-		--> thread2 commence et ajoute un élément un élément dans la chaine
-		--> la chaine n'est donc plus vide
-		--> le comportement de thread1 peut causer des erreurs car il se basait sur le fait que la chaine soit vide alors qu'elle ne l'est plus après le passage de thread2
+	- race condition : contexte dans lequel plusieurs threads tentent d'accéder/modifier à une données partagées
 	- pour éviter d'avoir des problèmes de ce genre, on peut utiliser des locks :
 		--> si l'exécution du thread renvoie une erreur, l'état du thread est indéfini
 		--> synchronized au début de la déclaration de la fonction : synchronized void foo(){}
 		--> synchronized (objectName) à l'intérieur de la fonction : void foo(){ synchronized(objectName){...} }
 	- revoir .notitfy(All)(), et les deadlocks
-	- on peut synchroniser sur les objets directement ou sur une classe en particulier :
-		* sur l'objet : synchronized <return type> foo() --> obj.synchronizedMethod()
-		* sur la classe : static synchronized <return type> foo() --> MyClass.obj.staticSynchronizedMethod()
-			--> ne compilera pas si on l'appelle avec un objet
-	- myObject.lock() et myObject.unlock() permet de faire comme synchronized mais en permettant de décider exactement quand lock et unlock l'objet
-	- notion de tryLock à revoir
-	- .wait() :
-		* La méthode wait() est appelée sur un objet dans le contexte d'un bloc synchronized.
-		* Elle met le thread appelant en attente (suspendu) jusqu'à ce qu'un autre thread appelle notify() ou notifyAll() sur le même objet.
-		* Le thread doit posséder le verrou sur l'objet avant d'appeler wait().
-	- .notify() et .notifyAll() :
-		* Les méthodes notify() et notifyAll() sont également appelées sur un objet dans le contexte d'un bloc synchronized.
-		* notify() réveille un seul thread en attente (suspendu) sur l'objet, tandis que notifyAll() réveille tous les threads en attente sur l'objet.
-		* Ces méthodes ne libèrent pas le verrou sur l'objet.
-	- on ne peut lock() que des objets
-	- revoir Restaurant.java pour retravailler la classe ExecutorService
-	- revoir les sémaphores
-
-Expressions lambdas :
-	- à partir du moment où on a une interface :
-		--> <interface> <nomObjet> = ([liste des paramètres]) -> <ce que ça fait et retourne>
-
+	- pour bloquer un block de code sur un objet, il faut faire : synchronized(myObject){ // code }
+	- Lorsque vous synchronisez un bloc ou une méthode avec le mot-clé synchronized seul, cela bloque le bloc ou la méthode pour l'exécution d'un seul thread à la fois. Cela signifie que si un thread exécute ce bloc ou cette méthode, aucun autre thread ne peut y accéder tant que le premier thread n'a pas terminé son exécution.
+	-Lorsque vous utilisez synchronized(myObject) pour synchroniser sur un objet spécifique, cela signifie que le bloc ou la méthode est bloqué pour tous les threads qui tentent d'accéder au même objet (c'est-à-dire l'objet myObject). Cela signifie que plusieurs threads peuvent exécuter simultanément différentes méthodes synchronisées si ces méthodes sont synchronisées sur des objets différents. Cependant, si plusieurs threads tentent d'accéder au même bloc ou à la même méthode synchronisée sur le même objet, un seul thread pourra y accéder à la fois.
+	- Lorsque vous utilisez static synchronized(myClass) pour synchroniser une méthode statique sur une classe, cela bloque l'accès à la méthode pour tous les threads jusqu'à ce que le thread actuel ait terminé son exécution de la méthode. Cela signifie que si une méthode est déclarée comme static synchronized, elle est bloquée pour tous les threads, qu'ils travaillent avec la même instance de classe ou non. La synchronisation s'applique au niveau de la classe plutôt qu'au niveau de l'objet.
 
 Inner classes and interfaces :
-	- A static inner class does not require an outer class object to create an object of a nested class
-	- Static inner class objects cannot access non-static outer class objects
-	- les classes internes anonymes :
-		* ce pattern là :
-			interface/(abstract) class ClassA{
-				// méthodes ou non
-				foo(){code0}/;
-			}
-			
-			ClassA objetA = new ClassA(){
-				// fonctions internes anonymes
-				// ne pourront être appelées qu'avec objetA
-				foo(){
-					// code1 here
-				}
-				foo2(){
-					// code2 here
-				}
-			}
-		* doivent étendre/implémenter une classe déjà existante
-		* pour appeler foo (code1) il faut faire objetA.foo()
-		* on ne peut pas accéder à objetA.foo2() car foo2 n'est pas déclarée dans ClassA; on doit l'appeler en Class
-		* on ne peut pas utiliser le keyword super dans une classe interne anonyme (erreur de compil)
-		* 
+	- un objet d'une classe statique n'a pas besoin de ses outer classes pour être créé
+	- depuis une classe statique, on ne peut pas accéder à un élément non statique d'une autre classe sans appeler un objet de cette classe
 	- pour créer un objet objet d'une classe2 à l'intérieur d'une classe1 :
 		* mettre en statique la classe2
 		* classe1.classe objet = new class1.classe2();
@@ -172,5 +83,8 @@ Inner classes and interfaces :
 		class B extends A{
 			U foo(){}
 		}
-		--> U doit être égal à T, une méthode qui override cette méthode de sa classe parente ne pas avoir un type de retour différent de celui de la même méthode dans la classe parente
-	- Inner classes may be private or protected while regular classes may only be public or package
+		--> U doit être égal ou étendre à T
+	
+Expressions lambdas :
+	- à partir du moment où on a une interface :
+		--> <interface> <nomObjet> = ([liste des paramètres]) -> <ce que ça fait et retourne>
