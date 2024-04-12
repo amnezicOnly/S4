@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 // update this with your A number
-char a_num[] = "A01410991";
+char a_num[] = "";
 
 void transposeArray(int arr[10][10], int rows, int cols) {
 	for(int i=0; i<rows; i++){

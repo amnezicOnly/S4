@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 // update this with your A number
-char a_num[] = "01910991";
+char a_num[] = "";
 
 struct ListNode
 {
