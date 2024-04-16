@@ -63,7 +63,6 @@ Race conditions, locks et deadlocks :
 		--> si l'exécution du thread renvoie une erreur, l'état du thread est indéfini
 		--> synchronized au début de la déclaration de la fonction : synchronized void foo(){}
 		--> synchronized (objectName) à l'intérieur de la fonction : void foo(){ synchronized(objectName){...} }
-	- revoir .notitfy(All)(), et les deadlocks
 	- pour bloquer un block de code sur un objet, il faut faire : synchronized(myObject){ // code }
 	- Lorsque vous synchronisez un bloc ou une méthode avec le mot-clé synchronized seul, cela bloque le bloc ou la méthode pour l'exécution d'un seul thread à la fois. Cela signifie que si un thread exécute ce bloc ou cette méthode, aucun autre thread ne peut y accéder tant que le premier thread n'a pas terminé son exécution.
 	-Lorsque vous utilisez synchronized(myObject) pour synchroniser sur un objet spécifique, cela signifie que le bloc ou la méthode est bloqué pour tous les threads qui tentent d'accéder au même objet (c'est-à-dire l'objet myObject). Cela signifie que plusieurs threads peuvent exécuter simultanément différentes méthodes synchronisées si ces méthodes sont synchronisées sur des objets différents. Cependant, si plusieurs threads tentent d'accéder au même bloc ou à la même méthode synchronisée sur le même objet, un seul thread pourra y accéder à la fois.
