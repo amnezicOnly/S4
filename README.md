@@ -13,4 +13,4 @@ Le dossier BCIT contient tous les cours et devoirs que j'ai eu dans les différe
 
 Dans le dossier de chaque matière il est indiqué dans le fichier ReadMe certaines informations importantes sur la matière en question.
 
-Je viens de commencer à apprendre le MarkDown quand j'archive ce repo donc c'est normal si les ReadMe sont "un peu" moches".
+Je viens de commencer à apprendre le MarkDown quand j'archive ce repo donc c'est normal si les ReadMe sont "un peu" moches.
